@@ -119,7 +119,7 @@
 
             <div class="row gy-4">
                 <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
-                    <img src="assets/img/about.jpg" class="img-fluid mb-4" alt="">
+                    <img src="{{asset('landingpage/assets/img/about.jpg')}}" class="img-fluid mb-4" alt="">
                     <div class="book-a-table">
                         <h3>Book a Table</h3>
                         <p>+1 5589 55488 55</p>
@@ -142,7 +142,7 @@
                         </p>
 
                         <div class="position-relative mt-4">
-                            <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
+                            <img src="{{asset('landingpage/assets/img/about-2.jpg')}}" class="img-fluid" alt="">
                             <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
                         </div>
                     </div>
@@ -212,7 +212,7 @@
     <!-- Stats Section -->
     <section id="stats" class="stats section dark-background">
 
-        <img src="assets/img/stats-bg.jpg" alt="" data-aos="fade-in">
+        <img src="{{asset('landingpage/assets/img/stats-bg.jpg')}}" alt="" data-aos="fade-in">
 
         <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
 
@@ -303,7 +303,7 @@
                     <div class="row gy-5">
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/"assets/img/menu/menu-item-1.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Magnam Tiste</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -314,7 +314,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-2.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Aut Luia</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -325,7 +325,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/"assets/img/menu/menu-item-3.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Est Eligendi</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -336,7 +336,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-4.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -347,7 +347,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-5.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -358,7 +358,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-6.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Laboriosam Direva</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -381,7 +381,7 @@
                     <div class="row gy-5">
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-1.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Magnam Tiste</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -392,7 +392,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-2.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Aut Luia</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -403,7 +403,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-3.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Est Eligendi</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -414,7 +414,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-4.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -425,7 +425,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-5.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -436,7 +436,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-6.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Laboriosam Direva</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -459,7 +459,7 @@
                     <div class="row gy-5">
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-1.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Magnam Tiste</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -470,7 +470,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/"assets/img/menu/menu-item-2.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Aut Luia</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -481,7 +481,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-3.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Est Eligendi</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -492,7 +492,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-4.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -503,7 +503,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-5.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -514,7 +514,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-6.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Laboriosam Direva</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -537,7 +537,7 @@
                     <div class="row gy-5">
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-1.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Magnam Tiste</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -548,7 +548,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-2.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Aut Luia</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -559,7 +559,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-3.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Est Eligendi</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -570,7 +570,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-4.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -581,7 +581,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-5.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Eos Luibusdam</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -592,7 +592,7 @@
                         </div><!-- Menu Item -->
 
                         <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
+                            <a href="{{asset('landingpage/assets/img/menu/menu-item-6.png')}}" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
                             <h4>Laboriosam Direva</h4>
                             <p class="ingredients">
                                 Lorem, deren, trataro, filede, nerada
@@ -658,7 +658,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-1.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img src="{{asset('landingpage/assets/img/testimonials/testimonials-1.jpg')}}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -682,7 +682,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-2.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img src="{{asset('landingpage/assets/img/testimonials/testimonials-2.jpg')}}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -706,7 +706,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-3.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img src="{{asset('landingpage/assets/img/testimonials/testimonials-3.jpg')}}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -730,7 +730,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 text-center">
-                                    <img src="assets/img/testimonials/testimonials-4.jpg" class="img-fluid testimonial-img" alt="">
+                                    <img src="{{asset('landingpage/assets/img/testimonials/testimonials-4.jpg')}}" class="img-fluid testimonial-img" alt="">
                                 </div>
                             </div>
                         </div>
@@ -833,7 +833,7 @@
                 <div class="col-lg-4 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                     <div class="team-member">
                         <div class="member-img">
-                            <img src="assets/img/chefs/chefs-1.jpg" class="img-fluid" alt="">
+                            <img src="{{asset('landingpage/assets/img/chefs/chefs-1.jpg')}}" class="img-fluid" alt="">
                             <div class="social">
                                 <a href=""><i class="bi bi-twitter-x"></i></a>
                                 <a href=""><i class="bi bi-facebook"></i></a>
@@ -852,7 +852,7 @@
                 <div class="col-lg-4 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                     <div class="team-member">
                         <div class="member-img">
-                            <img src="assets/img/chefs/chefs-2.jpg" class="img-fluid" alt="">
+                            <img src="{{asset('landingpage/assets/img/chefs/chefs-2.jpg')}}" class="img-fluid" alt="">
                             <div class="social">
                                 <a href=""><i class="bi bi-twitter-x"></i></a>
                                 <a href=""><i class="bi bi-facebook"></i></a>
@@ -871,7 +871,7 @@
                 <div class="col-lg-4 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
                     <div class="team-member">
                         <div class="member-img">
-                            <img src="assets/img/chefs/chefs-3.jpg" class="img-fluid" alt="">
+                            <img src="{{asset('landingpage/assets/img/chefs/chefs-3.jpg')}}" class="img-fluid" alt="">
                             <div class="social">
                                 <a href=""><i class="bi bi-twitter-x"></i></a>
                                 <a href=""><i class="bi bi-facebook"></i></a>
