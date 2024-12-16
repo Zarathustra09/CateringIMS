@@ -15,51 +15,64 @@
         <!-- Dashboard -->
         <li class="menu-item {{ Request::is('admin/home') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home"></i>
+                <i class="menu-icon tf-icons bx bx-home-alt"></i>
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
 
+
         <!-- Catering Management -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Catering Management</span></li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Reservation Management</span></li>
         <li class="menu-item {{ Request::is('admin/orders') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-food-menu"></i>
-                <div data-i18n="Orders">Orders</div>
-            </a>
-        </li>
-        <li class="menu-item {{ Request::is('admin/menus') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-dish"></i>
-                <div data-i18n="Menus">Menus</div>
+                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <div data-i18n="Reservations">Reservations</div>
             </a>
         </li>
         <li class="menu-item {{ Request::is('admin/events') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-calendar-event"></i>
-                <div data-i18n="Events">Events</div>
+                <i class="menu-icon tf-icons bx bx-briefcase-alt-2"></i>
+                <div data-i18n="Services">Services</div>
             </a>
         </li>
 
-        <!-- Clients -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Clients</span></li>
         <li class="menu-item {{ Request::is('admin/clients') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-group"></i>
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Clients">Clients</div>
             </a>
         </li>
 
-        <!-- Staff -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Staff</span></li>
-        <li class="menu-item {{ Request::is('admin/staff') ? 'active' : '' }}">
+        <!-- Inventory Management -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Inventory Management</span></li>
+        <li class="menu-item {{ Request::is('admin/categories') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Staff">Staff</div>
+                <i class="menu-icon tf-icons bx bx-category"></i>
+                <div data-i18n="Categories">Categories</div>
+            </a>
+        </li>
+        <li class="menu-item {{ Request::is('admin/inventory') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-box"></i>
+                <div data-i18n="Inventory">Inventory</div>
             </a>
         </li>
 
 
 
+        <!-- Staff -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Staff Management</span></li>
+        <li class="menu-item {{ Request::is('admin/staff') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-check"></i>
+                <div data-i18n="Staff">Staff</div>
+            </a>
+        </li>
+        <li class="menu-item {{ Request::is('admin/payroll') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
+                <div data-i18n="Payroll">Payroll</div>
+            </a>
+        </li>
     </ul>
 </aside>
