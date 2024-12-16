@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - Yummy Bootstrap Template</title>
+    <title>{{env('APP_NAME')}}</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -27,13 +27,6 @@
     <!-- Main CSS File -->
     <link href="{{asset('landingpage/assets/css/main.css')}}" rel="stylesheet">
 
-    <!-- =======================================================
-    * Template Name: Yummy
-    * Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
-    * Updated: Aug 07 2024 with Bootstrap v5.3.3
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
 </head>
 
 <body class="index-page">
