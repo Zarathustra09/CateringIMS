@@ -45,14 +45,14 @@
 
         <!-- Inventory Management -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Inventory Management</span></li>
-        <li class="menu-item {{ Request::is('admin/categories') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item {{ Request::is('admin/category') ? 'active' : '' }}">
+            <a href="{{route('admin.category.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
                 <div data-i18n="Categories">Categories</div>
             </a>
         </li>
         <li class="menu-item {{ Request::is('admin/inventory') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+            <a href="{{route('admin.inventory.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="Inventory">Inventory</div>
             </a>
