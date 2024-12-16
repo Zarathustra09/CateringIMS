@@ -92,7 +92,7 @@
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
-                    <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+                    <img src="{{asset('landingpage/assets/img/hero-img.png" class="img-fluid animated')}}" alt="">
                 </div>
             </div>
         </div>
@@ -1167,15 +1167,15 @@
 <div id="preloader"></div>
 
 <!-- Vendor JS Files -->
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendor/php-email-form/validate.js"></script>
-<script src="assets/vendor/aos/aos.js"></script>
-<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-<script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="{{asset('landingpage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('landingpage/assets/vendor/php-email-form/validate.js')}}"></script>
+<script src="{{asset('landingpage/assets/vendor/aos/aos.js')}}"></script>
+<script src="{{asset('landingpage/assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
+<script src="{{asset('landingpage/assets/vendor/purecounter/purecounter_vanilla.js')}}"></script>
+<script src="{{asset('landingpage/assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
 
 <!-- Main JS File -->
-<script src="assets/js/main.js"></script>
+<script src="{{asset('landingpage/assets/js/main.js')}}"></script>
 
 </body>
 
