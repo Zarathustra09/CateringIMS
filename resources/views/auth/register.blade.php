@@ -1,12 +1,15 @@
 @extends('layouts.guest')
 
 @section('content')
-    <div class="container mt-5 mb-5"> <!-- Added mt-5 and mb-5 for top and bottom spacing -->
+
+<link rel="stylesheet" href="{{ asset('landingpage/assets/css/custom.css') }}">
+
+    <div class="container mt-5 mb-5"> <!-- Added mt-5 and mb-5 for spacing -->
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow-sm mb-4"> <!-- Added shadow-sm and mb-4 for spacing and subtle shadow -->
-                    <div class="card-header bg-primary text-white text-center">
-                        <h4>{{ __('Register') }}</h4>
+                    <div class="card-header text-center" style="background-color: #ce1212; color: white;">
+                        <h4 class="sitename">{{ __('Register') }}</h4>
                     </div>
 
                     <div class="card-body">
@@ -76,10 +79,19 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="d-grid gap-2 mb-3">
+                                <button type="submit" class="btn text-white" style="background-color: #ce1212;">
                                     {{ __('Register') }}
                                 </button>
+                            </div>
+
+                            <!-- Login Link -->
+                            <div class="text-center">
+                                @if (Route::has('login'))
+                                    <a class="btn btn-link p-0" href="{{ route('login') }}">
+                                        {{ __('Already have an account? Login') }}
+                                    </a>
+                                @endif
                             </div>
                         </form>
                     </div>

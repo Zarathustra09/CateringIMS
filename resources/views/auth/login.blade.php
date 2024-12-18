@@ -1,13 +1,17 @@
 @extends('layouts.guest')
 
 @section('content')
-    <div class="container mt-5 mb-5"> <!-- Added mb-5 for bottom space -->
+
+<link rel="stylesheet" href="{{ asset('landingpage/assets/css/custom.css') }}">
+
+    <div class="container mt-5 mb-5"> <!-- Added mt-5 and mb-5 for spacing -->
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card shadow-sm mb-4"> <!-- Added mb-4 for card bottom spacing -->
-                    <div class="card-header bg-primary text-white text-center">
-                        <h4>{{ __('Login') }}</h4>
+                <div class="card shadow-sm mb-4"> <!-- Added shadow-sm and mb-4 for spacing and subtle shadow -->
+                    <div class="card-header text-center" style="background-color: #ce1212; color: white;">
+                        <h4 class="sitename">{{ __('Login') }}</h4>
                     </div>
+                    
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
@@ -59,15 +63,24 @@
                                 </label>
                             </div>
 
-                            <!-- Submit & Forgot Password -->
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">
+                            <!-- Submit Button -->
+                            <div class="d-grid gap-2 mb-3">
+                                <button type="submit" class="btn text-white" style="background-color: #ce1212;">
                                     {{ __('Login') }}
                                 </button>
+                            </div>
 
+                            <!-- Forgot Password and Register Links -->
+                            <div class="d-flex justify-content-between">
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link text-center" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link p-0" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
+                                    </a>
+                                @endif
+
+                                @if (Route::has('register'))
+                                    <a class="btn btn-link p-0" href="{{ route('register') }}">
+                                        {{ __('Register') }}
                                     </a>
                                 @endif
                             </div>
