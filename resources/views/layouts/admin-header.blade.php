@@ -29,8 +29,8 @@
                 <div data-i18n="Reservations">Reservations</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('admin/events') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('admin.service.*') ? 'active' : '' }}">
+            <a href="{{route('admin.service.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-briefcase-alt-2"></i>
                 <div data-i18n="Services">Services</div>
             </a>
