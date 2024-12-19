@@ -62,7 +62,7 @@
 
         <!-- Staff -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Staff Management</span></li>
-        <li class="menu-item {{ request()->routeIs('admin.employee.*') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('admin.employee.*') || request()->routeIs('admin.employee_detail.show') ? 'active' : '' }}">
             <a href="{{route('admin.employee.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-check"></i>
                 <div data-i18n="Staff">Staff</div>
