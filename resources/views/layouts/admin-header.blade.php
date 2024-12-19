@@ -13,8 +13,8 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item {{ Request::is('admin/home') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('home') ? 'active' : '' }}">
+            <a href="{{route('home')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-alt"></i>
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
@@ -36,8 +36,8 @@
             </a>
         </li>
 
-        <li class="menu-item {{ Request::is('admin/clients') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('admin.client.*') ? 'active' : '' }}">
+            <a href="{{route('admin.client.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Clients">Clients</div>
             </a>
@@ -45,13 +45,13 @@
 
         <!-- Inventory Management -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Inventory Management</span></li>
-        <li class="menu-item {{ Request::is('admin/category') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('admin.category.*') ? 'active' : '' }}">
             <a href="{{route('admin.category.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
                 <div data-i18n="Categories">Categories</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('admin/inventory') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('admin.inventory.*') ? 'active' : '' }}">
             <a href="{{route('admin.inventory.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="Inventory">Inventory</div>
@@ -62,8 +62,8 @@
 
         <!-- Staff -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Staff Management</span></li>
-        <li class="menu-item {{ Request::is('admin/staff') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('admin.employee.*') ? 'active' : '' }}">
+            <a href="{{route('admin.employee.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-check"></i>
                 <div data-i18n="Staff">Staff</div>
             </a>

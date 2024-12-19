@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +39,20 @@ Route::get('/admin/inventory/{id}', [InventoryController::class, 'show'])->name(
 Route::post('/admin/inventory', [InventoryController::class, 'store'])->name('admin.inventory.store');
 Route::put('/admin/inventory/{id}', [InventoryController::class, 'update'])->name('admin.inventory.update');
 Route::delete('/admin/inventory/{id}', [InventoryController::class, 'destroy'])->name('admin.inventory.destroy');
+
+
+//admin employee
+Route::get('/admin/employee', [EmployeeController::class, 'index'])->name('admin.employee.index');
+Route::get('/admin/employee/{id}', [EmployeeController::class, 'show'])->name('admin.employee.show');
+Route::post('/admin/employee', [EmployeeController::class, 'store'])->name('admin.employee.store');
+Route::put('/admin/employee/{id}', [EmployeeController::class, 'update'])->name('admin.employee.update');
+Route::delete('/admin/employee/{id}', [EmployeeController::class, 'destroy'])->name('admin.employee.destroy');
+
+
+//admin client
+
+Route::get('/admin/client', [ClientController::class, 'index'])->name('admin.client.index');
+Route::get('/admin/client/{id}', [ClientController::class, 'show'])->name('admin.client.show');
+Route::post('/admin/client', [ClientController::class, 'store'])->name('admin.client.store');
+Route::put('/admin/client/{id}', [ClientController::class, 'update'])->name('admin.client.update');
+Route::delete('/admin/client/{id}', [ClientController::class, 'destroy'])->name('admin.client.destroy');
