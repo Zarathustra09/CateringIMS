@@ -1,7 +1,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="javascript:void(0);" class="app-brand-link">
-            <img src="{{ asset('img/logo-new.png') }}" alt="Catering Management System Logo" class="app-brand-logo">
+            <img src="{{asset('landingpage/assets/img/logoname.jpg')}}" class="img-fluid" alt="" style="max-height: 60px;">
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

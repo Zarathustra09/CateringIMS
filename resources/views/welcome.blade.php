@@ -11,15 +11,15 @@
         <div class="container">
             <div class="row gy-4 justify-content-center justify-content-lg-between">
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center">
-                    <h1 data-aos="fade-up">Enjoy Your Healthy<br>Delicious Food</h1>
-                    <p data-aos="fade-up" data-aos-delay="100">We are team of talented designers making websites with Bootstrap</p>
+                    <h1 data-aos="fade-up">Delicious Moments Served:<br>Your Perfect Catering Awaits!</h1>
+                    <p data-aos="fade-up" data-aos-delay="100">Elevate your events with our seamless catering reservations, where every bite is a celebration!</p>
                     <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                        <a href="#book-a-table" class="btn-get-started">Booka a Table</a>
-                        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                        <a href="#book-a-table" class="btn-get-started">Reserve Now!</a>
+                        {{-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
-                    <img src="{{asset('landingpage/assets/img/hero-img.png" class="img-fluid animated')}}" alt="">
+                    <img src="{{asset('landingpage/assets/img/hero-img.jpg')}}" class="img-fluid animated" alt="">
                 </div>
             </div>
         </div>
@@ -41,30 +41,30 @@
                 <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
                     <img src="{{asset('landingpage/assets/img/about.jpg')}}" class="img-fluid mb-4" alt="">
                     <div class="book-a-table">
-                        <h3>Book a Table</h3>
-                        <p>+1 5589 55488 55</p>
+                        <h3>Inquire Now!</h3>
+                        <p>Globe: 0917 504 4011 / 0917 892 5128</p>
+                            <p>Smart: 0939 924 9377</p>
+                            <p>Landline: (043)741 1278</p>
                     </div>
                 </div>
                 <div class="col-lg-5" data-aos="fade-up" data-aos-delay="250">
                     <div class="content ps-0 ps-lg-5">
                         <p class="fst-italic">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.
+                            Welcome to Jhulians Suite, where we believe that every event deserves to be unforgettable! Located in the heart of Tinurik, Tanauan, Philippines, we have been serving our community since 2013 with a passion for exceptional food and memorable experiences
                         </p>
                         <ul>
-                            <li><i class="bi bi-check-circle-fill"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-                            <li><i class="bi bi-check-circle-fill"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-                            <li><i class="bi bi-check-circle-fill"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Jhulians Suite offers a diverse range of services, including wedding packages, debut celebrations, birthday parties, and corporate events.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>In addition to Suite, we provide flower arrangements, photo booth services, and event coordination for a complete event experience.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Jhulians Suite is known for its stunning food presentation, transforming each dish into a visual masterpiece that enhances the overall dining experience at your event.</span></li>
                         </ul>
                         <p>
-                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident
+                            In addition to our catering services, we offer beautiful flower arrangements, engaging photo booths, and comprehensive event coordination to ensure every detail is taken care of. Our team is committed to providing you with delicious cuisine and exceptional service, allowing you to relax and enjoy your event to the fullest.
                         </p>
 
-                        <div class="position-relative mt-4">
+                        {{-- <div class="position-relative mt-4">
                             <img src="{{asset('landingpage/assets/img/about-2.jpg')}}" class="img-fluid" alt="">
                             <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -82,10 +82,11 @@
 
                 <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="why-box">
-                        <h3>Why Choose Yummy</h3>
+                        <h3>Why Choose Jhulian's Suite?</h3>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                            Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus optio ad corporis.
+                            Choosing Jhulians Catering means selecting a dedicated team that creates unforgettable culinary 
+                            experiences tailored to your events. With diverse menu options, quality ingredients, and exceptional 
+                            service, we ensure a delightful experience for you and your guests. Let us handle every detail, so you can relax and enjoy your special occasion!
                         </p>
                         <div class="text-center">
                             <a href="#" class="more-btn"><span>Learn More</span> <i class="bi bi-chevron-right"></i></a>
@@ -99,24 +100,24 @@
                         <div class="col-xl-4">
                             <div class="icon-box d-flex flex-column justify-content-center align-items-center">
                                 <i class="bi bi-clipboard-data"></i>
-                                <h4>Corporis voluptates officia eiusmod</h4>
-                                <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+                                <h4>Local Ingredients</h4>
+                                <p>Jhulians Catering prioritizes the use of fresh, locally sourced ingredients to ensure the highest quality and flavor in every dish.</p>
                             </div>
                         </div><!-- End Icon Box -->
 
                         <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
                             <div class="icon-box d-flex flex-column justify-content-center align-items-center">
                                 <i class="bi bi-gem"></i>
-                                <h4>Ullamco laboris ladore lore pan</h4>
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
+                                <h4>Customizable Menus</h4>
+                                <p>We offer customizable menu options that cater to various dietary preferences and restrictions, allowing you to create a dining experience that suits all your guests.</p>
                             </div>
                         </div><!-- End Icon Box -->
 
                         <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
                             <div class="icon-box d-flex flex-column justify-content-center align-items-center">
                                 <i class="bi bi-inboxes"></i>
-                                <h4>Labore consequatur incidid dolore</h4>
-                                <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+                                <h4>Client-Centric Approach</h4>
+                                <p>Our team takes a client-centric approach, working closely with you to understand your vision and preferences, ensuring that your event is personalized and meets your expectations.</p>
                             </div>
                         </div><!-- End Icon Box -->
 
@@ -140,14 +141,14 @@
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="123" data-purecounter-duration="1" class="purecounter"></span>
                         <p>Clients</p>
                     </div>
                 </div><!-- End Stats Item -->
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="342" data-purecounter-duration="1" class="purecounter"></span>
                         <p>Projects</p>
                     </div>
                 </div><!-- End Stats Item -->
@@ -172,7 +173,7 @@
 
     </section><!-- /Stats Section -->
 
-    <!-- Menu Section -->
+    {{-- <!-- Menu Section -->
     <section id="menu" class="menu section">
 
         <!-- Section Title -->
@@ -529,7 +530,7 @@
 
         </div>
 
-    </section><!-- /Menu Section -->
+    </section><!-- /Menu Section --> --}}
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section light-background">
@@ -699,7 +700,7 @@
 
                     <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(landingpage/assets/img/events-1.jpg)">
                         <h3>Custom Parties</h3>
-                        <div class="price align-self-start">$99</div>
+                        {{-- <div class="price align-self-start">$99</div> --}}
                         <p class="description">
                             Quo corporis voluptas ea ad. Consectetur inventore sapiente ipsum voluptas eos omnis facere. Enim facilis veritatis id est rem repudiandae nulla expedita quas.
                         </p>
@@ -707,7 +708,7 @@
 
                     <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(landingpage/assets/img/events-2.jpg)">
                         <h3>Private Parties</h3>
-                        <div class="price align-self-start">$289</div>
+                        {{-- <div class="price align-self-start">$289</div> --}}
                         <p class="description">
                             In delectus sint qui et enim. Et ab repudiandae inventore quaerat doloribus. Facere nemo vero est ut dolores ea assumenda et. Delectus saepe accusamus aspernatur.
                         </p>
@@ -715,7 +716,7 @@
 
                     <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(landingpage/assets/img/events-3.jpg)">
                         <h3>Birthday Parties</h3>
-                        <div class="price align-self-start">$499</div>
+                        {{-- <div class="price align-self-start">$499</div> --}}
                         <p class="description">
                             Laborum aperiam atque omnis minus omnis est qui assumenda quos. Quis id sit quibusdam. Esse quisquam ducimus officia ipsum ut quibusdam maxime. Non enim perspiciatis.
                         </p>
@@ -723,7 +724,7 @@
 
                     <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(landingpage/assets/img/events-4.jpg)">
                         <h3>Wedding Parties</h3>
-                        <div class="price align-self-start">$899</div>
+                        {{-- <div class="price align-self-start">$899</div> --}}
                         <p class="description">
                             Laborum aperiam atque omnis minus omnis est qui assumenda quos. Quis id sit quibusdam. Esse quisquam ducimus officia ipsum ut quibusdam maxime. Non enim perspiciatis.
                         </p>
@@ -737,7 +738,7 @@
 
     </section><!-- /Events Section -->
 
-    <!-- Chefs Section -->
+    {{-- <!-- Chefs Section -->
     <section id="chefs" class="chefs section">
 
         <!-- Section Title -->
@@ -811,15 +812,15 @@
 
         </div>
 
-    </section><!-- /Chefs Section -->
+    </section><!-- /Chefs Section --> --}}
 
     <!-- Book A Table Section -->
     <section id="book-a-table" class="book-a-table section">
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <h2>Book A Table</h2>
-            <p><span>Book Your</span> <span class="description-title">Stay With Us<br></span></p>
+            <h2>Hire us</h2>
+            <p><span>Book for your</span> <span class="description-title">special day!<br></span></p>
         </div><!-- End Section Title -->
 
         <div class="container">
@@ -941,7 +942,7 @@
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
             <div class="mb-5">
-                <iframe style="width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" allowfullscreen=""></iframe>
+                <iframe style="width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d483.78003528434397!2d121.12082605359308!3d14.062983621155947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd6f946f9d1bc7%3A0xd46c976a848bebda!2sJhulians%20Catering%20Services!5e0!3m2!1sen!2sph!4v1734617857176!5m2!1sen!2sph" frameborder="0" allowfullscreen=""></iframe>
             </div><!-- End Google Maps -->
 
             <div class="row gy-4">
@@ -951,7 +952,7 @@
                         <i class="icon bi bi-geo-alt flex-shrink-0"></i>
                         <div>
                             <h3>Address</h3>
-                            <p>A108 Adam Street, New York, NY 535022</p>
+                            <p>Tinurik 4232 Tanauan, Philippines</p>
                         </div>
                     </div>
                 </div><!-- End Info Item -->
@@ -961,7 +962,9 @@
                         <i class="icon bi bi-telephone flex-shrink-0"></i>
                         <div>
                             <h3>Call Us</h3>
-                            <p>+1 5589 55488 55</p>
+                            <p>Globe: 0917 504 4011 / 0917 892 5128</p>
+                            <p>Smart: 0939 924 9377</p>
+                            <p>Landline: (043)741 1278</p>
                         </div>
                     </div>
                 </div><!-- End Info Item -->
@@ -971,24 +974,24 @@
                         <i class="icon bi bi-envelope flex-shrink-0"></i>
                         <div>
                             <h3>Email Us</h3>
-                            <p>info@example.com</p>
+                            <p>jhulianscateringservices2003@gmail.com</p>
                         </div>
                     </div>
                 </div><!-- End Info Item -->
 
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="500">
                         <i class="icon bi bi-clock flex-shrink-0"></i>
                         <div>
                             <h3>Opening Hours<br></h3>
                             <p><strong>Mon-Sat:</strong> 11AM - 23PM; <strong>Sunday:</strong> Closed</p>
                         </div>
-                    </div>
+                    </div> --}}
                 </div><!-- End Info Item -->
 
             </div>
 
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="600">
+            {{-- <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="600">
                 <div class="row gy-4">
 
                     <div class="col-md-6">
@@ -1016,7 +1019,7 @@
                     </div>
 
                 </div>
-            </form><!-- End Contact Form -->
+            </form><!-- End Contact Form --> --}}
 
         </div>
 
