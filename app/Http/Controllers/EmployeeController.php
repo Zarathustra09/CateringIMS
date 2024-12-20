@@ -37,7 +37,7 @@ class EmployeeController extends Controller
             'employee_id' => $employee_id,
         ]);
 
-        return response()->json(['success' => 'Employee created successfully']);
+        return response()->json(['success' => 'Employee created successfully', 'user' => $user]);
     }
 
     public function show($id)

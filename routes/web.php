@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeDetailController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,12 @@ Route::post('/admin/employee', [EmployeeController::class, 'store'])->name('admi
 Route::put('/admin/employee/{id}', [EmployeeController::class, 'update'])->name('admin.employee.update');
 Route::delete('/admin/employee/{id}', [EmployeeController::class, 'destroy'])->name('admin.employee.destroy');
 
+//admin employee detail
+Route::post('/admin/employee-detail', [EmployeeDetailController::class, 'store'])->name('admin.employee_detail.store');
+Route::get('/admin/employee-detail/{id}', [EmployeeDetailController::class, 'show'])->name('admin.employee_detail.show');
+Route::put('/admin/employee-detail/{id}', [EmployeeDetailController::class, 'update'])->name('admin.employee_detail.update');
+Route::delete('/admin/employee-detail/{id}', [EmployeeDetailController::class, 'destroy'])->name('admin.employee_detail.destroy');
+
 
 //admin client
 Route::get('/admin/client', [ClientController::class, 'index'])->name('admin.client.index');
@@ -63,3 +70,4 @@ Route::post('/admin/service', [ServiceController::class, 'store'])->name('admin.
 Route::get('/admin/service/{service}', [ServiceController::class, 'show'])->name('admin.service.show');
 Route::put('/admin/service/{service}', [ServiceController::class, 'update'])->name('admin.service.update');
 Route::delete('/admin/service/{service}', [ServiceController::class, 'destroy'])->name('admin.service.destroy');
+
