@@ -8,7 +8,7 @@
             <tr>
                 <th>ID</th>
                 <th>Reservation ID</th>
-                <th>Checkout Link</th>
+                <th>Invoice ID</th>
                 <th>Status</th>
                 <th>Total</th>
                 <th>Created At</th>
