@@ -3,7 +3,7 @@
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('landingpage/assets/css/custom.css') }}">
-
+<div style="margin-top: 100px;"></div>
     <div class="container mt-5 mb-5"> <!-- Added mt-5 and mb-5 for spacing -->
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -50,6 +50,24 @@
                                     </div>
                                 @enderror
                             </div>
+
+                             <!-- Phone Number Field -->
+                             <div class="form-group mb-3">
+                                <label for="phone_number" class="form-label">{{ __('Phone Number') }}</label>
+                                <input id="phone_number" 
+                                       type="phone_number" 
+                                       class="form-control @error('phone_number') is-invalid @enderror" 
+                                       name="phone_number" 
+                                       value="{{ old('phone_number') }}" 
+                                       required 
+                                       autocomplete="phone_number">
+                                @error('phone_number')
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                @enderror
+                            </div>
+
 
                             <!-- Password Field -->
                             <div class="form-group mb-3">

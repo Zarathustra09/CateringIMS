@@ -3,6 +3,8 @@
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('landingpage/assets/css/custom.css') }}">
+<div style="margin-top: 100px;"></div>
+
 
     <div class="container mt-5 mb-5"> <!-- Added mt-5 and mb-5 for spacing -->
         <div class="row justify-content-center">

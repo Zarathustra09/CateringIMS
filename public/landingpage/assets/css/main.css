@@ -571,11 +571,12 @@ h6 {
   font-size: 14px;
   padding: 40px 0;
   position: relative;
+
 }
 
 .footer .icon {
   color: var(--accent-color);
-  margin-right: 15px;
+  /* margin-right: 1px; */
   font-size: 24px;
   line-height: 0;
 }
@@ -621,6 +622,24 @@ h6 {
 .footer .credits {
   margin-top: 5px;
   font-size: 13px;
+}
+
+/* new */
+.footer .row {
+  display: flex;
+  justify-content: center;
+  /* Center the columns in the row */
+  text-align: center;
+  /* Center the text within each column */
+}
+
+.footer .col-lg-3,
+.footer .col-md-6 {
+  display: flex;
+  flex-direction: column;
+  /* Stack the icon and text vertically */
+  align-items: center;
+  /* Center the items horizontally */
 }
 
 /*--------------------------------------------------------------
