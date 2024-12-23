@@ -5,6 +5,8 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDetailController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,4 +72,17 @@ Route::post('/admin/service', [ServiceController::class, 'store'])->name('admin.
 Route::get('/admin/service/{service}', [ServiceController::class, 'show'])->name('admin.service.show');
 Route::put('/admin/service/{service}', [ServiceController::class, 'update'])->name('admin.service.update');
 Route::delete('/admin/service/{service}', [ServiceController::class, 'destroy'])->name('admin.service.destroy');
+
+
+//Reservation
+Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
+Route::get('/reservation/create', [ReservationController::class, 'create'])->name('reservation.create');
+Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
+
+
+//payment
+Route::get('/payment/index', [PaymentController::class, 'index'])->name('payment.index');
+Route::post('/payment/checkout', [PaymentController::class, 'store'])->name('payment.checkout');
+Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
 

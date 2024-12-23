@@ -23,10 +23,10 @@
     <link href="{{asset('landingpage/assets/vendor/aos/aos.css" rel="stylesheet')}}">
     <link href="{{asset('landingpage/ssets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
     <link href="{{asset('landingpage/assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Main CSS File -->
     <link href="{{asset('landingpage/assets/css/main.css')}}" rel="stylesheet">
-   
+
 </head>
 
 <body class="index-page">
@@ -72,8 +72,8 @@
         </nav>
 
         <a class="btn-getstarted me-2" href="{{ route('login') }}">Sign In</a>
-       
-        
+
+
 
     </div>
 </header>
@@ -158,10 +158,12 @@
 <script src="{{asset('landingpage/assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
 <script src="{{asset('landingpage/assets/vendor/purecounter/purecounter_vanilla.js')}}"></script>
 <script src="{{asset('landingpage/assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
-
+<script src="{{ asset('dashboard/assets/vendor/libs/jquery/jquery.js') }}"></script>
 <!-- Main JS File -->
 <script src="{{asset('landingpage/assets/js/main.js')}}"></script>
-
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@stack('scripts')
 </body>
 
 </html>
