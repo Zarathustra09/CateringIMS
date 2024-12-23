@@ -46,21 +46,78 @@
 
         async function createEmployee() {
             await Swal.fire({
-                title: 'Create Employee',
+                title: 'Create New Employee',
+                width: '800px',
                 html: `
-            <input id="swal-input1" class="swal2-input" placeholder="Name">
-            <input id="swal-input2" class="swal2-input" placeholder="Email">
-            <input id="swal-input3" class="swal2-input" placeholder="Phone Number">
-            <input id="swal-input4" class="swal2-input" type="password" placeholder="Password">
-            <input id="swal-input5" class="swal2-input" type="password" placeholder="Confirm Password">
-            <input id="swal-input6" class="swal2-input" placeholder="Position">
-            <input id="swal-input7" class="swal2-input" placeholder="Department">
-            <input id="swal-input8" class="swal2-input" placeholder="Salary">
-            <input id="swal-input9" class="swal2-input" type="date" placeholder="Hired At">
-        `,
+                    <div style="text-align: left; padding: 20px;">
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="color: #333; margin-bottom: 15px; font-weight: 600;">Personal Information</h4>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Full Name</label>
+                                <input id="swal-input1" class="swal2-input" style="width: 100%; margin: 0;" placeholder="Enter full name">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Email Address</label>
+                                <input id="swal-input2" class="swal2-input" style="width: 100%; margin: 0;" placeholder="Enter email address">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Phone Number</label>
+                                <input id="swal-input3" class="swal2-input" style="width: 100%; margin: 0;" placeholder="Enter phone number">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="color: #333; margin-bottom: 15px; font-weight: 600;">Security</h4>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Password</label>
+                                <input id="swal-input4" class="swal2-input" type="password" style="width: 100%; margin: 0;" placeholder="Enter password">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Confirm Password</label>
+                                <input id="swal-input5" class="swal2-input" type="password" style="width: 100%; margin: 0;" placeholder="Confirm password">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="color: #333; margin-bottom: 15px; font-weight: 600;">Employment Details</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Position</label>
+                                    <input id="swal-input6" class="swal2-input" style="width: 100%; margin: 0;" placeholder="Enter position">
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Department</label>
+                                    <input id="swal-input7" class="swal2-input" style="width: 100%; margin: 0;" placeholder="Enter department">
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Salary</label>
+                                    <input id="swal-input8" class="swal2-input" style="width: 100%; margin: 0;" placeholder="Enter salary">
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Hire Date</label>
+                                    <input id="swal-input9" class="swal2-input" type="date" style="width: 100%; margin: 0;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                customClass: {
+                    container: 'custom-swal-container',
+                    popup: 'custom-swal-popup',
+                    header: 'custom-swal-header',
+                    title: 'custom-swal-title',
+                    closeButton: 'custom-swal-close',
+                    content: 'custom-swal-content',
+                    confirmButton: 'custom-swal-confirm',
+                    cancelButton: 'custom-swal-cancel'
+                },
                 showConfirmButton: true,
-                confirmButtonText: 'Create',
+                confirmButtonText: 'Create Employee',
                 showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+                buttonsStyling: true,
+                reverseButtons: true,
                 preConfirm: () => {
                     return {
                         name: document.getElementById('swal-input1').value,
@@ -78,6 +135,69 @@
                 if (result.isConfirmed) {
                     storeEmployee(result.value);
                 }
+            });
+        }
+
+        function editUser(userId) {
+            $.get('/admin/employee/' + userId, function(user) {
+                Swal.fire({
+                    title: 'Edit Employee Information',
+                    width: '800px',
+                    html: `
+                        <div style="text-align: left; padding: 20px;">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Full Name</label>
+                                <input id="swal-input1" class="swal2-input" style="width: 100%; margin: 0;" value="${user.name}" placeholder="Enter full name">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Email Address</label>
+                                <input id="swal-input2" class="swal2-input" style="width: 100%; margin: 0;" value="${user.email}" placeholder="Enter email address">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Phone Number</label>
+                                <input id="swal-input3" class="swal2-input" style="width: 100%; margin: 0;" value="${user.phone_number}" placeholder="Enter phone number">
+                            </div>
+                        </div>
+                    `,
+                    customClass: {
+                        container: 'custom-swal-container',
+                        popup: 'custom-swal-popup',
+                        header: 'custom-swal-header',
+                        title: 'custom-swal-title',
+                        closeButton: 'custom-swal-close',
+                        content: 'custom-swal-content',
+                        confirmButton: 'custom-swal-confirm',
+                        cancelButton: 'custom-swal-cancel'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Update Employee',
+                    cancelButtonText: 'Cancel',
+                    buttonsStyling: true,
+                    reverseButtons: true,
+                    preConfirm: () => {
+                        return {
+                            name: document.getElementById('swal-input1').value,
+                            email: document.getElementById('swal-input2').value,
+                            phone_number: document.getElementById('swal-input3').value
+                        }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/admin/employee/' + userId,
+                            type: 'PUT',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                ...result.value
+                            },
+                            success: function(response) {
+                                Swal.fire('Updated!', response.success, 'success').then(() => {
+                                    location.reload();
+                                });
+                            }
+                        });
+                    }
+                });
             });
         }
 
@@ -196,5 +316,47 @@
                 }
             });
         }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            .custom-swal-popup {
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+            .custom-swal-header {
+                border-bottom: 1px solid #eee;
+                padding: 20px;
+            }
+            .custom-swal-title {
+                color: #2c3e50;
+                font-size: 24px;
+                font-weight: 600;
+            }
+            .swal2-input {
+                height: 40px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 0 12px;
+                font-size: 14px;
+                box-shadow: none !important;
+            }
+            .swal2-input:focus {
+                border-color: #3085d6;
+            }
+            .custom-swal-confirm {
+                background: #3085d6 !important;
+                border-radius: 4px !important;
+                font-weight: 500 !important;
+                padding: 12px 24px !important;
+            }
+            .custom-swal-cancel {
+                background: #6c757d !important;
+                border-radius: 4px !important;
+                font-weight: 500 !important;
+                padding: 12px 24px !important;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 @endpush
