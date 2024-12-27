@@ -28,7 +28,17 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function redirectTo()
+    {
+        $role = auth()->user()->role_id;
+
+        switch ($role) {
+            case 0:
+                return '/';
+            default:
+                return '/home';
+        }
+    }
 
     /**
      * Create a new controller instance.
@@ -65,12 +75,12 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            
+
             'name' => $data['name'],
             'phone_number' => $data['phone_number'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-           
+
         ]);
     }
 }
