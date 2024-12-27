@@ -22,5 +22,12 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1,
             'employee_id' => 'Im Overpowered'
         ]);
+
+        $this->call([
+            ServiceSeeder::class,
+            CategorySeeder::class,
+            InventorySeeder::class,
+            EmployeeSeeder::class,
+        ]);
     }
 }

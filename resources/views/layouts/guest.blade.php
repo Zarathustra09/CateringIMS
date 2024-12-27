@@ -26,7 +26,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Main CSS File -->
     <link href="{{asset('landingpage/assets/css/main.css')}}" rel="stylesheet">
-
+    @stack('styles')
 </head>
 
 <body class="index-page">
@@ -35,43 +35,50 @@
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
         <a href="{{ url('/') }}" class="logo d-flex align-items-center me-auto me-xl-0">
-            <img src="{{asset('landingpage/assets/img/logoname.jpg')}}" class="img-fluid" alt="" style="max-height: 60px;"> <!-- Adjust the height as needed -->
+            <img src="{{asset('landingpage/assets/img/logoname.jpg')}}" class="img-fluid" alt="" style="max-height: 60px;">
         </a>
-        
 
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="#hero" class="active">Home<br></a></li>
-                <li><a href="#about">About</a></li>
-                {{-- <li><a href="#menu">Menu</a></li> --}}
-                <li><a href="#events">Events</a></li>
-                {{-- <li><a href="#chefs">Chefs</a></li> --}}
-                <li><a href="#gallery">Gallery</a></li>
-                {{-- <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                    <ul>
-                        <li><a href="#">Dropdown 1</a></li>
-                        <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                            <ul>
-                                <li><a href="#">Deep Dropdown 1</a></li>
-                                <li><a href="#">Deep Dropdown 2</a></li>
-                                <li><a href="#">Deep Dropdown 3</a></li>
-                                <li><a href="#">Deep Dropdown 4</a></li>
-                                <li><a href="#">Deep Dropdown 5</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Dropdown 2</a></li>
-                        <li><a href="#">Dropdown 3</a></li>
-                        <li><a href="#">Dropdown 4</a></li>
-                    </ul>
-                </li> --}}
-                <li><a href="#contact">Contact</a></li>
+                @guest
+                    <li><a href="{{url('/')}}" class="active">Home<br></a></li>
+                    <li><a href="{{ url('/') }}#about">About</a></li>
+                    <li><a href="{{ url('/') }}#events">Events</a></li>
+                    <li><a href="{{ url('/') }}#gallery">Gallery</a></li>
+                    <li><a href="{{ url('/') }}#contact">Contact</a></li>
+                @endguest
+
+                @auth
+                        <li><a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">Home<br></a></li>
+                        <li><a href="{{ route('reservation.index') }}" class="{{ Request::routeIs('reservation.index') ? 'active' : '' }}">Reservation</a></li>
+                        <li><a href="{{ route('payment.index') }}" class="{{ Request::routeIs('payment.index') ? 'active' : '' }}">Payment</a></li>
+                @endauth
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
-        <a class="btn-getstarted me-2" href="{{ route('login') }}">Sign In</a>
+        @guest
+            <a class="btn-getstarted me-2" href="{{ route('login') }}">Sign In</a>
+        @endguest
 
-
+        @auth
+            <div class="dropdown">
+                <a class="btn-getstarted dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ Auth::user()->name }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                    <li>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        @endauth
 
     </div>
 </header>
@@ -84,7 +91,7 @@
     <div class="container">
         <div class="row gy-3 justify-content-center"> <!-- Added justify-content-center -->
             <div class="col-lg-3 col-md-6 d-flex">
-              
+
                 <i class="bi bi-geo-alt icon"></i>
                 <div class="address">
                     <h4>Address</h4>
