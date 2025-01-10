@@ -9,6 +9,10 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\AssigneeController;
+use App\Http\Controllers\ReservationItemsController;
+use App\Http\Controllers\CategoryEventController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,6 +49,7 @@ Route::get('/admin/inventory/{id}', [InventoryController::class, 'show'])->name(
 Route::post('/admin/inventory', [InventoryController::class, 'store'])->name('admin.inventory.store');
 Route::put('/admin/inventory/{id}', [InventoryController::class, 'update'])->name('admin.inventory.update');
 Route::delete('/admin/inventory/{id}', [InventoryController::class, 'destroy'])->name('admin.inventory.destroy');
+Route::get('/admin/item/list', [InventoryController::class, 'allInventory'])->name('admin.inventory.list');
 
 
 //admin employee
@@ -77,9 +82,14 @@ Route::delete('/admin/service/{service}', [ServiceController::class, 'destroy'])
 
 
 //Reservation
+Route::get('/admin/reservations', [ReservationController::class, 'index'])->name('admin.reservations.index');
+
 Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
 Route::get('/reservation/create', [ReservationController::class, 'create'])->name('reservation.create');
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
+
+
+
 
 
 //payment
@@ -94,3 +104,31 @@ Route::put('/profile', [ProfileController::class, 'update'])->name('profile.upda
 Route::post('/profile/upload-image', [ProfileController::class, 'uploadProfileImage'])->name('profile.uploadImage');
 Route::post('/profile/reset-image', [ProfileController::class, 'resetProfileImage'])->name('profile.resetImage');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+//admin team task
+Route::get('/admin/reservation-items', [ReservationItemsController::class, 'index'])->name('admin.reservationitems.index');
+Route::get('/admin/reservation-items/single/{id}', [ReservationItemsController::class, 'showSingle'])->name('admin.reservationitems.single');
+Route::get('/admin/reservation-items/{id}', [ReservationController::class, 'show'])->name('admin.reservationitems.show');
+Route::post('/admin/reservation-items/store', [ReservationItemsController::class, 'store'])->name('admin.reservationitems.store');
+Route::get('/admin/reservation-items/{id}/edit', [ReservationController::class, 'edit'])->name('admin.reservationitems.edit');
+Route::put('/admin/reservation-items/{id}', [ReservationController::class, 'update'])->name('admin.reservationitems.update');
+
+
+Route::post('admin/reservation-items/{id}/addInventory', [ReservationItemsController::class, 'addInventory'])->name('admin.reservationItems.addInventory');
+Route::post('admin/reservation-items/{id}/editInventory', [ReservationItemsController::class, 'editInventory'])->name('admin.reservationItems.editInventory');
+Route::post('admin/reservation-items/{id}/deleteInventory', [ReservationItemsController::class, 'deleteInventory'])->name('admin.reservationItems.deleteInventory');
+
+
+Route::get('/admin/assignee', [AssigneeController::class, 'index'])->name('admin.assignee.index');
+Route::post('/admin/assignee', [AssigneeController::class, 'store'])->name('admin.assignee.store');
+Route::get('/admin/assignee/{id}', [AssigneeController::class, 'show'])->name('admin.assignee.show');
+Route::put('/admin/assignee/{id}', [AssigneeController::class, 'update'])->name('admin.assignee.update');
+Route::delete('/admin/assignee/{id}', [AssigneeController::class, 'destroy'])->name('admin.assignee.destroy');
+
+Route::prefix('admin/category-events')->group(function () {
+    Route::get('/', [CategoryEventController::class, 'index'])->name('admin.categoryevents.index'); // List all category events
+    Route::post('/', [CategoryEventController::class, 'store'])->name('admin.categoryevents.store'); // Create a new category event
+    Route::get('/{id}', [CategoryEventController::class, 'show'])->name('admin.categoryevents.show'); // Show a specific category event
+    Route::put('/{id}', [CategoryEventController::class, 'update'])->name('admin.categoryevents.update'); // Update an existing category event
+    Route::delete('/{id}', [CategoryEventController::class, 'destroy'])->name('admin.categoryevents.destroy'); // Delete a category event
+});

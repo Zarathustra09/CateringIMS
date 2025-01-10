@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoryEvent;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
+use App\Models\Inventory;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,8 +22,11 @@ class ReservationController extends Controller
 
     public function create(Request $request)
     {
+        
         $service = Service::find($request->input('service_id'));
-        return view('guest.reservation.create', compact('service'));
+        $categories = CategoryEvent::all();
+
+        return view('guest.reservation.create', compact('service', 'categories'));
     }
 
 
@@ -73,6 +79,41 @@ class ReservationController extends Controller
             Log::error('Error creating reservation:', ['message' => $e->getMessage()]);
             return back()->withErrors(['error' => 'An error occurred while creating the reservation. Please try again.']);
         }
+    }
+
+    public function show($id)
+    {
+        $reservation = Reservation::with(['assignees.user','inventories'])->findOrFail($id);
+        $existingInventories = Inventory::all();
+        $employees = User::where('role_id', 1)->get(['id', 'name']);
+        return view('admin.reservationitems.show', compact('reservation', 'employees', 'existingInventories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        Log::info('Update function called', ['request' => $request->all(), 'reservation_id' => $id]);
+
+        $request->validate([
+            
+            'status' => 'required|string|max:50',
+           
+        ]);
+
+        Log::info('Validation passed');
+
+        $reservation = Reservation::findOrFail($id);
+        $data = $request->all();
+
+        $reservation->update($data);
+        Log::info('reservation updated', ['reservation_id' => $reservation->id]);
+
+        return redirect()->route('admin.reservationitems.index')->with('success', 'Reservation updated successfully.');
+    }
+
+    public function edit($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        return view('admin.reservationitems.edit', compact('reservation', 'categories')); // Add this line
     }
 
 //    public function track($id)

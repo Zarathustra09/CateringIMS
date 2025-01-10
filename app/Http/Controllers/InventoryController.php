@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class InventoryController extends Controller
 {
@@ -54,5 +55,16 @@ class InventoryController extends Controller
         $inventory->delete();
 
         return response()->json(['success' => 'Inventory deleted successfully']);
+    }
+    public function allInventory()
+    {
+        try {
+            $items = Inventory::all(); // Fetch all inventory items from the database
+            return response()->json($items); // Return items as JSON
+        } catch (\Exception $e) {
+            // Log the error and return a JSON error response
+            Log::error('Error fetching inventory items: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
 }

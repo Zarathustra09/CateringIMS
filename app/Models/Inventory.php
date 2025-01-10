@@ -15,4 +15,9 @@ class Inventory extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    
+    public function reservationItems()
+    {
+        return $this->hasMany(ReservationItems::class);
+    }
 }

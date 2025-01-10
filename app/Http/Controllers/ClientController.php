@@ -10,7 +10,7 @@ class ClientController extends Controller
 {
     public function index()
     {
-        $clients = User::where('role_id', 2)->get();
+        $clients = User::where('role_id', 0)->get();
         return view('admin.client.index', compact('clients'));
     }
 

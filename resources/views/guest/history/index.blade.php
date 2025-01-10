@@ -1,9 +1,9 @@
 @extends('layouts.guest')
 
 @section('content')
-    <div class="container py-4">
+    <div class="container py-4" style="padding-top: 200px; padding-bottom: 200px;"> <!-- Added padding-top and padding-bottom -->
         <div class="card">
-            <div class="card-header bg-white border-bottom">
+            <div class="card-header text-center" style="background-color: #ce1212; color: white;">
                 <h2 class="h4 mb-0">Payment History</h2>
             </div>
             <div class="card-body">
@@ -39,11 +39,20 @@
                 </div>
             </div>
         </div>
-        @push('scripts')
-            <script>
-                $(document).ready(function() {
-                    $('#payments-table').DataTable();
-                });
-            </script>
+
+        @if($payments->isEmpty())
+            <div class="text-center py-8">
+                <p class="text-gray-500">No payment history available.</p>
+            </div>
+        @endif
+
+    </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#payments-table').DataTable();
+            });
+        </script>
     @endpush
 @endsection

@@ -103,7 +103,7 @@ class EmployeeSeeder extends Seeder
                 'email' => $employee['email'],
                 'phone_number' => $employee['phone_number'],
                 'password' => Hash::make('password123'),
-                'role_id' => 0,
+                'role_id' => 1,
                 'employee_id' => strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5)) . '-' . substr(str_shuffle('0123456789'), 0, 5),
             ]);
 

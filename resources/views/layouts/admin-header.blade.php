@@ -23,12 +23,15 @@
 
         <!-- Catering Management -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Reservation Management</span></li>
-        <li class="menu-item {{ Request::is('admin/orders') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-receipt"></i>
+    
+
+        <li class="menu-item {{ Request()->routeIs('admin/reservationitems') ? 'active' : '' }}">
+            <a href="{{route('admin.reservationitems.index')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-ul"></i>
                 <div data-i18n="Reservations">Reservations</div>
             </a>
         </li>
+
         <li class="menu-item {{ request()->routeIs('admin.service.*') ? 'active' : '' }}">
             <a href="{{route('admin.service.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-briefcase-alt-2"></i>
@@ -49,6 +52,12 @@
             <a href="{{route('admin.category.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
                 <div data-i18n="Categories">Categories</div>
+            </a>
+        </li>
+        <li class="menu-item {{ request()->routeIs('admin.categoryevents.*') ? 'active' : '' }}">
+            <a href="{{route('admin.categoryevents.index')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-category"></i>
+                <div data-i18n="Categories">Categories Events</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('admin.inventory.*') ? 'active' : '' }}">

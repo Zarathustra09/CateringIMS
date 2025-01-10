@@ -9,6 +9,8 @@ class Reservation extends Model
 {
     use HasFactory;
 
+    protected $table = 'reservations';
+
     protected $fillable = [
         'user_id',
         'service_id',
@@ -28,4 +30,17 @@ class Reservation extends Model
     {
         return $this->belongsTo(Service::class);
     }
+    public function assignees()
+    {
+        return $this->hasMany(Assignee::class);
+    }
+    public function inventories()
+    {
+        return $this->belongsToMany(Inventory::class, 'reservation_items')->withPivot('quantity');
+    }   
+    public function reservationItems()
+    {
+        return $this->hasMany(ReservationItems::class);
+    }
+
 }
