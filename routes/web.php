@@ -1,7 +1,8 @@
     <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProfileController;
+    use App\Http\Controllers\Employee\EmployeeHomeController;
+    use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDetailController;
@@ -132,3 +133,6 @@ Route::prefix('admin/category-events')->group(function () {
     Route::put('/{id}', [CategoryEventController::class, 'update'])->name('admin.categoryevents.update'); // Update an existing category event
     Route::delete('/{id}', [CategoryEventController::class, 'destroy'])->name('admin.categoryevents.destroy'); // Delete a category event
 });
+
+//Staff Routes
+Route::get('/staff/home', [EmployeeHomeController::class, 'index'])->name('staff.home');
