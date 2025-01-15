@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('assignees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained('reservation')->onDelete('cascade');
+            $table->foreignId('reservation_id')->constrained('reservations')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
