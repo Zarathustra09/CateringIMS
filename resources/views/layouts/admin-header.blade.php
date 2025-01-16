@@ -77,8 +77,9 @@
                 <div data-i18n="Staff">Staff</div>
             </a>
         </li>
+        
         <li class="menu-item {{ Request::is('admin/payroll') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+            <a href="{{route('admin.payroll.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
                 <div data-i18n="Payroll">Payroll</div>
             </a>

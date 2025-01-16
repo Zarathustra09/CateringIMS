@@ -12,6 +12,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AssigneeController;
 use App\Http\Controllers\ReservationItemsController;
 use App\Http\Controllers\CategoryEventController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PayPeriodController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -132,3 +134,16 @@ Route::prefix('admin/category-events')->group(function () {
     Route::put('/{id}', [CategoryEventController::class, 'update'])->name('admin.categoryevents.update'); // Update an existing category event
     Route::delete('/{id}', [CategoryEventController::class, 'destroy'])->name('admin.categoryevents.destroy'); // Delete a category event
 });
+
+
+
+
+Route::get('/admin/payroll', [PayrollController::class, 'index'])->name('admin.payroll.index');
+Route::get('/admin/payroll/create', [PayrollController::class, 'create'])->name('admin.payroll.create');
+Route::post('/admin/payroll', [PayrollController::class, 'store'])->name('admin.payroll.store');
+Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('admin.payroll.update');
+Route::delete('/admin/payroll/{id}', [PayrollController::class, 'destroy'])->name('admin.payroll.destroy');
+Route::get('/admin/payroll/{id}/edit', [PayrollController::class, 'edit'])->name('admin.payroll.edit');
+Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('admin.payroll.update');
+
+

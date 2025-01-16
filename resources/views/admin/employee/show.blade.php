@@ -36,7 +36,7 @@
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Role</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="{{ $user->role_id == 0 ? 'Employee' : ($user->role_id == 1 ? 'Admin' : 'Client') }}" readonly>
+                        <input type="text" class="form-control" value="{{ $user->role_id == 0 ? 'Client' : ($user->role_id == 1 ? 'Employee' : 'Admin') }}" readonly>
                     </div>
                 </div>
             </div>
@@ -66,6 +66,15 @@
                             <input type="text" class="form-control" value="{{ $user->employeeDetail->salary }}" readonly>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Pay Period</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" 
+                                   value="{{ $user->employeeDetail->payPeriod->name }}" 
+                                   readonly>
+                        </div>
+                    </div>
+                    
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label">Hired At</label>
                         <div class="col-sm-10">

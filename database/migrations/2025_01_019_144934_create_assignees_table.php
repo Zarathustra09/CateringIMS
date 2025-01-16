@@ -9,26 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('employee_details', function (Blueprint $table) {
+        Schema::create('assignees', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('reservation_id')->constrained('reservations')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('position');
-            $table->string('department');
-            $table->decimal('salary', 8, 2);
-            $table->date('hired_at');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('employee_details');
+        Schema::dropIfExists('assignees');
     }
 };

@@ -4,17 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreatePayPeriodsTable extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('assignees', function (Blueprint $table) {
+        Schema::create('pay_periods', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained('reservation')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('name'); // Pay period name: monthly, bi-monthly, contractual
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assignees');
+        Schema::dropIfExists('pay_periods');
     }
-};
+}

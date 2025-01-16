@@ -43,7 +43,7 @@
 
                     <div class="text-center mt-3">
                         <button type="submit" class="btn btn-light">Submit</button>
-                        <button type="reset" class="btn btn-warning">Cancel</button>
+                        
                     </div>
                 </form>
             </div>
