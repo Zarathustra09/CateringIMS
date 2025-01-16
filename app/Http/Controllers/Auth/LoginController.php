@@ -30,10 +30,12 @@ class LoginController extends Controller
         $role = auth()->user()->role_id;
 
         switch ($role) {
-            case 0:
-                return '/';
-            default:
+            case 2:
                 return '/home';
+            case 1:
+                return '/staff/home';
+            default:
+                return '/';
         }
     }
 

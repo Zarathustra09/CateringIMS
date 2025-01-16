@@ -1,7 +1,8 @@
     <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProfileController;
+    use App\Http\Controllers\Employee\EmployeeHomeController;
+    use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDetailController;
@@ -147,3 +148,5 @@ Route::get('/admin/payroll/{id}/edit', [PayrollController::class, 'edit'])->name
 Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('admin.payroll.update');
 
 
+//Staff Routes
+Route::get('/staff/home', [EmployeeHomeController::class, 'index'])->name('staff.home');
