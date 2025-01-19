@@ -26,6 +26,16 @@
             
         </div>
 
+        <div class="mb-3">
+            <label for="reservation_id" class="form-label">Reservation</label>
+            <select name="reservation_id" id="reservation_id" class="form-control" required>
+                <option value="" disabled selected>Select Reservation</option>
+                @foreach ($reservation as $reservations)
+                    <option value="{{ $reservations->id }}">#{{ $reservations->id }} - {{ $reservations->event_type }}</option>
+                @endforeach
+            </select>
+        </div>
+
         
         <div class="mb-3">
             <label for="deductions" class="form-label">Deductions</label>

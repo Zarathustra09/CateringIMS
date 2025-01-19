@@ -4,7 +4,8 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h2 class="mb-0">Payroll Records</h2>
+            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home /</span> Payroll</h4>
+
             <a href="{{ route('admin.payroll.create') }}" class="btn btn-primary">Add Payroll</a>
         </div>
         <div class="card-body">
@@ -14,6 +15,7 @@
                         <th>ID</th>
                         <th>Employee</th>
                         <th>Pay Period</th>
+                        <th>Reservation</th>
                         <th>Salary</th> <!-- Change this column header to Salary -->
                         <th>Deductions</th>
                         <th>Net Salary</th>
@@ -27,6 +29,7 @@
                             <td>{{ $payroll->id }}</td>
                             <td>{{ $payroll->user->name }}</td>
                             <td>{{ $payroll->payPeriod->name }}</td>
+                            <td>{{ $payroll->reservation->event_type }}</td>
                             <td>
                                 @if ($payroll->user->employeeDetail)
                                     {{ number_format($payroll->user->employeeDetail->salary, 2) }}

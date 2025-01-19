@@ -84,5 +84,14 @@
                 <div data-i18n="Payroll">Payroll</div>
             </a>
         </li>
+
+        <li class="menu-item {{ Request::is('admin/attendance') ? 'active' : '' }}">
+            <a href="{{route('admin.attendance.index')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-check"></i>
+                <div data-i18n="Attendance">Attendance</div>
+            </a>
+        </li>
+
+
     </ul>
 </aside>

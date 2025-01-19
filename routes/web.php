@@ -15,7 +15,8 @@ use App\Http\Controllers\ReservationItemsController;
 use App\Http\Controllers\CategoryEventController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayPeriodController;
-
+use App\Http\Controllers\AttendanceController;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -108,7 +109,7 @@ Route::post('/profile/upload-image', [ProfileController::class, 'uploadProfileIm
 Route::post('/profile/reset-image', [ProfileController::class, 'resetProfileImage'])->name('profile.resetImage');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-//admin team task
+//admin reservation allocation
 Route::get('/admin/reservation-items', [ReservationItemsController::class, 'index'])->name('admin.reservationitems.index');
 Route::get('/admin/reservation-items/single/{id}', [ReservationItemsController::class, 'showSingle'])->name('admin.reservationitems.single');
 Route::get('/admin/reservation-items/{id}', [ReservationController::class, 'show'])->name('admin.reservationitems.show');
@@ -116,18 +117,19 @@ Route::post('/admin/reservation-items/store', [ReservationItemsController::class
 Route::get('/admin/reservation-items/{id}/edit', [ReservationController::class, 'edit'])->name('admin.reservationitems.edit');
 Route::put('/admin/reservation-items/{id}', [ReservationController::class, 'update'])->name('admin.reservationitems.update');
 
-
+//reservation input
 Route::post('admin/reservation-items/{id}/addInventory', [ReservationItemsController::class, 'addInventory'])->name('admin.reservationItems.addInventory');
 Route::post('admin/reservation-items/{id}/editInventory', [ReservationItemsController::class, 'editInventory'])->name('admin.reservationItems.editInventory');
 Route::post('admin/reservation-items/{id}/deleteInventory', [ReservationItemsController::class, 'deleteInventory'])->name('admin.reservationItems.deleteInventory');
-
-
+ 
+//assignee for reservation
 Route::get('/admin/assignee', [AssigneeController::class, 'index'])->name('admin.assignee.index');
 Route::post('/admin/assignee', [AssigneeController::class, 'store'])->name('admin.assignee.store');
 Route::get('/admin/assignee/{id}', [AssigneeController::class, 'show'])->name('admin.assignee.show');
 Route::put('/admin/assignee/{id}', [AssigneeController::class, 'update'])->name('admin.assignee.update');
 Route::delete('/admin/assignee/{id}', [AssigneeController::class, 'destroy'])->name('admin.assignee.destroy');
 
+// admin category events
 Route::prefix('admin/category-events')->group(function () {
     Route::get('/', [CategoryEventController::class, 'index'])->name('admin.categoryevents.index'); // List all category events
     Route::post('/', [CategoryEventController::class, 'store'])->name('admin.categoryevents.store'); // Create a new category event
@@ -138,7 +140,7 @@ Route::prefix('admin/category-events')->group(function () {
 
 
 
-
+//admin payroll
 Route::get('/admin/payroll', [PayrollController::class, 'index'])->name('admin.payroll.index');
 Route::get('/admin/payroll/create', [PayrollController::class, 'create'])->name('admin.payroll.create');
 Route::post('/admin/payroll', [PayrollController::class, 'store'])->name('admin.payroll.store');
@@ -147,6 +149,18 @@ Route::delete('/admin/payroll/{id}', [PayrollController::class, 'destroy'])->nam
 Route::get('/admin/payroll/{id}/edit', [PayrollController::class, 'edit'])->name('admin.payroll.edit');
 Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('admin.payroll.update');
 
+//admin attendance
+Route::get('/admin/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
+Route::get('/admin/attendance/create', [AttendanceController::class, 'create'])->name('admin.attendance.create'); 
+Route::post('/admin/attendance', [AttendanceController::class, 'store'])->name('admin.attendance.store');
+Route::get('/admin/attendance/{id}', [AttendanceController::class, 'show'])->name('admin.attendance.show'); 
+Route::get('/admin/attendance/{id}/edit', [AttendanceController::class, 'edit'])->name('admin.attendance.edit'); 
+Route::put('/admin/attendance/{id}', [AttendanceController::class, 'update'])->name('admin.attendance.update'); 
+Route::delete('/admin/attendance/{id}', [AttendanceController::class, 'destroy'])->name('admin.attendance.destroy'); 
+
 
 //Staff Routes
 Route::get('/staff/home', [EmployeeHomeController::class, 'index'])->name('staff.home');
+
+
+

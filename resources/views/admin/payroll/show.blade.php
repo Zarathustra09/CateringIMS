@@ -8,6 +8,9 @@
         <strong>Employee:</strong> {{ $payroll->user->name }}
     </div>
     <div class="mb-3">
+        <strong>Paid At:</strong> {{ $payroll->reservation->name }}
+    </div>
+    <div class="mb-3">
         <strong>Pay Period:</strong> {{ $payroll->payPeriod->name }}
     </div>
     <div class="mb-3">
@@ -22,6 +25,7 @@
     <div class="mb-3">
         <strong>Paid At:</strong> {{ $payroll->paid_at }}
     </div>
+    
 
     <a href="{{ route('admin.payroll.index') }}" class="btn btn-primary">Back to Payroll List</a>
 </div>

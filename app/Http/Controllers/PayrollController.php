@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Payroll;
 use App\Models\User;
 use Illuminate\Http\Request;
- use App\Models\PayPeriod;
+use App\Models\PayPeriod; 
+use App\Models\Reservation;
 
 class PayrollController extends Controller
 {
@@ -13,7 +14,7 @@ class PayrollController extends Controller
   // In PayrollController.php
 public function index()
 {
-    $payrolls = Payroll::with(['user', 'user.employeeDetail', 'payPeriod'])->paginate(10);
+    $payrolls = Payroll::with(['user', 'user.employeeDetail', 'payPeriod', 'reservation'])->paginate(10);
     return view('admin.payroll.index', compact('payrolls'));
 }
 
@@ -23,8 +24,9 @@ public function index()
 public function create()
 {
     $users = User::all();
-    $payPeriods = PayPeriod::all(); // Fetch all pay periods
-    return view('admin.payroll.create', compact('users', 'payPeriods'));
+    $payPeriods = PayPeriod::all(); 
+    $reservation = Reservation::all();
+    return view('admin.payroll.create', compact('users', 'payPeriods', 'reservation'));
 }
 
 
@@ -35,6 +37,7 @@ public function create()
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'pay_period_id' => 'required|exists:pay_periods,id', // Use 'pay_period_id' as it's in the database
+            'reservation_id' => 'required|exists:reservations,id',
             'deductions' => 'nullable|numeric|min:0',
         ]);
     
@@ -49,6 +52,7 @@ public function create()
         Payroll::create([
             'user_id' => $request->user_id,
             'pay_period_id' => $request->pay_period_id, // Corrected to pay_period_id
+            'reservation_id' => $request->reservation_id,
             'gross_salary' => $gross_salary,
             'deductions' => $request->deductions,
             'net_salary' => $net_salary,
@@ -77,6 +81,7 @@ public function create()
             $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'pay_period_id' => 'required|exists:pay_periods,id',
+                'reservation_id' => 'required|exists:reservations,id',
                 'gross_salary' => 'required|numeric|min:0',
                 'deductions' => 'nullable|numeric|min:0',
             ]);
@@ -86,6 +91,7 @@ public function create()
             $payroll->update([
                 'user_id' => $request->user_id,
                 'pay_period_id' => $request->pay_period_id,
+                'pay_period_id' => $request->reservation_id,
                 'gross_salary' => $request->gross_salary,
                 'deductions' => $request->deductions,
                 'net_salary' => $net_salary,
