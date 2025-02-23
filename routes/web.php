@@ -158,6 +158,10 @@ Route::get('/admin/attendance/{id}/edit', [AttendanceController::class, 'edit'])
 Route::put('/admin/attendance/{id}', [AttendanceController::class, 'update'])->name('admin.attendance.update'); 
 Route::delete('/admin/attendance/{id}', [AttendanceController::class, 'destroy'])->name('admin.attendance.destroy'); 
 
+Route::get('/admin/reservation/attendance/{reservationId}', [AttendanceController::class, 'reservationAttendance'])
+    ->name('admin.reservation.attendance');
+
+
 
 //Staff Routes
 Route::get('/staff/home', [EmployeeHomeController::class, 'index'])->name('staff.home');

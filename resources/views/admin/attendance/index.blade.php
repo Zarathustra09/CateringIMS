@@ -38,43 +38,49 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
         $('#attendanceTable').DataTable();
-
-        // Attach moment.js formatting to the created_at column (optional if needed)
-        $('#attendanceTable').on('draw.dt', function () {
-            $('[data-timestamp]').each(function () {
-                const timestamp = $(this).data('timestamp');
-                $(this).text(moment(timestamp).format('YYYY-MM-DD HH:mm:ss'));
-            });
-        });
     });
+
+    // Function to get the reservation ID from the URL path
+    function getReservationIdFromUrl() {
+        const pathSegments = window.location.pathname.split('/');
+        return pathSegments[pathSegments.length - 1]; // Get the last part of the URL
+    }
+
+    // Get reservationId from URL
+    const reservationId = getReservationIdFromUrl();
 
     // Create Attendance
     async function createAttendance() {
         await Swal.fire({
             title: 'Create New Attendance',
             html: `
-                <select id="swal-user-id" class="swal2-input">
-                    <option value="" disabled selected>Select Employee</option>
+                <select id="swal-user-id" class="swal2-input" multiple>
+                    <option value="" disabled>Select Employees</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
                 </select>
-                <select id="swal-reservation-id" class="swal2-input">
-                    <option value="" disabled selected>Select Reservation</option>
-                    @foreach($reservations as $reservation)
-                        <option value="{{ $reservation->id }}">Reservation #{{ $reservation->event_type }}</option>
-                    @endforeach
-                </select>
+                <br>
+                <input type="text" id="swal-reservation-id" class="swal2-input" value="${reservationId}" readonly>
             `,
             showConfirmButton: true,
             confirmButtonText: 'Create',
             showCloseButton: true,
+            didOpen: () => {
+                $('#swal-user-id').select2({
+                    width: '100%',
+                    placeholder: "Select Employees",
+                    allowClear: true,
+                    dropdownParent: $('.swal2-container') 
+                });
+            },
             preConfirm: () => {
-                const userId = document.getElementById('swal-user-id').value;
-                const reservationId = document.getElementById('swal-reservation-id').value;
-                return { user_id: userId, reservation_id: reservationId };
+                return {
+                    user_ids: $('#swal-user-id').val(),
+                    reservation_id: $('#swal-reservation-id').val()
+                };
             }
         }).then((result) => {
             if (result.isConfirmed) {
@@ -83,25 +89,27 @@
         });
     }
 
+    // Store Attendance for multiple users
     function storeAttendance(data) {
         $.ajax({
             url: '/admin/attendance',
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
-                user_id: data.user_id,
+                user_ids: data.user_ids,
                 reservation_id: data.reservation_id,
             },
             success: function () {
                 Swal.fire({
                     title: 'Created!',
-                    text: 'Attendance record created successfully.',
+                    text: 'Attendance records created successfully.',
                     icon: 'success',
                 }).then(() => {
                     location.reload();
                 });
             },
-            error: function () {
+            error: function (xhr) {
+                console.error(xhr.responseText);
                 Swal.fire({
                     title: 'Error!',
                     text: 'Failed to create the attendance record.',
@@ -110,6 +118,7 @@
             }
         });
     }
+
 
     // View Attendance
 //     function viewAttendance(id) {
@@ -152,13 +161,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <select id="swal-reservation-id" class="swal2-input">
-                        @foreach($reservations as $reservation)
-                            <option value="{{ $reservation->id }}" ${attendance.reservation.id == {{ $reservation->id }} ? 'selected' : ''}>
-                               {{ $reservation->event_type }}
-                            </option>
-                        @endforeach
-                    </select>
+                   
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Update',

@@ -41,6 +41,11 @@
                             <td>{{ \Carbon\Carbon::parse($reservation->end_date)->format('F d Y h:i A') }}</td>
                             <td>{{ $reservation->message }}</td>
                             <td>
+                               
+                                <button class="btn btn-primary btn-sm" onclick="viewAttendance({{ $reservation->id }})">
+                                        <i class="fas fa-user-check me-1"></i>Attendance
+                                 </button>
+                              
                                 <button class="btn btn-info btn-sm" onclick="viewReservationItems({{ $reservation->id }})">View</button>
                                 <button class="btn btn-warning btn-sm" onclick="editReservationItems({{ $reservation->id }})">Edit</button>
                                
@@ -83,7 +88,10 @@
             $('#reservationTable').DataTable();
         });
     
-    
+        function viewAttendance(reservationId) {
+        window.location.href = `/admin/reservation/attendance/${reservationId}`;
+        }
+z
         function viewReservationItems(reservationId) {
             window.location.href = "{{ route('admin.reservationitems.show', ':id') }}".replace(':id', reservationId);
         }

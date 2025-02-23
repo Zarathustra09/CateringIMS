@@ -13,24 +13,29 @@ class AttendanceController extends Controller
     {
         $attendances = Attendance::with(['user', 'reservation'])->latest()->get();
         $users = User::all(); // Fetch all users for dropdown
-        $reservations = Reservation::all(); // Fetch all reservations for dropdown
-
-        return view('admin.attendance.index', compact('attendances', 'users', 'reservations'));
+        return view('admin.attendance.index', compact('attendances', 'users'));
     }
 
     
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'reservation_id' => 'required|exists:reservations,id',
+        $request->validate([
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:users,id', // Validate each user ID
+            'reservation_id' => 'required|exists:reservations,id', // Ensure reservation exists
         ]);
-
-        Attendance::create($validated);
-
-        return redirect()->route('admin.attendance.index')
-            ->with('success', 'Attendance record created successfully.');
+    
+        foreach ($request->user_ids as $userId) {
+            Attendance::create([
+                'user_id' => $userId,
+                'reservation_id' => $request->reservation_id, // Associate with the current reservation
+            ]);
+        }
+    
+        return response()->json(['success' => 'Attendance records created successfully.']);
     }
+    
+    
 
    
     public function show($id)
@@ -80,5 +85,28 @@ public function destroy($id)
 
     return response()->json(['success' => 'Attendance record deleted successfully.']);
 }
+
+public function reservationAttendance($reservationId)
+{
+    // Find the reservation or return with error if not found
+    $reservation = Reservation::find($reservationId);
+
+    if (!$reservation) {
+        return redirect()->route('admin.reservationitems.index')
+                         ->with('error', 'Reservation not found.');
+    }
+
+    // Get attendance for this specific reservation
+    $attendances = Attendance::where('reservation_id', $reservationId)->get();
+    
+    // Get all users to mark attendance
+    $users = User::all(); 
+
+    return view('admin.attendance.index', compact('reservation', 'attendances', 'users'));
+}
+
+
+
+
 
 }

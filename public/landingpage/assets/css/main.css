@@ -1679,6 +1679,15 @@ section,
   background: color-mix(in srgb, var(--accent-color), transparent 20%);
 }
 
+.select2-container {
+  z-index: 9999 !important;
+}
+
+.select2-dropdown {
+  z-index: 99999 !important;
+}
+
+
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/

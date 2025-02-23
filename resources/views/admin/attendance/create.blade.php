@@ -16,15 +16,7 @@
             </select>
         </div>
 
-        <div class="mb-3">
-            <label for="reservation_id" class="form-label">Reservation</label>
-            <select name="reservation_id" id="reservation_id" class="form-control" required>
-                <option value="" disabled selected>Select Reservation</option>
-                @foreach ($reservations as $reservation)
-                    <option value="{{ $reservation->id }}">#{{ $reservation->id }} - {{ $reservation->name }}</option>
-                @endforeach
-            </select>
-        </div>
+       
 
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
