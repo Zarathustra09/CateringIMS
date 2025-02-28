@@ -23,12 +23,19 @@
 
         <!-- Catering Management -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Reservation Management</span></li>
-    
+
 
         <li class="menu-item {{ Request()->routeIs('admin/reservationitems') ? 'active' : '' }}">
             <a href="{{route('admin.reservationitems.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-list-ul"></i>
                 <div data-i18n="Reservations">Reservations</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{ request()->routeIs('admin.categoryevents.*') ? 'active' : '' }}">
+            <a href="{{route('admin.categoryevents.index')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-category"></i>
+                <div data-i18n="Categories">Categories Events</div>
             </a>
         </li>
 
@@ -51,19 +58,21 @@
         <li class="menu-item {{ request()->routeIs('admin.category.*') ? 'active' : '' }}">
             <a href="{{route('admin.category.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
-                <div data-i18n="Categories">Categories</div>
+                <div data-i18n="Categories">Inventory Categories</div>
             </a>
         </li>
-        <li class="menu-item {{ request()->routeIs('admin.categoryevents.*') ? 'active' : '' }}">
-            <a href="{{route('admin.categoryevents.index')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-category"></i>
-                <div data-i18n="Categories">Categories Events</div>
-            </a>
-        </li>
+
         <li class="menu-item {{ request()->routeIs('admin.inventory.*') ? 'active' : '' }}">
             <a href="{{route('admin.inventory.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="Inventory">Inventory</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{ request()->routeIs('admin.log.*') ? 'active' : '' }}">
+            <a href="{{route('admin.log.index')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-history"></i>
+                <div data-i18n="Inventory">Logs</div>
             </a>
         </li>
 
@@ -77,7 +86,7 @@
                 <div data-i18n="Staff">Staff</div>
             </a>
         </li>
-        
+
         <li class="menu-item {{ Request::is('admin/payroll') ? 'active' : '' }}">
             <a href="{{route('admin.payroll.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-dollar-circle"></i>

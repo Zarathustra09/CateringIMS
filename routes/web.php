@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\Employee\EmployeeHomeController;
+    use App\Http\Controllers\LogController;
     use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
@@ -47,7 +48,7 @@ Route::put('/admin/category/{id}', [CategoryController::class, 'update'])->name(
 Route::delete('/admin/category/{id}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
 Route::get('/admin/list', [CategoryController::class, 'list'])->name('admin.category.list');
 
-
+//Admin Inventory
 Route::get('/admin/inventory', [InventoryController::class, 'index'])->name('admin.inventory.index');
 Route::get('/admin/inventory/{id}', [InventoryController::class, 'show'])->name('admin.inventory.show');
 Route::post('/admin/inventory', [InventoryController::class, 'store'])->name('admin.inventory.store');
@@ -55,6 +56,8 @@ Route::put('/admin/inventory/{id}', [InventoryController::class, 'update'])->nam
 Route::delete('/admin/inventory/{id}', [InventoryController::class, 'destroy'])->name('admin.inventory.destroy');
 Route::get('/admin/item/list', [InventoryController::class, 'allInventory'])->name('admin.inventory.list');
 
+//Logs
+Route::get('/admin/logs', [LogController::class, 'index'])->name('admin.log.index');
 
 //admin employee
 Route::get('/admin/employee', [EmployeeController::class, 'index'])->name('admin.employee.index');
@@ -121,7 +124,7 @@ Route::put('/admin/reservation-items/{id}', [ReservationController::class, 'upda
 Route::post('admin/reservation-items/{id}/addInventory', [ReservationItemsController::class, 'addInventory'])->name('admin.reservationItems.addInventory');
 Route::post('admin/reservation-items/{id}/editInventory', [ReservationItemsController::class, 'editInventory'])->name('admin.reservationItems.editInventory');
 Route::post('admin/reservation-items/{id}/deleteInventory', [ReservationItemsController::class, 'deleteInventory'])->name('admin.reservationItems.deleteInventory');
- 
+
 //assignee for reservation
 Route::get('/admin/assignee', [AssigneeController::class, 'index'])->name('admin.assignee.index');
 Route::post('/admin/assignee', [AssigneeController::class, 'store'])->name('admin.assignee.store');
@@ -151,12 +154,12 @@ Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('a
 
 //admin attendance
 Route::get('/admin/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
-Route::get('/admin/attendance/create', [AttendanceController::class, 'create'])->name('admin.attendance.create'); 
+Route::get('/admin/attendance/create', [AttendanceController::class, 'create'])->name('admin.attendance.create');
 Route::post('/admin/attendance', [AttendanceController::class, 'store'])->name('admin.attendance.store');
-Route::get('/admin/attendance/{id}', [AttendanceController::class, 'show'])->name('admin.attendance.show'); 
-Route::get('/admin/attendance/{id}/edit', [AttendanceController::class, 'edit'])->name('admin.attendance.edit'); 
-Route::put('/admin/attendance/{id}', [AttendanceController::class, 'update'])->name('admin.attendance.update'); 
-Route::delete('/admin/attendance/{id}', [AttendanceController::class, 'destroy'])->name('admin.attendance.destroy'); 
+Route::get('/admin/attendance/{id}', [AttendanceController::class, 'show'])->name('admin.attendance.show');
+Route::get('/admin/attendance/{id}/edit', [AttendanceController::class, 'edit'])->name('admin.attendance.edit');
+Route::put('/admin/attendance/{id}', [AttendanceController::class, 'update'])->name('admin.attendance.update');
+Route::delete('/admin/attendance/{id}', [AttendanceController::class, 'destroy'])->name('admin.attendance.destroy');
 
 Route::get('/admin/reservation/attendance/{reservationId}', [AttendanceController::class, 'reservationAttendance'])
     ->name('admin.reservation.attendance');

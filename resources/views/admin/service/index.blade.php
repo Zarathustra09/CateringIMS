@@ -22,7 +22,7 @@
                 <tr>
                     <td>{{ $service->name }}</td>
                     <td>{{ $service->description }}</td>
-                    <td>{{ $service->price }}</td>
+                    <td>₱{{ $service->price }}</td>
                     <td>
                         <button class="btn btn-warning btn-sm" onclick="editService({{ $service->id }})">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteService({{ $service->id }})">Delete</button>
