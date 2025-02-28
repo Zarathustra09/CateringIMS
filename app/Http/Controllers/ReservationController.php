@@ -22,7 +22,7 @@ class ReservationController extends Controller
 
     public function create(Request $request)
     {
-        
+
         $service = Service::find($request->input('service_id'));
         $categories = CategoryEvent::all();
 
@@ -51,24 +51,23 @@ class ReservationController extends Controller
         DB::beginTransaction();
 
         try {
-            $reservation = new Reservation([
-                'user_id' => Auth::id(),
-                'service_id' => $service->id,
-                'event_type' => $request->input('event_type'),
-                'start_date' => $request->input('start_date'),
-                'end_date' => $request->input('end_date'),
-                'message' => $request->input('message'),
-                'status' => 'pending',
-            ]);
-
-            $reservation->save();
+//            $reservation = new Reservation([
+//                'user_id' => Auth::id(),
+//                'service_id' => $service->id,
+//                'event_type' => $request->input('event_type'),
+//                'start_date' => $request->input('start_date'),
+//                'end_date' => $request->input('end_date'),
+//                'message' => $request->input('message'),
+//                'status' => 'pending',
+//            ]);
+//
+//            $reservation->save();
 
             session([
                 'total' => $service->price,
                 'service_id' => $service->id,
                 'description' => 'Reservation for ' . $service->name,
                 'success' => 'Reservation created successfully.',
-                'reservation_id' => $reservation->id
             ]);
 
             DB::commit();
@@ -94,9 +93,9 @@ class ReservationController extends Controller
         Log::info('Update function called', ['request' => $request->all(), 'reservation_id' => $id]);
 
         $request->validate([
-            
+
             'status' => 'required|string|max:50',
-           
+
         ]);
 
         Log::info('Validation passed');
@@ -113,6 +112,7 @@ class ReservationController extends Controller
     public function edit($id)
     {
         $reservation = Reservation::findOrFail($id);
+        $categories = CategoryEvent::all();
         return view('admin.reservationitems.edit', compact('reservation', 'categories')); // Add this line
     }
 
