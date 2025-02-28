@@ -11,6 +11,13 @@
                     @csrf
                     <input type="hidden" name="service_id" value="{{ request('service_id') }}">
 
+
+                    <!-- Event Name -->
+                    <div class="mb-3">
+                        <label for="event_name" class="form-label" style="color: black;">Event Name</label>
+                        <input type="text" class="form-control" id="event_name" name="event_name" required>
+                    </div>
+                    
                     <!-- Event Type Dropdown -->
                     <div class="mb-3">
                         <label for="event_type" class="form-label" style="color: black;">Event Type</label>

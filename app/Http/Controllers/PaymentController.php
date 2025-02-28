@@ -18,9 +18,14 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        $payments = Payment::where('user_id', auth()->id())->get();
-        return view('guest.history.index', compact('payments'));
+        $userId = auth()->id();
+        
+        $payments = Payment::where('user_id', $userId)->get();
+        $reservations = Reservation::where('user_id', $userId)->get();
+    
+        return view('guest.history.index', compact('payments', 'reservations'));
     }
+    
 
     public function create()
     {
@@ -85,6 +90,7 @@ class PaymentController extends Controller
             $reservation = new Reservation([
                 'user_id' => Auth::id(),
                 'service_id' => $service->id,
+                'event_name' => $request->input('description'),
                 'event_type' => $request->input('description'),
                 'start_date' => now(),
                 'end_date' => now()->addDays(1),

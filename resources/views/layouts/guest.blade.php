@@ -84,7 +84,9 @@
 </header>
 
 <main class="main">
+
     @yield('content')
+    
 </main>
 
 <footer id="footer" class="footer dark-background">

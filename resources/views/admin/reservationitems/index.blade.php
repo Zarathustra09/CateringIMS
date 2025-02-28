@@ -5,55 +5,10 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home /</span> Reservation</h4>
-
-             
             </div>
             <div class="card-body">
-                <table id="reservationTable" class="table table-hover table-striped">
-                    <thead class="thead-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Event Type</th>
-                        <th>Status</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Message</th> 
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($reservations as $reservation)
-                        <tr>
-                            <td>{{ $reservation->id }}</td>
-                            <td>{{ $reservation->event_type }}</td>
-                            <td>
-                                <span class="badge
-                                    @if($reservation->status == 'completed') bg-success
-                                    @elseif($reservation->status == 'pending') bg-warning
-                                    @elseif($reservation->status == 'confirmed') bg-primary
-                                    @elseif($reservation->status == 'cancelled') bg-danger
-                                    @endif">
-                                    {{ $reservation->status }}
-                                </span>
-                            </td>
-                            {{-- <td>{{ $reservation->category->name }}</td> --}}
-                            <td>{{ \Carbon\Carbon::parse($reservation->start_date)->format('F d Y h:i A') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($reservation->end_date)->format('F d Y h:i A') }}</td>
-                            <td>{{ $reservation->message }}</td>
-                            <td>
-                               
-                                <button class="btn btn-primary btn-sm" onclick="viewAttendance({{ $reservation->id }})">
-                                        <i class="fas fa-user-check me-1"></i>Attendance
-                                 </button>
-                              
-                                <button class="btn btn-info btn-sm" onclick="viewReservationItems({{ $reservation->id }})">View</button>
-                                <button class="btn btn-warning btn-sm" onclick="editReservationItems({{ $reservation->id }})">Edit</button>
-                               
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                <!-- FullCalendar Container -->
+                <div id="calendar"></div>
             </div>
         </div>
     </div>
@@ -84,73 +39,33 @@
     @endif
 
     <script>
-        $(document).ready(function() {
-            $('#reservationTable').DataTable();
-        });
-    
-        function viewAttendance(reservationId) {
-        window.location.href = `/admin/reservation/attendance/${reservationId}`;
-        }
-z
-        function viewReservationItems(reservationId) {
-            window.location.href = "{{ route('admin.reservationitems.show', ':id') }}".replace(':id', reservationId);
-        }
-    
-        function editReservationItems(reservationId, reservation = {}, categoryOptions = '') {
-            Swal.fire({
-    title: 'Edit Reservation',
-    html: `
-        
-        <select id="swal-input3" class="swal2-input" required>
-            <option value="pending" ${reservation.status === 'pending' ? 'selected' : ''}>Pending</option>
-            <option value="confirmed" ${reservation.status === 'confirm' ? 'selected' : ''}>Confirm</option>
-            <option value="cancelled" ${reservation.status === 'cancelled' ? 'selected' : ''}>Cancled</option>
-            <option value="completed" ${reservation.status === 'completed' ? 'selected' : ''}>Completed</option>
-        </select>
-     `,
-    showCancelButton: true,
-    confirmButtonText: 'Update',
-    cancelButtonText: 'Cancel',
-    preConfirm: () => {
-        const formData = new FormData();
-        formData.append('status', document.getElementById('swal-input3').value); // Status
+     document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
 
-        return formData;
-    }
-}).then((result) => {
-    if (result.isConfirmed) {
-        $.ajax({
-            url: '/admin/reservation-items/' + reservationId, // URL should be correct
-            type: 'POST', // We're using POST with X-HTTP-Method-Override header to simulate PUT
-            data: result.value,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-HTTP-Method-Override': 'PUT', // Override to PUT
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                Swal.fire({
-                    title: 'Updated!',
-                    text: response.success,
-                    icon: 'success'
-                }).then(() => {
-                    location.reload();
-                });
-            },
-            error: function(xhr) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: xhr.responseJSON?.message || 'An error occurred while updating the reservation.',
-                    icon: 'error'
-                });
-            }
-        });
-    }
-});
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: {!! json_encode($reservations->map(function ($res) {
+            return [
+                'id' => $res->id,
+                'title' => $res->event_type . ' (' . $res->status . ')', // Display event type & status
+                'start' => $res->start_date,
+                'end' => $res->end_date,
+                'extendedProps' => [
+                    'status' => $res->status,
+                    'message' => $res->message
+                ]
+            ];
+        })) !!},
+        eventClick: function(info) {
+            var reservationId = info.event.id;
+            console.log('Redirecting to:', `/admin/reservation-items/${reservationId}`);
+            window.location.href = `/admin/reservation-items/${reservationId}`;
         }
-    
-       
+    });
+
+    calendar.render();
+});
+
+
     </script>
-    
 @endpush

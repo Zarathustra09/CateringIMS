@@ -17,4 +17,8 @@ class Payment extends Model
         'status',
         'total',
     ];
+    
+    protected $casts = [
+        'created_at' => 'datetime', // Ensure created_at is treated as a date
+    ];
 }

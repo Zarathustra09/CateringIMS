@@ -54,6 +54,7 @@ class ReservationController extends Controller
             $reservation = new Reservation([
                 'user_id' => Auth::id(),
                 'service_id' => $service->id,
+                'event_name' => $request->input('event_name'),
                 'event_type' => $request->input('event_type'),
                 'start_date' => $request->input('start_date'),
                 'end_date' => $request->input('end_date'),

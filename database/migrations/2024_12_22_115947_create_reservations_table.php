@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Reference to users table
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade'); // Reference to services table
+            $table->string('event_name');
             $table->string('event_type');
             $table->date('start_date'); // New start_date column
             $table->date('end_date'); // New end_date column
