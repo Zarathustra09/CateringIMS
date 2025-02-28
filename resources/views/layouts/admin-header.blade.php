@@ -58,7 +58,7 @@
         <li class="menu-item {{ request()->routeIs('admin.category.*') ? 'active' : '' }}">
             <a href="{{route('admin.category.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
-                <div data-i18n="Categories">Categories</div>
+                <div data-i18n="Categories">Inventory Categories</div>
             </a>
         </li>
 
@@ -66,6 +66,13 @@
             <a href="{{route('admin.inventory.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="Inventory">Inventory</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{ request()->routeIs('admin.log.*') ? 'active' : '' }}">
+            <a href="{{route('admin.log.index')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-history"></i>
+                <div data-i18n="Inventory">Logs</div>
             </a>
         </li>
 
