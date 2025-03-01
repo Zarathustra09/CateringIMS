@@ -11,7 +11,7 @@
         <table id="clientTable" class="table table-hover">
             <thead>
             <tr>
-                <th>Client ID</th>
+{{--                <th>Client ID</th>--}}
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
@@ -21,7 +21,7 @@
             <tbody>
             @foreach($clients as $client)
                 <tr>
-                    <td>{{ $client->employee_id }}</td>
+{{--                    <td>{{ $client->employee_id }}</td>--}}
                     <td>{{ $client->name }}</td>
                     <td>{{ $client->email }}</td>
                     <td>{{ $client->phone_number }}</td>
