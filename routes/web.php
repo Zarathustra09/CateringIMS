@@ -1,6 +1,7 @@
     <?php
 
-use App\Http\Controllers\CategoryController;
+    use App\Http\Controllers\AdminPaymentController;
+    use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\Employee\EmployeeHomeController;
     use App\Http\Controllers\LogController;
     use App\Http\Controllers\ProfileController;
@@ -87,6 +88,8 @@ Route::get('/admin/service/{service}', [ServiceController::class, 'show'])->name
 Route::put('/admin/service/{service}', [ServiceController::class, 'update'])->name('admin.service.update');
 Route::delete('/admin/service/{service}', [ServiceController::class, 'destroy'])->name('admin.service.destroy');
 
+//admin payment
+Route::get('/admin/payment', [AdminPaymentController::class, 'index'])->name('admin.payment.index');
 
 //Reservation
 Route::get('/admin/reservations', [ReservationController::class, 'index'])->name('admin.reservations.index');

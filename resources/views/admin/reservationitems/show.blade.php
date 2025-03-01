@@ -6,7 +6,7 @@
             <div class="col-12">
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h1 class="h3 mb-0">Reservation Details</h1>
+                        <h1 class="h3 mb-0 text-white">Reservation Details</h1>
                         <span class="badge bg-light text-primary">{{ $reservation->status }}</span>
                     </div>
                     <div class="card-body">
@@ -45,7 +45,7 @@
                 <!-- Assignees Section -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                        <h3 class="h4 mb-0">Assignees</h3>
+                        <h3 class="h4 mb-0 text-white">Assignees</h3>
                         <button class="btn btn-sm btn-success" onclick="createAssignee()">
                             <i class="fas fa-plus me-1"></i>Add Assignee
                         </button>
@@ -79,7 +79,7 @@
                 <!-- Inventory Section -->
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h3 class="h4 mb-0">Inventory</h3>
+                        <h3 class="h4 mb-0 text-white">Inventory</h3>
                         <span class="badge bg-light text-primary">{{ $reservation->inventories->count() }} Items</span>
                         <button class="btn btn-sm btn-success" onclick="addInventory()">
                             <i class="fas fa-plus me-1"></i>Add Inventory

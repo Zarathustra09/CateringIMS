@@ -17,8 +17,18 @@ class Payment extends Model
         'status',
         'total',
     ];
-    
+
     protected $casts = [
         'created_at' => 'datetime', // Ensure created_at is treated as a date
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reservation()
+    {
+        return $this->belongsTo(Reservation::class);
+    }
 }

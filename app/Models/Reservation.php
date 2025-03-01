@@ -56,4 +56,8 @@ class Reservation extends Model
     {
         return $this->hasMany(PayPeriod::class);
     }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

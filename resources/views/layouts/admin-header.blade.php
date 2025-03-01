@@ -24,8 +24,7 @@
         <!-- Catering Management -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Reservation Management</span></li>
 
-
-        <li class="menu-item {{ Request()->routeIs('admin/reservationitems') ? 'active' : '' }}">
+        <li class="menu-item {{ Request()->routeIs('admin.reservationitems*') ? 'active' : '' }}">
             <a href="{{route('admin.reservationitems.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-list-ul"></i>
                 <div data-i18n="Reservations">Reservations</div>
@@ -50,6 +49,13 @@
             <a href="{{route('admin.client.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Clients">Clients</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{ request()->routeIs('admin.payment.*') ? 'active' : '' }}">
+            <a href="{{route('admin.payment.index')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-money"></i>
+                <div data-i18n="Clients">Payment</div>
             </a>
         </li>
 
