@@ -69,7 +69,7 @@
                             <tr>
                                 <td class="align-middle">{{ $reservation->id }}</td>
                                 <td class="align-middle">{{ $reservation->event_name }}</td>
-                                <td class="align-middle">{{ $reservation->event_type }}</td>
+                                <td class="align-middle">{{ $reservation->categoryEvent->name }}</td>
                                 <td class="align-middle">{{ \Carbon\Carbon::parse($reservation->start_date)->format('M d, Y') }}</td>
                                 <td class="align-middle">{{ \Carbon\Carbon::parse($reservation->end_date)->format('M d, Y') }}</td>
                                 <td class="align-middle">

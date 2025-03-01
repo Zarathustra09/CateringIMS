@@ -19,13 +19,13 @@ class PaymentController extends Controller
     public function index()
     {
         $userId = auth()->id();
-        
+
         $payments = Payment::where('user_id', $userId)->get();
         $reservations = Reservation::where('user_id', $userId)->get();
-    
+
         return view('guest.history.index', compact('payments', 'reservations'));
     }
-    
+
 
     public function create()
     {
@@ -36,6 +36,17 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         Log::info('Payment store function called with request data:', $request->all());
+
+
+        Log::info('Session data:', [
+            'total' => session('total'),
+            'service_id' => session('service_id'),
+            'event_name' => session('event_name'),
+            'category_event_id' => session('category_event_id'),
+            'description' => session('description'),
+            'success' => session('success'),
+        ]);
+
 
         $request->validate([
             'total' => 'required|numeric',
@@ -90,8 +101,8 @@ class PaymentController extends Controller
             $reservation = new Reservation([
                 'user_id' => Auth::id(),
                 'service_id' => $service->id,
-                'event_name' => $request->input('description'),
-                'event_type' => $request->input('description'),
+                'event_name' => session('event_name'),
+                'category_event_id' => session('category_event_id'), // Corrected key
                 'start_date' => now(),
                 'end_date' => now()->addDays(1),
                 'message' => $request->input('description'),

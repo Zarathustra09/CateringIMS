@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Reference to users table
-            $table->foreignId('service_id')->constrained('services')->onDelete('cascade'); // Reference to services table
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
+            $table->foreignId('category_event_id')->constrained('category_events')->onDelete('cascade'); // Reference to category_events table
             $table->string('event_name');
-            $table->string('event_type');
-            $table->date('start_date'); // New start_date column
-            $table->date('end_date'); // New end_date column
+            $table->date('start_date');
+            $table->date('end_date');
             $table->text('message')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
             $table->timestamps();

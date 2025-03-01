@@ -17,15 +17,14 @@
                         <label for="event_name" class="form-label" style="color: black;">Event Name</label>
                         <input type="text" class="form-control" id="event_name" name="event_name" required>
                     </div>
-                    
+
                     <!-- Event Type Dropdown -->
                     <div class="mb-3">
                         <label for="event_type" class="form-label" style="color: black;">Event Type</label>
                         <select class="form-control" id="event_type" name="event_type" required>
                             <option value="">Select Event Type</option>
                             @foreach($categories as $category)
-                                <!-- Save the category name instead of the id -->
-                                <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -50,7 +49,7 @@
 
                     <div class="text-center mt-3">
                         <button type="submit" class="btn btn-light">Submit</button>
-                        
+
                     </div>
                 </form>
             </div>

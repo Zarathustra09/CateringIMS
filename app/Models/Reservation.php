@@ -14,8 +14,8 @@ class Reservation extends Model
     protected $fillable = [
         'user_id',
         'service_id',
+        'category_event_id', // Add this line
         'event_name',
-        'event_type',
         'start_date',
         'end_date',
         'message',
@@ -31,14 +31,22 @@ class Reservation extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    public function categoryEvent()
+    {
+        return $this->belongsTo(CategoryEvent::class, 'category_event_id');
+    }
+
     public function assignees()
     {
         return $this->hasMany(Assignee::class);
     }
+
     public function inventories()
     {
         return $this->belongsToMany(Inventory::class, 'reservation_items')->withPivot('quantity');
-    }   
+    }
+
     public function reservationItems()
     {
         return $this->hasMany(ReservationItems::class);
@@ -46,7 +54,6 @@ class Reservation extends Model
 
     public function payPeriod()
     {
-        return $this->hasMany(payPeriod::class);
+        return $this->hasMany(PayPeriod::class);
     }
-
 }

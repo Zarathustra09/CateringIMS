@@ -40,7 +40,8 @@ class ReservationController extends Controller
     {
         $request->validate([
             'service_id' => 'required|exists:services,id',
-            'event_type' => 'required|string',
+            'event_name' => 'required|string',
+            'event_type' => 'required|exists:category_events,id', // Validate category_event_id
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'message' => 'nullable|string',
@@ -50,25 +51,18 @@ class ReservationController extends Controller
 
         DB::beginTransaction();
 
+        Log::info( $request->input('event_type'));
         try {
-//            $reservation = new Reservation([
-//                'user_id' => Auth::id(),
-//                'service_id' => $service->id,
-//                'event_type' => $request->input('event_type'),
-//                'start_date' => $request->input('start_date'),
-//                'end_date' => $request->input('end_date'),
-//                'message' => $request->input('message'),
-//                'status' => 'pending',
-//            ]);
-//
-//            $reservation->save();
-
             session([
                 'total' => $service->price,
                 'service_id' => $service->id,
+                'event_name' => $request->input('event_name'),
+                'category_event_id' => $request->input('event_type'), // Save category_event_id
                 'description' => 'Reservation for ' . $service->name,
                 'success' => 'Reservation created successfully.',
             ]);
+
+
 
             DB::commit();
 
