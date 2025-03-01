@@ -47,7 +47,7 @@
         events: {!! json_encode($reservations->map(function ($res) {
             return [
                 'id' => $res->id,
-                'title' => $res->event_type . ' (' . $res->status . ')', // Display event type & status
+                'title' => $res->event_name . ' (' . $res->status . ')', // Display event type & status
                 'start' => $res->start_date,
                 'end' => $res->end_date,
                 'extendedProps' => [

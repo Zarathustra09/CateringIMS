@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
-                                <h2 class="h4 text-primary mb-3">{{ $reservation->event_type }}</h2>
+                                <h2 class="h4 text-primary mb-3">{{ $reservation->categoryEvent->name }}</h2>
                                 <p class="text-muted mb-3">{{ $reservation->message }}</p>
 
                                 <div class="row mb-3">
