@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReservationMail;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Reservation;
@@ -9,6 +10,8 @@ use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Xendit\Configuration;
 use Xendit\Invoice\CreateInvoiceRequest;
@@ -26,7 +29,6 @@ class PaymentController extends Controller
         return view('guest.history.index', compact('payments', 'reservations'));
     }
 
-
     public function create()
     {
         $services = Service::all();
@@ -37,7 +39,6 @@ class PaymentController extends Controller
     {
         Log::info('Payment store function called with request data:', $request->all());
 
-
         Log::info('Session data:', [
             'total' => session('total'),
             'service_id' => session('service_id'),
@@ -46,7 +47,6 @@ class PaymentController extends Controller
             'description' => session('description'),
             'success' => session('success'),
         ]);
-
 
         $request->validate([
             'total' => 'required|numeric',
@@ -131,6 +131,19 @@ class PaymentController extends Controller
 
             DB::commit();
 
+//            // Call the private function to send SMS notification
+//            $this->sendSmsNotification(Auth::user()->phone_number, 'Test Input BROADCAST MK 04-24-1998');
+
+            // Send email notification
+            $reservationDetails = [
+                'name' => Auth::user()->name,
+                'event_name' => session('event_name'),
+                'service' => $service->name,
+                'total' => $total,
+                'description' => $request->input('description')
+            ];
+            Mail::to(Auth::user()->email)->send(new ReservationMail($reservationDetails));
+
             return redirect($result['invoice_url']);
 
         } catch (\Xendit\XenditSdkException $e) {
@@ -171,5 +184,24 @@ class PaymentController extends Controller
     public function failed()
     {
         return redirect()->route('payment.index')->with('error', 'Payment unsuccessful.');
+    }
+
+    private function sendSmsNotification($phoneNumber, $message)
+    {
+
+
+        $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+            'apikey' => env('SEMAPHORE_API_KEY'),
+            'number' => $phoneNumber,
+            'message' => $message
+        ]);
+
+        Log::info('API Response:', ['response' => $response->json()]);
+
+        if ($response->successful()) {
+            Log::info('SMS sent successfully to ' . $phoneNumber);
+        } else {
+            Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
+        }
     }
 }
