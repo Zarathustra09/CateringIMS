@@ -51,7 +51,7 @@ class HomeController extends Controller
 
     private function getAllReservation()
     {
-        return count(Reservation::all());
+        return Reservation::where('status', 'confirmed')->count();
     }
 
     private function getAllClients()
