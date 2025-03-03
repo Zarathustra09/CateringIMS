@@ -7,7 +7,12 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h1 class="h3 mb-0 text-white">Reservation Details</h1>
-                        <span class="badge bg-light text-primary">{{ $reservation->status }}</span>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-light text-primary">{{ $reservation->status }}</span>
+                            <button class="btn btn-light btn-sm ms-2" onclick="editStatus()" title="Edit Status">
+                                <i class="bx bx-edit"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -317,6 +322,60 @@
                 console.error(error);
                 Swal.fire('Error', 'Something went wrong.', 'error');
             }
+        }
+
+
+
+
+        function editStatus() {
+            Swal.fire({
+                title: 'Edit Reservation Status',
+                html: `
+                <select id="statusSelect" class="swal2-input">
+                    <option value="pending" {{ $reservation->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="confirmed" {{ $reservation->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                    <option value="cancelled" {{ $reservation->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                    <option value="completed" {{ $reservation->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                </select>
+            `,
+                showCancelButton: true,
+                confirmButtonText: 'Update',
+                preConfirm: () => {
+                    const status = document.getElementById('statusSelect').value;
+                    return status;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateStatus(result.value);
+                }
+            });
+        }
+
+        function updateStatus(status) {
+            $.ajax({
+                url: '{{ route("api.reservation.update", $reservation->id) }}',
+                type: 'PUT',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    status: status
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Updated!',
+                        text: 'Reservation status has been updated successfully.',
+                        icon: 'success'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(response) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.responseJSON?.message || 'There was an error updating the status.',
+                        icon: 'error'
+                    });
+                }
+            });
         }
     </script>
 @endpush
