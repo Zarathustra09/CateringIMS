@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h5 class="card-title mb-1 text-muted">Total Reservations</h5>
+                                    <h5 class="card-title mb-1 text-muted">Total Confirmed Reservations</h5>
                                     <h2 class="mb-0">{{$countReservation}}</h2>
                                 </div>
                                 <div class="avatar bg-light-primary p-2">
