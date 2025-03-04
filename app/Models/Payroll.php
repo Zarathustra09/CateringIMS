@@ -33,4 +33,10 @@ class Payroll extends Model
     {
         return $this->belongsTo(Reservation::class);
     }
+
+    public function employeeDetails()
+    {
+        return $this->hasOne(EmployeeDetail::class, 'user_id');
+    }
 }
+

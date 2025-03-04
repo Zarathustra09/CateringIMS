@@ -26,4 +26,10 @@ class EmployeeDetail extends Model
     {
         return $this->belongsTo(PayPeriod::class);
     }
+
+    public function payPeriodid()
+    {
+        return $this->belongsTo(PayPeriod::class, 'pay_period_id');
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployeeDetail;
 use App\Models\Payroll;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,45 +23,61 @@ public function index()
    
 
 public function create()
-{
-    $users = User::all();
+{   
+    $users = User::where('role_id', 1)->with('employeePayPeriod.payPeriod')->get();
     $payPeriods = PayPeriod::all(); 
-    $reservation = Reservation::all();
-    return view('admin.payroll.create', compact('users', 'payPeriods', 'reservation'));
+    $reservations = Reservation::all();
+    return view('admin.payroll.create', compact('users', 'payPeriods', 'reservations'));
 }
 
 
     // Store a new payroll record in the database
     public function store(Request $request)
     {
-        // Validate the incoming request
-        $request->validate([
+    
+    
+        // Validate request
+        $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'pay_period_id' => 'required|exists:pay_periods,id', // Use 'pay_period_id' as it's in the database
-            'reservation_id' => 'required|exists:reservations,id',
+            'pay_period_id' => 'required|exists:pay_periods,id',
+            'reservation_id' => 'nullable|exists:reservations,id',
             'deductions' => 'nullable|numeric|min:0',
         ]);
     
-        // Fetch the user's salary from the employee_details table
+       
+    
+        // Fetch user salary
         $user = User::find($request->user_id);
-        $gross_salary = $user->employeeDetail ? $user->employeeDetail->salary : 0;
+        if (!$user) {
+            return back()->withErrors(['user_id' => 'Invalid user selected.']);
+        }
     
-        // Calculate net salary
-        $net_salary = $gross_salary - $request->deductions;
+        $gross_salary = $user->employeeDetail->salary ?? 0;
+        $deductions = $request->deductions ?? 0;
+        $net_salary = $gross_salary - $deductions;
     
-        // Create the payroll record
-        Payroll::create([
+      
+    
+        // Create payroll entry
+        $payroll = Payroll::create([
             'user_id' => $request->user_id,
-            'pay_period_id' => $request->pay_period_id, // Corrected to pay_period_id
+            'pay_period_id' => $request->pay_period_id,
             'reservation_id' => $request->reservation_id,
             'gross_salary' => $gross_salary,
-            'deductions' => $request->deductions,
+            'deductions' => $deductions,
             'net_salary' => $net_salary,
             'paid_at' => now(),
         ]);
     
+        if (!$payroll) {
+            return back()->withErrors(['payroll' => 'Failed to create payroll record.']);
+        }
+    
+       
+    
         return redirect()->route('admin.payroll.index')->with('success', 'Payroll record created successfully!');
     }
+    
     
     public function edit($id)
 {
@@ -108,5 +125,12 @@ public function create()
 
             return redirect()->route('admin.payroll.index')->with('success', 'Payroll record deleted successfully!');
         }
+       
+        // Payroll.php
+        public function reservation()
+        {
+            return $this->belongsTo(Reservation::class, 'reservation_id', 'id');
+        }
+
 
 }

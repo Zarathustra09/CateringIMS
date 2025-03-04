@@ -53,7 +53,7 @@
                         <div style="margin-bottom: 25px;">
                             <h4 style="color: #333; margin-bottom: 15px; font-weight: 600;">Personal Information</h4>
                             <div class="form-group" style="margin-bottom: 15px;">
-                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Full Name</label>
+                                <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Name</label>
                                 <input id="swal-input1" class="swal2-input" style="width: 100%; margin: 0;" placeholder="Enter full name">
                             </div>
                             <div class="form-group" style="margin-bottom: 15px;">
@@ -77,7 +77,6 @@
                                 <input id="swal-input5" class="swal2-input" type="password" style="width: 100%; margin: 0;" placeholder="Confirm password">
                             </div>
                         </div>
-
                         <div style="margin-bottom: 25px;">
                             <h4 style="color: #333; margin-bottom: 15px; font-weight: 600;">Employment Details</h4>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -97,27 +96,19 @@
                                     <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Hire Date</label>
                                     <input id="swal-input9" class="swal2-input" type="date" style="width: 100%; margin: 0;">
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                                <div>
+                               <label style="display: block; margin-bottom: 5px; color: #555; font-weight: 500;">Pay Period</label>
+                                <select id="swal-input10" class="swal2-input" style="width: 100%; margin: 0;">
+                                    <option value="" disabled selected>Select Pay Period</option>
+                                    @foreach($payPeriods as $payPeriod)
+                                        <option value="{{ $payPeriod->id }}">{{ $payPeriod->name }}</option>
+                                    @endforeach
+                                </select>
+                                 </div>
                 `,
-                customClass: {
-                    container: 'custom-swal-container',
-                    popup: 'custom-swal-popup',
-                    header: 'custom-swal-header',
-                    title: 'custom-swal-title',
-                    closeButton: 'custom-swal-close',
-                    content: 'custom-swal-content',
-                    confirmButton: 'custom-swal-confirm',
-                    cancelButton: 'custom-swal-cancel'
-                },
-                showConfirmButton: true,
-                confirmButtonText: 'Create Employee',
-                showCloseButton: true,
+                focusConfirm: false,
                 showCancelButton: true,
-                cancelButtonText: 'Cancel',
-                buttonsStyling: true,
-                reverseButtons: true,
+                confirmButtonText: 'Create',
                 preConfirm: () => {
                     return {
                         name: document.getElementById('swal-input1').value,
@@ -128,8 +119,9 @@
                         position: document.getElementById('swal-input6').value,
                         department: document.getElementById('swal-input7').value,
                         salary: document.getElementById('swal-input8').value,
-                        hired_at: document.getElementById('swal-input9').value
-                    }
+                        hired_at: document.getElementById('swal-input9').value,
+                        pay_period: document.getElementById('swal-input10').value
+                    };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -137,6 +129,59 @@
                 }
             });
         }
+        function storeEmployee(data) {
+            $.ajax({
+                url: '/admin/employee',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    name: data.name,
+                    email: data.email,
+                    phone_number: data.phone_number,
+                    password: data.password,
+                    password_confirmation: data.password_confirmation
+                },
+                success: function(response) {
+                    const userId = response.user.id;
+                    $.ajax({
+                        url: '/admin/employee-detail',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            user_id: userId,
+                            position: data.position,
+                            department: data.department,
+                            salary: data.salary,
+                            hired_at: data.hired_at,
+                            pay_period_id: data.pay_period
+                        },
+                        success: function(response) {
+                            Swal.fire('Created!', 'Employee has been created successfully.', 'success').then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(response) {
+                            Swal.fire('Error!', 'There was an error creating the employee details.', 'error');
+                        }
+                    });
+                },
+                error: function(response) {
+                    if (response.status === 422) {
+                        let errors = response.responseJSON.errors;
+                        let errorMessages = '';
+                        for (let field in errors) {
+                            errorMessages += `${errors[field].join(', ')}<br>`;
+                        }
+                        Swal.fire('Error!', errorMessages, 'error');
+                    } else {
+                        Swal.fire('Error!', 'There was an error creating the employee.', 'error');
+                    }
+                }
+            });
+        }
+
+
+
 
         function editUser(userId) {
             $.get('/admin/employee/' + userId, function(user) {
@@ -201,55 +246,7 @@
             });
         }
 
-        function storeEmployee(data) {
-            $.ajax({
-                url: '/admin/employee',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    name: data.name,
-                    email: data.email,
-                    phone_number: data.phone_number,
-                    password: data.password,
-                    password_confirmation: data.password_confirmation
-                },
-                success: function(response) {
-                    const userId = response.user.id;
-                    $.ajax({
-                        url: '/admin/employee-detail',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            user_id: userId,
-                            position: data.position,
-                            department: data.department,
-                            salary: data.salary,
-                            hired_at: data.hired_at
-                        },
-                        success: function(response) {
-                            Swal.fire('Created!', 'Employee has been created successfully.', 'success').then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            Swal.fire('Error!', 'There was an error creating the employee details.', 'error');
-                        }
-                    });
-                },
-                error: function(response) {
-                    if (response.status === 422) {
-                        let errors = response.responseJSON.errors;
-                        let errorMessages = '';
-                        for (let field in errors) {
-                            errorMessages += `${errors[field].join(', ')}<br>`;
-                        }
-                        Swal.fire('Error!', errorMessages, 'error');
-                    } else {
-                        Swal.fire('Error!', 'There was an error creating the employee.', 'error');
-                    }
-                }
-            });
-        }
+      
 
         function editUser(userId) {
             $.get('/admin/employee/' + userId, function(user) {

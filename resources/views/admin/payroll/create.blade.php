@@ -5,76 +5,77 @@
     <h1>Create Payroll</h1>
     <form action="{{ route('admin.payroll.store') }}" method="POST" id="payrollForm">
         @csrf
+
+        <!-- Employee Selection -->
         <div class="mb-3">
             <label for="user_id" class="form-label">Employee</label>
             <select name="user_id" id="user_id" class="form-control" required>
                 <option value="" disabled selected>Select Employee</option>
                 @foreach ($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    <option value="{{ $user->id }}" 
+                        data-pay-period-id="{{ $user->employeeDetail->pay_period_id ?? '' }}">
+                        {{ $user->name }} - 
+                        {{ $user->employeeDetail->payPeriod->name ?? 'No Pay Period' }}
+                    </option>
                 @endforeach
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="pay_period">Pay Period</label>
-            <select name="pay_period_id" id="pay_period" class="form-control" required>
-                <option value="" disabled selected>Select Pay Period</option>
-                @foreach($payPeriods as $payPeriod)
-                    <option value="{{ $payPeriod->id }}">{{ $payPeriod->name }}</option>
-                @endforeach
-            </select>
-            
-        </div>
+        <!-- Hidden field for pay_period_id -->
+        <input type="hidden" name="pay_period_id" id="pay_period_id">
 
-        <div class="mb-3">
+        <!-- Reservation Selection (Only for Pay Period ID = 3) -->
+        <div class="mb-3" id="reservation_field" style="display: none;">
             <label for="reservation_id" class="form-label">Reservation</label>
-            <select name="reservation_id" id="reservation_id" class="form-control" required>
+            <select name="reservation_id" id="reservation_id" class="form-control">
                 <option value="" disabled selected>Select Reservation</option>
-                @foreach ($reservation as $reservations)
-                    <option value="{{ $reservations->id }}">#{{ $reservations->id }} - {{ $reservations->event_type }}</option>
+                @foreach ($reservations as $reservation)
+                    <option value="{{ $reservation->id }}">
+                        #{{ $reservation->id }} - {{ $reservation->event_name }}
+                    </option>
                 @endforeach
             </select>
         </div>
 
-        
+        <!-- Deductions Field -->
         <div class="mb-3">
             <label for="deductions" class="form-label">Deductions</label>
             <input type="number" name="deductions" id="deductions" class="form-control" required>
         </div>
 
+        <!-- Submit Button -->
         <button type="submit" class="btn btn-success">Save</button>
     </form>
 </div>
 @endsection
 
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+@push('scripts')
 <script>
-    // Fetch salary when an employee is selected
-    $('#user_id').change(function() {
-        var userId = $(this).val();
-        
-        // Make sure the user is selected
-        if (userId) {
-            $.ajax({
-                url: '/admin/payroll/employee/' + userId + '/salary',
-                method: 'GET',
-                success: function(response) {
-                    // Update the gross salary input
-                    $('#gross_salary').val(response.salary);
-                },
-                error: function() {
-                    alert("Error fetching salary data.");
-                }
-            });
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ JavaScript Loaded in create.blade.php");
+
+    let userDropdown = document.getElementById("user_id");
+    let reservationField = document.getElementById("reservation_field");
+    let payPeriodInput = document.getElementById("pay_period_id");
+
+    userDropdown.addEventListener("change", function () {
+        let selectedUser = this.options[this.selectedIndex];
+        let payPeriodId = selectedUser.getAttribute("data-pay-period-id");
+
+        console.log("📌 Selected User ID:", this.value);
+        console.log("📅 Pay Period ID:", payPeriodId);
+
+        payPeriodInput.value = payPeriodId || ""; // Update hidden field
+
+        if (payPeriodId == "3") {
+            reservationField.style.display = "block";
         } else {
-            $('#gross_salary').val(''); // Clear salary if no user selected
+            reservationField.style.display = "none";
         }
     });
 
-    // Form submission with SweetAlert for confirmation
-    $('#payrollForm').on('submit', function(e) {
+    // SweetAlert Confirmation on Submit
+    document.getElementById("payrollForm").addEventListener("submit", function (e) {
         e.preventDefault();
 
         Swal.fire({
@@ -91,15 +92,6 @@
             }
         });
     });
-
-    @if ($errors->any())
-        // SweetAlert for validation errors
-        Swal.fire({
-            title: 'Error!',
-            text: 'Please fix the errors in the form.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-    @endif
+});
 </script>
-@endsection
+@endpush

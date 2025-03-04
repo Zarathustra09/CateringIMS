@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\PayPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,8 +11,9 @@ class EmployeeController extends Controller
 {
     public function index()
     {
+        $payPeriods = PayPeriod::all();
         $users = User::where('role_id', 1)->get();
-        return view('admin.employee.index', compact('users'));
+        return view('admin.employee.index', compact('users', 'payPeriods'));
     }
 
     public function store(Request $request)
@@ -33,7 +35,7 @@ class EmployeeController extends Controller
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
-            'role_id' => 0,
+            'role_id' => 1,
             'employee_id' => $employee_id,
         ]);
 

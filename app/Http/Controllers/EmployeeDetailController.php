@@ -16,6 +16,7 @@ class EmployeeDetailController extends Controller
             'department' => 'required|string|max:255',
             'salary' => 'required|numeric',
             'hired_at' => 'required|date',
+            'pay_period_id' => 'required|exists:pay_periods,id',
         ]);
 
         $employeeDetail = EmployeeDetail::create($request->all());

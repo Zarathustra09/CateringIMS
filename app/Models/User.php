@@ -44,4 +44,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+
+        public function employeePayPeriod()
+    {
+        return $this->hasOne(EmployeeDetail::class, 'user_id');
+    }
+
 }
