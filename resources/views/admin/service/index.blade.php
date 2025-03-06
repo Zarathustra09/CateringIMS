@@ -2,35 +2,39 @@
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home /</span> Services</h4>
-
-        <button type="button" class="btn btn-primary mb-3" onclick="createService()">
-            <span class="tf-icons bx bx-plus"></span>&nbsp; Add Service
-        </button>
-
-        <table id="serviceTable" class="table table-hover">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($services as $service)
-                <tr>
-                    <td>{{ $service->name }}</td>
-                    <td>{{ $service->description }}</td>
-                    <td>₱{{ $service->price }}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="editService({{ $service->id }})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteService({{ $service->id }})">Delete</button>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Services</h2>
+                <button type="button" class="btn btn-primary" onclick="createService()">
+                    <span class="tf-icons bx bx-plus"></span>&nbsp; Add Service
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="serviceTable" class="table table-hover table-striped">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($services as $service)
+                        <tr>
+                            <td>{{ $service->name }}</td>
+                            <td>{{ $service->description }}</td>
+                            <td>₱{{ $service->price }}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editService({{ $service->id }})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteService({{ $service->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 

@@ -2,34 +2,38 @@
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home /</span> Categories</h4>
-
-        <button type="button" class="btn btn-primary mb-3" onclick="createCategory()">
-            <span class="tf-icons bx bx-plus"></span>&nbsp; Add Category
-        </button>
-
-        <table id="categoryTable" class="table table-hover">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($categories as $category)
-                <tr>
-                    <td>{{ $category->name }}</td>
-                    <td>{{ $category->description }}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" onclick="viewCategory({{ $category->id }})">View</button>
-                        <button class="btn btn-warning btn-sm" onclick="editCategory({{ $category->id }})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteCategory({{ $category->id }})">Delete</button>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Categories</h2>
+                <button type="button" class="btn btn-primary" onclick="createCategory()">
+                    <span class="tf-icons bx bx-plus"></span>&nbsp; Add Category
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="categoryTable" class="table table-hover table-striped">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($categories as $category)
+                        <tr>
+                            <td>{{ $category->name }}</td>
+                            <td>{{ $category->description }}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="viewCategory({{ $category->id }})">View</button>
+                                <button class="btn btn-warning btn-sm" onclick="editCategory({{ $category->id }})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteCategory({{ $category->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 

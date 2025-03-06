@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h2 class="mb-0">Activity Logs</h2>

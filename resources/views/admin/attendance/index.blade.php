@@ -2,37 +2,39 @@
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home /</span> Attendance Records</h4>
-
-        <button type="button" class="btn btn-primary mb-3" onclick="createAttendance()">
-            <span class="tf-icons bx bx-plus"></span>&nbsp; Add Attendance
-        </button>
-
-        <table id="attendanceTable" class="table table-hover">
-            <thead>
-            <tr>
-                <th>Employee</th>
-                <th>Reservation</th>
-                <th>Created At</th>
-                <th>Actions</th>
-                
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($attendances as $attendance)
-                <tr>
-                    <td>{{ $attendance->user->name }}</td>
-                    <td>Reservation #{{ $attendance->reservation->event_type }}</td>
-                    <td>{{ $attendance->created_at->format('Y-m-d H:i:s') }}</td> <!-- Display timestamp -->
-                    <td>
-                        {{-- <button class="btn btn-info btn-sm" onclick="viewAttendance({{ $attendance->id }})">View</button> --}}
-                        <button class="btn btn-warning btn-sm" onclick="editAttendance({{ $attendance->id }})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteAttendance({{ $attendance->id }})">Delete</button>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Attendance Records</h2>
+                <button type="button" class="btn btn-primary" onclick="createAttendance()">
+                    <span class="tf-icons bx bx-plus"></span>&nbsp; Add Attendance
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="attendanceTable" class="table table-hover table-striped">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Reservation</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($attendances as $attendance)
+                        <tr>
+                            <td>{{ $attendance->user->name }}</td>
+                            <td>Reservation #{{ $attendance->reservation->event_type }}</td>
+                            <td>{{ $attendance->created_at->format('Y-m-d H:i:s') }}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editAttendance({{ $attendance->id }})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteAttendance({{ $attendance->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -73,7 +75,7 @@
                     width: '100%',
                     placeholder: "Select Employees",
                     allowClear: true,
-                    dropdownParent: $('.swal2-container') 
+                    dropdownParent: $('.swal2-container')
                 });
             },
             preConfirm: () => {
@@ -161,7 +163,7 @@
                             </option>
                         @endforeach
                     </select>
-                   
+
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Update',
