@@ -154,6 +154,8 @@ Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('a
 Route::delete('/admin/payroll/{id}', [PayrollController::class, 'destroy'])->name('admin.payroll.destroy');
 Route::get('/admin/payroll/{id}/edit', [PayrollController::class, 'edit'])->name('admin.payroll.edit');
 Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('admin.payroll.update');
+Route::get('/admin/payroll/{id}', [PayrollController::class, 'show'])->name('admin.payroll.show');
+
 
 //admin attendance
 Route::get('/admin/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
