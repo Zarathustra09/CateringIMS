@@ -2,38 +2,40 @@
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home /</span> Clients</h4>
-
-        <button type="button" class="btn btn-primary mb-3" onclick="createClient()">
-            <span class="tf-icons bx bx-plus"></span>&nbsp; Add Client
-        </button>
-
-        <table id="clientTable" class="table table-hover">
-            <thead>
-            <tr>
-{{--                <th>Client ID</th>--}}
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($clients as $client)
-                <tr>
-{{--                    <td>{{ $client->employee_id }}</td>--}}
-                    <td>{{ $client->name }}</td>
-                    <td>{{ $client->email }}</td>
-                    <td>{{ $client->phone_number }}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" onclick="viewClient({{ $client->id }})">View</button>
-                        <button class="btn btn-warning btn-sm" onclick="editClient({{ $client->id }})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteClient({{ $client->id }})">Delete</button>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Clients</h2>
+                <button type="button" class="btn btn-primary" onclick="createClient()">
+                    <span class="tf-icons bx bx-plus"></span>&nbsp; Add Client
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="clientTable" class="table table-hover table-striped">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($clients as $client)
+                        <tr>
+                            <td>{{ $client->name }}</td>
+                            <td>{{ $client->email }}</td>
+                            <td>{{ $client->phone_number }}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="viewClient({{ $client->id }})">View</button>
+                                <button class="btn btn-warning btn-sm" onclick="editClient({{ $client->id }})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteClient({{ $client->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 

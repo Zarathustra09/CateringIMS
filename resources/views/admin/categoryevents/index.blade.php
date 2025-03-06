@@ -2,32 +2,36 @@
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home /</span> Event Categories</h4>
-
-        <button type="button" class="btn btn-primary mb-3" onclick="createCategoryEvent()">
-            <span class="tf-icons bx bx-plus"></span>&nbsp; Add Event Category
-        </button>
-
-        <table id="categoryEventTable" class="table table-hover">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($categoryEvents as $event)
-                <tr>
-                    <td>{{ $event->name }}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" onclick="viewCategoryEvent({{ $event->id }})">View</button>
-                        <button class="btn btn-warning btn-sm" onclick="editCategoryEvent({{ $event->id }})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteCategoryEvent({{ $event->id }})">Delete</button>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Event Categories</h2>
+                <button type="button" class="btn btn-primary" onclick="createCategoryEvent()">
+                    <span class="tf-icons bx bx-plus"></span>&nbsp; Add Event Category
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="categoryEventTable" class="table table-hover table-striped">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($categoryEvents as $event)
+                        <tr>
+                            <td>{{ $event->name }}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="viewCategoryEvent({{ $event->id }})">View</button>
+                                <button class="btn btn-warning btn-sm" onclick="editCategoryEvent({{ $event->id }})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteCategoryEvent({{ $event->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 
