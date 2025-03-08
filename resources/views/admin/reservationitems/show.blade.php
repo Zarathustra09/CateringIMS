@@ -90,7 +90,7 @@
                             <i class="fas fa-plus me-1"></i>Add Inventory
                         </button>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table id="inventoryTable" class="table table-hover">
                                 <thead class="table-light">

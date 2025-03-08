@@ -24,7 +24,7 @@
         <!-- Hidden field for pay_period_id -->
         <input type="hidden" name="pay_period_id" id="pay_period_id">
 
-        <!-- Reservation Selection (Only for Pay Period ID = 3) -->
+        <!-- Reservation Selection (Only for Contractual Employees) -->
         <div class="mb-3" id="reservation_field" style="display: none;">
             <label for="reservation_id" class="form-label">Reservation</label>
             <select name="reservation_id" id="reservation_id" class="form-control">
@@ -46,11 +46,52 @@
         <!-- Submit Button -->
         <button type="submit" class="btn btn-success">Save</button>
     </form>
+
+    <!-- Employees Without Payroll Table -->
+    @if(isset($employeesWithoutPayrollByType) && count($employeesWithoutPayrollByType) > 0)
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="fw-bold">Employees Without Payroll</h5>
+            </div>
+            <div class="card-body">
+                <table id="noPayrollTable" class="table table-hover table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Pay Period</th>
+                            <th>Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($employeesWithoutPayrollByType as $payPeriod => $employees)
+                            @foreach ($employees as $employee)
+                                <tr>
+                                    <td>{{ $employee->id }}</td>
+                                    <td>{{ $employee->name }}</td>
+                                    <td>{{ $payPeriod }}</td>
+                                    <td>
+                                        {{ optional($employee->employeeDetail)->salary ? number_format($employee->employeeDetail->salary, 2) : 'N/A' }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
 </div>
 @endsection
 
 @push('scripts')
 <script>
+
+$(document).ready(function () {
+            $('#noPayrollTable').DataTable();
+        });
+
+
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ JavaScript Loaded in create.blade.php");
 
@@ -69,8 +110,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (payPeriodId == "3") {
             reservationField.style.display = "block";
+            document.getElementById("reservation_id").setAttribute("required", "required");
         } else {
             reservationField.style.display = "none";
+            document.getElementById("reservation_id").removeAttribute("required");
         }
     });
 
@@ -92,6 +135,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    // Initialize DataTable
+    $('#noPayrollTable').DataTable();
 });
 </script>
 @endpush

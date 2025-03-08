@@ -38,5 +38,6 @@ class Payroll extends Model
     {
         return $this->hasOne(EmployeeDetail::class, 'user_id');
     }
+    
 }
 
