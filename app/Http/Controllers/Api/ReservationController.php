@@ -22,4 +22,10 @@ class ReservationController extends Controller
         return response()->json(['success', 'Reservation updated successfully.']);
     }
 
+    public function index()
+    {
+        $reservations = Reservation::all();
+        return response()->json($reservations);
+    }
+
 }

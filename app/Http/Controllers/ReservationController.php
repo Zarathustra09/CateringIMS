@@ -51,7 +51,7 @@ class ReservationController extends Controller
 
         DB::beginTransaction();
 
-        Log::info( $request->input('event_type'));
+        Log::info('Creating reservation', ['service' => $request->all()]);
         try {
             session([
                 'total' => $service->price,
@@ -60,9 +60,9 @@ class ReservationController extends Controller
                 'category_event_id' => $request->input('event_type'), // Save category_event_id
                 'description' => 'Reservation for ' . $service->name,
                 'success' => 'Reservation created successfully.',
+                'start_date' => $request->input('start_date'), // Save start_date
+                'end_date' => $request->input('end_date'), // Save end_date
             ]);
-
-
 
             DB::commit();
 

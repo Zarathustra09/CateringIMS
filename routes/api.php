@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::put('/reservation/{id}', [ReservationController::class, 'update'])->name('api.reservation.update');
+Route::get('/reservation', [ReservationController::class, 'index'])->name('api.reservation.index');
