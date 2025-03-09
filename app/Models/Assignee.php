@@ -15,6 +15,11 @@ class Assignee extends Model
     {
         return $this->belongsTo(Reservation::class);
     }
+    public function reservation() // Singular
+{
+    return $this->belongsTo(Reservation::class, 'reservation_id'); // Explicit foreign key
+}
+
 
     public function user()
     {

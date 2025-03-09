@@ -16,7 +16,7 @@
         <li class="menu-item {{ request()->routeIs('home') ? 'active' : '' }}">
             <a href="{{route('staff.home')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-alt"></i>
-                <div data-i18n="Dashboard">Dashboard</div>
+                <div data-i18n="Home">Home</div>
             </a>
         </li>
 
@@ -25,8 +25,8 @@
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Reservation Management</span></li>
 
 
-        <li class="menu-item {{ Request()->routeIs('admin/reservationitems') ? 'active' : '' }}">
-            <a href="#" class="menu-link">
+        <li class="menu-item {{ Request()->routeIs('staff/reservations') ? 'active' : '' }}">
+            <a href="{{ route('staff.staffreservation.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-list-ul"></i>
                 <div data-i18n="Reservations">Reservations</div>
             </a>
@@ -34,11 +34,12 @@
 
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Payroll Management</span></li>
 
-        <li class="menu-item {{ Request::is('admin/payroll') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item {{ Request::is('staff/details') ? 'active' : '' }}">
+            <a href="{{ route('staff.staffdetail.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
-                <div data-i18n="Payroll">Payroll</div>
+                <div data-i18n="StaffDetail">My Detail</div>
             </a>
         </li>
+        
     </ul>
 </aside>

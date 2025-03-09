@@ -18,7 +18,9 @@ use App\Http\Controllers\CategoryEventController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayPeriodController;
 use App\Http\Controllers\AttendanceController;
-use App\Models\Attendance;
+use App\Http\Controllers\StaffDetailsController;
+use App\Http\Controllers\StaffHomeController;
+use App\Http\Controllers\StaffReservationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -157,6 +159,10 @@ Route::put('/admin/payroll/{id}', [PayrollController::class, 'update'])->name('a
 Route::get('/admin/payroll/{id}', [PayrollController::class, 'show'])->name('admin.payroll.show');
 
 
+Route::get('/admin/payroll/{payroll}/pdf', [PayrollController::class, 'downloadPDF'])->name('admin.payroll.pdf');
+
+
+
 //admin attendance
 Route::get('/admin/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
 Route::get('/admin/attendance/create', [AttendanceController::class, 'create'])->name('admin.attendance.create');
@@ -172,7 +178,12 @@ Route::get('/admin/reservation/attendance/{reservationId}', [AttendanceControlle
 
 
 //Staff Routes
-Route::get('/staff/home', [EmployeeHomeController::class, 'index'])->name('staff.home');
+Route::get('/staff/home', [StaffHomeController::class, 'index'])->name('staff.home');
+
+Route::get('/staff/reservations', [StaffReservationController::class, 'index'])->name('staff.staffreservation.index');
+Route::get('/staff/reservation/{id}', [StaffReservationController::class, 'show'])->name('staff.staffreservation.show');
+
+Route::get('/staff/details', [StaffDetailsController::class, 'index'])->name('staff.staffdetail.index');
 
 
 

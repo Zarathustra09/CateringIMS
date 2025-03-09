@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\PayPeriod;
 use App\Models\Reservation;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PayrollController extends Controller
 {
@@ -228,4 +229,15 @@ class PayrollController extends Controller
         $payroll->delete();
         return redirect()->route('admin.payroll.index')->with('success', 'Payroll deleted successfully!');
     }
+
+    public function downloadPDF($id)
+    {
+        $payroll = Payroll::findOrFail($id);
+        $employeeName = str_replace(' ', '_', $payroll->user->name); // Replace spaces with underscores
+    
+        $pdf = Pdf::loadView('admin.payroll.pdf', compact('payroll'));
+    
+        return $pdf->download("Payroll_{$employeeName}.pdf");
+    }
+    
 }

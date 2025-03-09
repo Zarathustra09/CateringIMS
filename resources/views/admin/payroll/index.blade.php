@@ -75,6 +75,9 @@
                                 <td>
                                     <button class="btn btn-warning btn-sm" onclick="editPayroll({{ $payroll->id }})">Edit</button>
                                     <button class="btn btn-danger btn-sm" onclick="deletePayroll({{ $payroll->id }})">Delete</button>
+                                    <a href="{{ route('admin.payroll.pdf', $payroll->id) }}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-file-pdf"></i> Download PDF
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
