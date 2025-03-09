@@ -5,6 +5,11 @@
         <div class="text-center mb-8">
             <h2 class="text-3xl font-bold text-gray-800 mb-2">Our Services</h2>
             <p class="text-gray-600">Choose from our range of professional services</p>
+            @if ($errors->has('reservation'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('reservation') }}
+                </div>
+            @endif
         </div>
 
         <div class="row g-4">

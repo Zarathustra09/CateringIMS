@@ -23,7 +23,9 @@
     <link href="{{asset('landingpage/assets/vendor/aos/aos.css" rel="stylesheet')}}">
     <link href="{{asset('landingpage/assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
     <link href="{{asset('landingpage/assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <!-- Main CSS File -->
     <link href="{{asset('landingpage/assets/css/main.css')}}" rel="stylesheet">
     @stack('styles')
@@ -86,7 +88,7 @@
 <main class="main">
 
     @yield('content')
-    
+
 </main>
 
 <footer id="footer" class="footer dark-background">
@@ -150,6 +152,8 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @stack('scripts')
+
+
 </body>
 
 </html>

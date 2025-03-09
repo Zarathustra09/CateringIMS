@@ -46,6 +46,8 @@ class PaymentController extends Controller
             'category_event_id' => session('category_event_id'),
             'description' => session('description'),
             'success' => session('success'),
+            'start_date' => session('start_date'), // Retrieve start_date
+            'end_date' => session('end_date'), // Retrieve end_date
         ]);
 
         $request->validate([
@@ -59,6 +61,29 @@ class PaymentController extends Controller
         if (!$service) {
             Log::error('Invalid service selected:', ['service' => $request->input('service')]);
             return back()->withErrors(['service' => 'Invalid service selected.']);
+        }
+
+        // Check for overlapping reservations
+        $startDate = session('start_date');
+        $endDate = session('end_date');
+        $overlappingReservations = Reservation::where('service_id', $service->id)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_date', '<=', $startDate)
+                            ->where('end_date', '>=', $endDate);
+                    });
+            })
+            ->exists();
+
+        if ($overlappingReservations) {
+            Log::error('Overlapping reservation found:', [
+                'service_id' => $service->id,
+                'start_date' => $startDate,
+                'end_date' => $endDate
+            ]);
+            return back()->withErrors(['reservation' => 'There is an overlapping reservation for the selected dates.']);
         }
 
         Configuration::setXenditKey(env('XENDIT_API_KEY'));
@@ -102,9 +127,9 @@ class PaymentController extends Controller
                 'user_id' => Auth::id(),
                 'service_id' => $service->id,
                 'event_name' => session('event_name'),
-                'category_event_id' => session('category_event_id'), // Corrected key
-                'start_date' => now(),
-                'end_date' => now()->addDays(1),
+                'category_event_id' => session('category_event_id'),
+                'start_date' => session('start_date'), // Use start_date from session
+                'end_date' => session('end_date'), // Use end_date from session
                 'message' => $request->input('description'),
                 'status' => 'pending',
             ]);
@@ -130,9 +155,6 @@ class PaymentController extends Controller
             ]);
 
             DB::commit();
-
-//            // Call the private function to send SMS notification
-//            $this->sendSmsNotification(Auth::user()->phone_number, 'Test Input BROADCAST MK 04-24-1998');
 
             // Send email notification
             $reservationDetails = [
