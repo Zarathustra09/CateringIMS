@@ -4,6 +4,8 @@
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\Employee\EmployeeHomeController;
     use App\Http\Controllers\LogController;
+    use App\Http\Controllers\MenuController;
+    use App\Http\Controllers\MenuItemController;
     use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
@@ -11,7 +13,8 @@ use App\Http\Controllers\EmployeeDetailController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\ServiceController;
+    use App\Http\Controllers\ReservationMenuController;
+    use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AssigneeController;
 use App\Http\Controllers\ReservationItemsController;
 use App\Http\Controllers\CategoryEventController;
@@ -170,6 +173,12 @@ Route::get('/admin/reservation/attendance/{reservationId}', [AttendanceControlle
     ->name('admin.reservation.attendance');
 
 
+
+//admin Menu
+    Route::resource('menus', MenuController::class)->except(['create', 'edit']);
+    Route::get('menu-items/showSingle/{id}', [MenuItemController::class, 'showSingle'])->name('menus.menu-items.showSingle');
+    Route::resource('menu-items', MenuItemController::class)->except(['create', 'edit']);
+    Route::resource('reservation-menus', ReservationMenuController::class)->except(['create', 'edit']);
 
 //Staff Routes
 Route::get('/staff/home', [EmployeeHomeController::class, 'index'])->name('staff.home');

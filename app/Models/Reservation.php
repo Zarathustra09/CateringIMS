@@ -14,7 +14,7 @@ class Reservation extends Model
     protected $fillable = [
         'user_id',
         'service_id',
-        'category_event_id', // Add this line
+        'category_event_id',
         'event_name',
         'start_date',
         'end_date',
@@ -56,13 +56,19 @@ class Reservation extends Model
     {
         return $this->hasMany(PayPeriod::class);
     }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);
     }
+
     public function payrolls()
     {
         return $this->hasMany(Payroll::class, 'reservation_id', 'id');
     }
 
+    public function menus()
+    {
+        return $this->belongsToMany(Menu::class, 'reservation_menus');
+    }
 }
