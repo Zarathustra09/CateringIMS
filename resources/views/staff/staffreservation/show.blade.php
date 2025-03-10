@@ -59,7 +59,7 @@
                 </div>
 
                 <!-- Inventory Section (View-Only) -->
-                <div class="card shadow-sm">
+                <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white">
                         <h3 class="h4 mb-0 text-white">Inventory</h3>
                         <span class="badge bg-light text-primary">{{ $reservation->inventories->count() }} Items</span>
@@ -82,6 +82,39 @@
                                             <td>{{ $inventory->description }}</td>
                                         </tr>
                                     @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h3 class="h4 mb-0 text-white">Menus</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="menusTable" class="table table-hover">
+                                <thead class="table-light">
+                                <tr>
+                                    <th>Menu Name</th>
+                                    <th>Menu Items</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($reservation->menus as $menu)
+                                    <tr>
+                                        <td>{{ $menu->name }}</td>
+                                        <td>
+                                            <ul>
+                                                @foreach($menu->menuItems as $menuItem)
+                                                    <li>{{ $menuItem->name }} - {{ $menuItem->description }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>

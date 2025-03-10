@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reservation;
+use App\Models\Menu;
 use Illuminate\Support\Facades\Auth;
 
 class StaffReservationController extends Controller
@@ -20,9 +21,10 @@ class StaffReservationController extends Controller
 
     public function show($id)
     {
-        // Fetch the reservation with related assignees and inventories
-        $reservation = Reservation::with(['assignees.user', 'inventories'])->findOrFail($id);
-
-        return view('staff.staffreservation.show', compact('reservation'));
+        $reservation = Reservation::with(['categoryEvent', 'assignees.user', 'inventories'])->findOrFail($id);
+        $menuItems = Menu::all(); // Fetch all menu items (modify as needed)
+    
+        return view('staff.staffreservation.show', compact('reservation', 'menuItems'));
     }
+    
 }
