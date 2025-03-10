@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoryEvent;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
 use App\Models\Inventory;
@@ -22,11 +23,11 @@ class ReservationController extends Controller
 
     public function create(Request $request)
     {
-
         $service = Service::find($request->input('service_id'));
         $categories = CategoryEvent::all();
+        $menus = Menu::with('menuItems')->get(); // Fetch menus with their items
 
-        return view('guest.reservation.create', compact('service', 'categories'));
+        return view('guest.reservation.create', compact('service', 'categories', 'menus'));
     }
 
 
@@ -38,30 +39,33 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
+        Log::info('Creating reservation', ['service' => $request->all()]);
+
         $request->validate([
             'service_id' => 'required|exists:services,id',
             'event_name' => 'required|string',
-            'event_type' => 'required|exists:category_events,id', // Validate category_event_id
+            'event_type' => 'required|exists:category_events,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'message' => 'nullable|string',
+            'selected_menus' => 'required|array|min:1',
         ]);
 
         $service = Service::find($request->input('service_id'));
 
         DB::beginTransaction();
 
-        Log::info('Creating reservation', ['service' => $request->all()]);
         try {
             session([
                 'total' => $service->price,
                 'service_id' => $service->id,
                 'event_name' => $request->input('event_name'),
-                'category_event_id' => $request->input('event_type'), // Save category_event_id
+                'category_event_id' => $request->input('event_type'),
                 'description' => 'Reservation for ' . $service->name,
                 'success' => 'Reservation created successfully.',
-                'start_date' => $request->input('start_date'), // Save start_date
-                'end_date' => $request->input('end_date'), // Save end_date
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date'),
+                'selected_menus' => $request->input('selected_menus'),
             ]);
 
             DB::commit();

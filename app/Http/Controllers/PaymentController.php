@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ReservationMail;
+use App\Models\ReservationMenu;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Reservation;
@@ -46,8 +47,9 @@ class PaymentController extends Controller
             'category_event_id' => session('category_event_id'),
             'description' => session('description'),
             'success' => session('success'),
-            'start_date' => session('start_date'), // Retrieve start_date
-            'end_date' => session('end_date'), // Retrieve end_date
+            'start_date' => session('start_date'),
+            'end_date' => session('end_date'),
+            'selected_menus' => session('selected_menus'),
         ]);
 
         $request->validate([
@@ -128,14 +130,23 @@ class PaymentController extends Controller
                 'service_id' => $service->id,
                 'event_name' => session('event_name'),
                 'category_event_id' => session('category_event_id'),
-                'start_date' => session('start_date'), // Use start_date from session
-                'end_date' => session('end_date'), // Use end_date from session
+                'start_date' => session('start_date'),
+                'end_date' => session('end_date'),
                 'message' => $request->input('description'),
                 'status' => 'pending',
             ]);
 
             $reservation->save();
             Log::info('Reservation saved successfully:', ['reservation_id' => $reservation->id]);
+
+            // Save selected menus
+            $selectedMenus = session('selected_menus');
+            foreach ($selectedMenus as $menuId) {
+                ReservationMenu::create([
+                    'reservation_id' => $reservation->id,
+                    'menu_id' => $menuId,
+                ]);
+            }
 
             $payment = new Payment([
                 'user_id' => auth()->id(),

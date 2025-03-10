@@ -29,27 +29,27 @@ class ReservationItemsController extends Controller
             'inventory_id' => 'required|exists:inventories,id',
             'quantity' => 'required|integer|min:1',
         ]);
-    
+
         // Retrieve the inventory and check if there's enough stock
         $inventory = Inventory::find($request->inventory_id);
         if ($inventory->quantity < $request->quantity) {
             return response()->json(['message' => 'Not enough stock available.'], 400);
         }
-    
+
         // Create the reservation_item
         $reservationItem = ReservationItems::create([
             'reservation_id' => $request->reservation_id,
             'inventory_id' => $request->inventory_id,
             'quantity' => $request->quantity,
         ]);
-    
+
         // Subtract the quantity from the inventory
         $inventory->quantity -= $request->quantity;
         $inventory->save();
-    
+
         return response()->json(['message' => 'Inventory added successfully and stock updated.']);
     }
-    
+
 
         public function destroy($id)
         {
@@ -62,9 +62,9 @@ class ReservationItemsController extends Controller
 
         public function show($id)
         {
-            $reservations = ReservationItems::with(['assignees.user', 'inventories'])->findOrFail($id);
+            $reservation = Reservation::with(['assignees.user', 'inventories', 'menus.menuItems'])->findOrFail($id);
             $employees = User::where('role_id', 1)->get(['id', 'name']);
-            return view('admin.reservationitems.show', compact('reservations', 'employees'));
+            return view('admin.reservationitems.show', compact('reservation', 'employees'));
         }
 
         public function showSingle($id)
