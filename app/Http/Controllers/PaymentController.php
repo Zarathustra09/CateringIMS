@@ -237,4 +237,24 @@ class PaymentController extends Controller
             Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
         }
     }
+
+        public function userReservations()
+    {
+        $userId = auth()->id();
+        $reservations = Reservation::where('user_id', $userId)
+            ->with('categoryEvent')
+            ->get();
+
+        $events = $reservations->map(function ($reservation) {
+            return [
+                'id'    => $reservation->id,
+                'title' => $reservation->event_name . ' (' . optional($reservation->categoryEvent)->name . ')',
+                'start' => $reservation->start_date,
+                'end'   => $reservation->end_date,
+                'color' => $reservation->status == 'confirmed' ? 'green' : 'orange',
+            ];
+        });
+
+        return response()->json($events);
+    }
 }
