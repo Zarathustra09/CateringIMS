@@ -176,6 +176,7 @@ class PaymentController extends Controller
                 'description' => $request->input('description')
             ];
             Mail::to(Auth::user()->email)->send(new ReservationMail($reservationDetails));
+//            $this->sendSmsNotification(Auth::user()->phone_number, $reservationDetails);
 
             return redirect($result['invoice_url']);
 
@@ -219,42 +220,25 @@ class PaymentController extends Controller
         return redirect()->route('payment.index')->with('error', 'Payment unsuccessful.');
     }
 
-    private function sendSmsNotification($phoneNumber, $message)
-    {
+ private function sendSmsNotification($phoneNumber, $reservationDetails)
+ {
+     $message = "Dear {$reservationDetails['name']},\n";
+     $message .= "Thank you for your reservation.\n";
+     $message .= "Event: {$reservationDetails['event_name']}\n";
+     $message .= "Please check your email for more details.";
 
+     $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+         'apikey' => env('SEMAPHORE_API_KEY'),
+         'number' => $phoneNumber,
+         'message' => $message
+     ]);
 
-        $response = Http::post('https://api.semaphore.co/api/v4/messages', [
-            'apikey' => env('SEMAPHORE_API_KEY'),
-            'number' => $phoneNumber,
-            'message' => $message
-        ]);
+     Log::info('API Response:', ['response' => $response->json()]);
 
-        Log::info('API Response:', ['response' => $response->json()]);
-
-        if ($response->successful()) {
-            Log::info('SMS sent successfully to ' . $phoneNumber);
-        } else {
-            Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
-        }
-    }
-
-        public function userReservations()
-    {
-        $userId = auth()->id();
-        $reservations = Reservation::where('user_id', $userId)
-            ->with('categoryEvent')
-            ->get();
-
-        $events = $reservations->map(function ($reservation) {
-            return [
-                'id'    => $reservation->id,
-                'title' => $reservation->event_name . ' (' . optional($reservation->categoryEvent)->name . ')',
-                'start' => $reservation->start_date,
-                'end'   => $reservation->end_date,
-                'color' => $reservation->status == 'confirmed' ? 'green' : 'orange',
-            ];
-        });
-
-        return response()->json($events);
-    }
+     if ($response->successful()) {
+         Log::info('SMS sent successfully to ' . $phoneNumber);
+     } else {
+         Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
+     }
+ }
 }
