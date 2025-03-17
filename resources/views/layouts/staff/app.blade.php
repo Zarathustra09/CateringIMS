@@ -65,6 +65,10 @@
     <script src="{{ asset('dashboard/assets/js/config.js') }}"></script>
 
     <style>
+        
+        .bg-primary {
+            background-color: #c25d5f !important;
+        }
         .navbar-nav-right {
             z-index: 1000;
         }

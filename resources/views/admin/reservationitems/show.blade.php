@@ -23,25 +23,32 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <div class="card border-info mb-3">
-                                            <div class="card-header bg-info text-white">Start Date</div>
+                                            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                                                Start Date
+                                                <span class="edit-icon" onclick="editDate('start', '{{ $reservation->id }}', '{{ $reservation->start_date }}')">✏️</span>
+                                            </div>
                                             <div class="card-body p-2">
-                                                <p class="card-text text-center">
-                                                    {{ \Carbon\Carbon::parse($reservation->start_date)->format('F d, Y h:i A') }}
+                                                <p id="start_date_display" class="card-text text-center">
+                                                    {{ \Carbon\Carbon::parse($reservation->start_date)->format('F d, Y') }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card border-warning mb-3">
-                                            <div class="card-header bg-warning text-white">End Date</div>
+                                            <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                                                End Date
+                                                <span class="edit-icon" onclick="editDate('end', '{{ $reservation->id }}', '{{ $reservation->end_date }}')">✏️</span>
+                                            </div>
                                             <div class="card-body p-2">
-                                                <p class="card-text text-center">
-                                                    {{ \Carbon\Carbon::parse($reservation->end_date)->format('F d, Y h:i A') }}
+                                                <p id="end_date_display" class="card-text text-center">
+                                                    {{ \Carbon\Carbon::parse($reservation->end_date)->format('F d, Y') }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
 
                                 <!-- ✅ Mark Attendance Button -->
                                 <a href="{{ route('admin.reservation.attendance', $reservation->id) }}" class="btn btn-success">
@@ -173,6 +180,47 @@
             $('#assigneesTable').DataTable();
             $('#inventoryTable').DataTable();
         });
+
+
+        function editDate(type, reservationId, currentDate) {
+        Swal.fire({
+            title: 'Edit ' + (type === 'start' ? 'Start' : 'End') + ' Date',
+            input: 'date',
+            inputValue: currentDate,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            cancelButtonText: 'Cancel',
+            preConfirm: (newDate) => {
+                if (!newDate) {
+                    Swal.showValidationMessage('Please select a valid date');
+                    return false;
+                }
+                return newDate;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/reservations/update-date',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        reservation_id: reservationId,
+                        type: type,
+                        date: result.value
+                    },
+                    success: function(response) {
+                        Swal.fire('Updated!', 'The date has been updated.', 'success');
+                        document.getElementById(type + '_date_display').innerText = new Date(result.value).toLocaleDateString('en-US', {
+                            month: 'long', day: 'numeric', year: 'numeric'
+                        });
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Could not update the date.', 'error');
+                    }
+                });
+            }
+        });
+    }
 
         function createAssignee() {
             let employeeOptions = @json($employees).map(employee => `<option value="${employee.id}">${employee.name}</option>`).join('');

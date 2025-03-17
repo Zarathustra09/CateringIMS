@@ -119,4 +119,24 @@ class ReservationController extends Controller
 //        $reservation = Reservation::with('service')->findOrFail($id);
 //        return view('guest.track', compact('reservation'));
 //    }
+
+public function updateDate(Request $request)
+{
+    $request->validate([
+        'reservation_id' => 'required|exists:reservations,id',
+        'type' => 'required|in:start,end',
+        'date' => 'required|date',
+    ]);
+
+    $reservation = Reservation::findOrFail($request->reservation_id);
+    if ($request->type === 'start') {
+        $reservation->start_date = $request->date;
+    } else {
+        $reservation->end_date = $request->date;
+    }
+    $reservation->save();
+
+    return response()->json(['success' => true]);
+}
+
 }

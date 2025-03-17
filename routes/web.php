@@ -102,6 +102,7 @@ Route::get('/admin/reservations', [ReservationController::class, 'index'])->name
 Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
 Route::get('/reservation/create', [ReservationController::class, 'create'])->name('reservation.create');
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
+Route::post('/reservations/update-date', [ReservationController::class, 'updateDate'])->name('reservations.update-date');
 
 
 
