@@ -34,12 +34,21 @@
 
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Payroll Management</span></li>
 
-        <li class="menu-item {{ Request::is('staff/details') ? 'active' : '' }}">
-            <a href="{{ route('staff.staffdetail.index') }}" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('staff.payroll.index') ? 'active' : '' }}">
+            <a href="{{ route('staff.payroll.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
+                <div data-i18n="StaffDetail">My Payroll</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Employee Management</span></li>
+
+        <li class="menu-item {{ request()->routeIs('staff.staffdetail.index') ? 'active' : '' }}">
+            <a href="{{ route('staff.staffdetail.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="StaffDetail">My Detail</div>
             </a>
         </li>
-        
+
     </ul>
 </aside>

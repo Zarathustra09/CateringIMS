@@ -32,9 +32,9 @@
                             @endphp
                         {
                             id: "{{ $reservation->id }}",
-                            title: "{{ $reservation->event_name }}",
-                            start: "{{ $reservation->start_date }}",
-                            end: "{{ $reservation->end_date }}",
+                            title: `{!! addslashes($reservation->event_name) !!}`, // Fix apostrophe issue
+                            start: "{{ \Carbon\Carbon::parse($reservation->start_date)->toIso8601String() }}",
+                            end: "{{ $reservation->end_date ? \Carbon\Carbon::parse($reservation->end_date)->toIso8601String() : null }}",
                             status: "{{ $reservation->status }}",
                             reservationtype: "{{ $reservation->message }}",
                             formatted_start_date: "{{ \Carbon\Carbon::parse($reservation->start_date)->format('M d, Y h:i A') }}",

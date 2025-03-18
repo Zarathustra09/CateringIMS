@@ -195,5 +195,7 @@ Route::get('/staff/reservation/{id}', [StaffReservationController::class, 'show'
 
 Route::get('/staff/details', [StaffDetailsController::class, 'index'])->name('staff.staffdetail.index');
 
+Route::get('/staff/payroll', [PayrollController::class, 'staffPayroll'])->name('staff.payroll.index');
+
 
 

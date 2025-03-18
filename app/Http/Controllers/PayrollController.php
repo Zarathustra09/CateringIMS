@@ -239,5 +239,20 @@ class PayrollController extends Controller
     
         return $pdf->download("Payroll_{$employeeName}.pdf");
     }
+
+        public function staffPayroll()
+    {
+        $user = auth()->user(); // Get the logged-in user
+
+        $payrolls = Payroll::where('user_id', $user->id)
+            ->with(['user', 'user.employeeDetail', 'payPeriod', 'reservation'])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('staff.payroll.index', compact('payrolls'));
+    }
+
+    
+
     
 }

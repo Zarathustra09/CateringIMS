@@ -24,7 +24,7 @@
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Reservation Management</span></li>
 
         <!-- Reservation Management -->
-        <li class="menu-item {{ request()->routeIs('admin.reservationitems.index','admin.client.index', 'admin.payment.index') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('admin.reservationitems.index','admin.client.index', 'admin.payment.index', 'admin.reservationitems.show') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-list-ul"></i>
                 <div data-i18n="Reservation Management">Reservation</div>
