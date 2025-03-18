@@ -37,6 +37,8 @@ class ReservationController extends Controller
 //        return view('guest.booking_history', compact('reservations'));
 //    }
 
+    // app/Http/Controllers/ReservationController.php
+
     public function store(Request $request)
     {
         Log::info('Creating reservation', ['service' => $request->all()]);
@@ -45,8 +47,8 @@ class ReservationController extends Controller
             'service_id' => 'required|exists:services,id',
             'event_name' => 'required|string',
             'event_type' => 'required|exists:category_events,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_date' => 'required|date_format:Y-m-d\TH:i',
+            'end_date' => 'required|date_format:Y-m-d\TH:i|after_or_equal:start_date',
             'message' => 'nullable|string',
             'selected_menus' => 'required|array|min:1',
         ]);
@@ -77,7 +79,6 @@ class ReservationController extends Controller
             return back()->withErrors(['error' => 'An error occurred while creating the reservation. Please try again.']);
         }
     }
-
     public function show($id)
     {
         $reservation = Reservation::with(['assignees.user','inventories'])->findOrFail($id);

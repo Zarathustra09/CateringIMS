@@ -29,7 +29,7 @@
                                             </div>
                                             <div class="card-body p-2">
                                                 <p id="start_date_display" class="card-text text-center">
-                                                    {{ \Carbon\Carbon::parse($reservation->start_date)->format('F d, Y') }}
+                                                    {{ \Carbon\Carbon::parse($reservation->start_date)->format('F d, Y g:i a') }}
                                                 </p>
                                             </div>
                                         </div>
@@ -42,13 +42,13 @@
                                             </div>
                                             <div class="card-body p-2">
                                                 <p id="end_date_display" class="card-text text-center">
-                                                    {{ \Carbon\Carbon::parse($reservation->end_date)->format('F d, Y') }}
+                                                    {{ \Carbon\Carbon::parse($reservation->end_date)->format('F d, Y g:i a') }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
+
 
                                 <!-- ✅ Mark Attendance Button -->
                                 <a href="{{ route('admin.reservation.attendance', $reservation->id) }}" class="btn btn-success">

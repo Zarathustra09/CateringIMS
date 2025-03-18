@@ -29,14 +29,17 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="start_date" class="form-label fw-semibold" style="color: black;">Start Date</label>
-                                    <input type="date" class="form-control form-control-lg shadow-sm" id="start_date" name="start_date" required>
-                                </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="end_date" class="form-label fw-semibold" style="color: black;">End Date</label>
-                                    <input type="date" class="form-control form-control-lg shadow-sm" id="end_date" name="end_date" required>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="start_date" class="form-label fw-semibold" style="color: black;">Start Date</label>
+                                        <input type="datetime-local" class="form-control form-control-lg shadow-sm" id="start_date" name="start_date" required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="end_date" class="form-label fw-semibold" style="color: black;">End Date</label>
+                                        <input type="datetime-local" class="form-control form-control-lg shadow-sm" id="end_date" name="end_date" required>
+                                    </div>
                                 </div>
                             </div>
 

@@ -1,4 +1,4 @@
-@extends(auth()->user()->role_id == 2 ? 'layouts.app' : 'layouts.staff.app')
+@extends(auth()->user()->role_id == 2 ? 'layouts.app' : (auth()->user()->role_id == 1 ? 'layouts.staff.app' : 'layouts.guest'))
 
 @section('content')
 
@@ -116,7 +116,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Role</label>
-                            <input type="text" class="form-control" value="{{ auth()->user()->role_id == 0 ? 'Employee' : 'Admin' }}" readonly>
+                            <input type="text" class="form-control" value="{{ auth()->user()->role_id == 2 ? 'Admin' : 'Employee' }}" readonly>
                         </div>
                         <div class="text-center mt-3">
                             <button type="submit" class="btn btn-primary">Save</button>
