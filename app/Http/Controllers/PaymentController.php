@@ -176,7 +176,7 @@ class PaymentController extends Controller
                 'description' => $request->input('description')
             ];
             Mail::to(Auth::user()->email)->send(new ReservationMail($reservationDetails));
-//            $this->sendSmsNotification(Auth::user()->phone_number, $reservationDetails);
+            $this->sendSmsNotification(Auth::user()->phone_number, $reservationDetails);
 
             return redirect($result['invoice_url']);
 
