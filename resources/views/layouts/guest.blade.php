@@ -37,7 +37,7 @@
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
         <a href="{{ url('/') }}" class="logo d-flex align-items-center me-auto me-xl-0">
-            <img src="{{asset('landingpage/assets/img/logoname.jpg')}}" class="img-fluid" alt="" style="max-height: 60px;">
+            <img src="{{asset('landingpage/assets/img/logoname.jpg')}}" class="img-fluid" alt="" style="max-height: 100px;">
         </a>
 
         <nav id="navmenu" class="navmenu">
