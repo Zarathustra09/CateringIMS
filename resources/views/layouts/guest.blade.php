@@ -47,7 +47,6 @@
                     <li><a href="{{ url('/') }}#about">About</a></li>
                     <li><a href="{{ url('/') }}#events">Events</a></li>
                     <li><a href="{{ url('/') }}#gallery">Gallery</a></li>
-                    <li><a href="{{ url('/') }}#contact">Contact</a></li>
                 @endguest
 
                 @auth
