@@ -59,7 +59,7 @@
         </nav>
 
         @guest
-            <a class="btn-getstarted me-2" href="{{ route('login') }}">Sign In</a>
+            <a class="btn-getstarted me-2" href="{{ route('login') }}">Get Started</a>
         @endguest
 
         @auth
