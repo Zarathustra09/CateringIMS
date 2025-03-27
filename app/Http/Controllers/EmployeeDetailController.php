@@ -43,4 +43,24 @@ class EmployeeDetailController extends Controller
         $employeeDetail->delete();
         return response()->json(['success' => 'Employee detail deleted successfully']);
     }
+
+    public function updateDetails(Request $request, $id)
+    {
+        // Find the employee details by user ID
+        $employeeDetail = EmployeeDetail::where('user_id', $id)->first();
+
+        if ($employeeDetail) {
+            $employeeDetail->update([
+                'position' => $request->position,
+                'department' => $request->department,
+                'salary' => $request->salary,
+                'pay_period_id' => $request->pay_period,
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Employee details updated successfully.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Employee details not found.'], 404);
+    }
+
 }

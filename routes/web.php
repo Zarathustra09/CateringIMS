@@ -77,6 +77,8 @@ Route::post('/admin/employee-detail', [EmployeeDetailController::class, 'store']
 Route::get('/admin/employee-detail/{id}', [EmployeeDetailController::class, 'show'])->name('admin.employee_detail.show');
 Route::put('/admin/employee-detail/{id}', [EmployeeDetailController::class, 'update'])->name('admin.employee_detail.update');
 Route::delete('/admin/employee-detail/{id}', [EmployeeDetailController::class, 'destroy'])->name('admin.employee_detail.destroy');
+Route::put('/employee/details/{id}/update', [EmployeeDetailController::class, 'updateDetails'])->name('employee.details.update');
+
 
 
 //admin client
