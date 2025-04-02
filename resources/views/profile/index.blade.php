@@ -14,17 +14,17 @@
                                 <h5 class="card-title mb-0">Profile Details</h5>
                             </div>
                             <div class="card-body text-center">
-                                <div class="position-relative d-inline-block mb-3">
-                                    <img src="{{ Storage::exists('users-avatar/' . auth()->user()->avatar) ? Storage::url('users-avatar/' . auth()->user()->avatar) : 'https://placehold.co/128x128' }}"
-                                         alt="{{ auth()->user()->name }}"
-                                         class="rounded-circle profile-image shadow-sm"
-                                         width="128"
-                                         height="128" />
-                                    <label for="profile-image-upload" class="position-absolute bottom-0 end-0 btn btn-sm btn-primary rounded-circle profile-image-upload-btn">
-                                        <i class="fas fa-camera"></i>
-                                    </label>
-                                </div>
-                                <h4 class="mb-1">{{ auth()->user()->name }}</h4>
+<div class="position-relative d-inline-block mb-3">
+                                 <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'https://placehold.co/128x128' }}"
+                                      alt="{{ auth()->user()->name }}"
+                                      class="rounded-circle profile-image shadow-sm"
+                                      width="128"
+                                      height="128" />
+                                 <label for="profile-image-upload" class="position-absolute bottom-0 end-0 btn btn-sm btn-primary rounded-circle profile-image-upload-btn">
+                                     <i class="bx bx-camera"></i>
+
+                                 </label>
+                             </div>                                <h4 class="mb-1">{{ auth()->user()->name }}</h4>
                                 <p class="text-muted mb-3">{{ auth()->user()->role_id == 0 ? 'Employee' : 'Admin' }}</p>
 
                                 <div class="d-flex justify-content-center gap-2">
@@ -36,7 +36,7 @@
                                     <form method="POST" action="{{ route('profile.resetImage') }}" class="d-inline">
                                         @csrf
                                         <button type="submit" class="btn btn-outline-warning btn-sm">
-                                            <i class="fas fa-undo me-1"></i>Reset Image
+                                            <i class="bx bx-undo me-1"></i>Reset Image
                                         </button>
                                     </form>
                                 </div>

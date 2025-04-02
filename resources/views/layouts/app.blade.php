@@ -132,7 +132,7 @@ r -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-<img src="{{ Storage::exists('users-avatar/' . auth()->user()->avatar) ? Storage::url('users-avatar/' . auth()->user()->avatar) : 'https://placehold.co/40x40' }}" alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                                        <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'https://placehold.co/40x40' }}" alt="User Avatar" class="w-px-40 h-px-40 rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -141,7 +141,7 @@ r -->
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                             <img src="{{ Storage::exists('users-avatar/' . auth()->user()->avatar) ? Storage::url('users-avatar/' . auth()->user()->avatar) : asset('path/to/placeholder.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                                                        <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'https://placehold.co/40x40' }}" alt="User Avatar" class="w-px-40 h-px-40 rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
