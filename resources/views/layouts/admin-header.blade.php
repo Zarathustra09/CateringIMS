@@ -103,6 +103,15 @@
             </ul>
         </li>
 
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Reports</span></li>
+       <li class="menu-item {{ request()->routeIs('report.index') ? 'active' : '' }}">
+           <a href="{{route('report.index')}}" class="menu-link">
+               <i class="menu-icon tf-icons bx bx-chart"></i>
+               <div data-i18n="Reports">Reports</div>
+           </a>
+       </li>
+
+
         <!-- Service Management -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Service Management</span></li>
         <li class="menu-item {{ request()->routeIs('admin.service.index', 'admin.categoryevents.index', 'menus.index') ? 'active' : '' }}">

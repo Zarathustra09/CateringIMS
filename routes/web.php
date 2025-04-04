@@ -12,7 +12,8 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDetailController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ReservationController;
+    use App\Http\Controllers\ReportController;
+    use App\Http\Controllers\ReservationController;
     use App\Http\Controllers\ReservationMenuController;
     use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AssigneeController;
@@ -183,11 +184,20 @@ Route::get('/admin/reservation/attendance/{reservationId}', [AttendanceControlle
 
 
 
+
+
 //admin Menu
     Route::resource('menus', MenuController::class)->except(['create', 'edit']);
     Route::get('menu-items/showSingle/{id}', [MenuItemController::class, 'showSingle'])->name('menus.menu-items.showSingle');
     Route::resource('menu-items', MenuItemController::class)->except(['create', 'edit']);
     Route::resource('reservation-menus', ReservationMenuController::class)->except(['create', 'edit']);
+
+
+
+
+Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/report/{type}', [ReportController::class, 'generateReport'])->name('report.generate');
+Route::get('/report/data/{type}', [ReportController::class, 'getReportData']);
 
 //Staff Routes
 Route::get('/staff/home', [StaffHomeController::class, 'index'])->name('staff.home');
