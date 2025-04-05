@@ -1,6 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- Only show the warning message if there are inventories with quantity <= 10 -->
+    @php
+        $lowStockItems = $inventories->where('quantity', '<=', 10);
+    @endphp
+
+    @if($lowStockItems->count() > 0)
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="alert alert-warning" role="alert">
+                <strong>Warning:</strong> The following inventory items have a quantity less than or equal to 10:
+                <ul>
+                    @foreach($lowStockItems as $inventory)
+                        <li>{{ $inventory->name }} ({{ $inventory->quantity }})</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
+
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">

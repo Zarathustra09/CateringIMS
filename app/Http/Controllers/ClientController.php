@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,8 +12,26 @@ class ClientController extends Controller
     public function index()
     {
         $clients = User::where('role_id', 0)->get();
-        return view('admin.client.index', compact('clients'));
+    
+        // Load reservations and payments for each client
+        $payments = collect();
+    
+        foreach ($clients as $client) {
+            foreach ($client->reservations as $reservation) {
+                if ($reservation->payment) {
+                    $payment = $reservation->payment;
+                    $payment->reservation = $reservation;
+                    $payment->client_id = $client->id;
+                    $payments->push($payment);
+                }
+            }
+        }
+    
+        $groupedPayments = $payments->groupBy('client_id');
+    
+        return view('admin.client.index', compact('clients', 'groupedPayments'));
     }
+    
 
     public function store(Request $request)
     {
@@ -59,4 +78,15 @@ class ClientController extends Controller
         $client->delete();
         return response()->json(['success' => 'Client deleted successfully']);
     }
+
+    public function getPayments(user $client)
+{
+    // Assuming the Client model has a payments relationship defined
+    $payments = $client->payments;
+
+    // Return a JSON response with the payment details
+    return response()->json($payments);
+}
+
+    
 }

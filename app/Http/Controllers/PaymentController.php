@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\ReservationMail;
 use App\Models\ReservationMenu;
 use Illuminate\Http\Request;
@@ -241,4 +242,23 @@ class PaymentController extends Controller
          Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
      }
  }
+
+ public function downloadPDF(Payment $payment)
+    {
+        // Get the reservation associated with the payment
+        $reservation = $payment->reservation; // assuming a relationship with the reservation model
+
+        // Prepare the data to pass to the view
+        $data = [
+            'payment' => $payment,
+            'reservation' => $reservation,
+        ];
+
+        // Generate the PDF from the 'pdf' blade view
+        $pdf = PDF::loadView('guest.history.pdf', $data);
+
+        // Return the PDF as a download
+        return $pdf->download('payment_receipt_' . $payment->id . '.pdf');
+    }
+
 }

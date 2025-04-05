@@ -1,90 +1,108 @@
 @extends('layouts.guest')
 
 @section('content')
-    <div class="container py-4" style="padding-top: 200px; padding-bottom: 200px;">
-        <!-- Reservation History -->
-        <div class="card">
-            <div class="card-header text-center" style="background-color: #ce1212; color: white;">
-                <h2 class="h4 mb-0">Reservation History</h2>
-            </div>
-            <div class="card-body">
-                <div id="calendar"></div>
-            </div>
+<div class="container py-4" style="padding-top: 200px; padding-bottom: 200px;">
+    <!-- Payment History -->
+    <div class="card mb-4">
+        <div class="card-header text-center" style="background-color: #ce1212; color: white;">
+            <h2 class="h4 mb-0">Payment History</h2>
+        </div>
+        <div class="card-body">
+            <table id="paymentTable" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Total Paid (₱)</th>
+                        <th>Status</th>
+                        <th>Paid At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($reservations as $reservation)
+                        @php $payment = $payments->firstWhere('reservation_id', $reservation->id); @endphp
+                        @if($payment)
+                            <tr>
+                                <td>{{ $payment->external_id ?? 'N/A' }}</td>
+                                <td>{{ number_format($payment->total, 2) }}</td>
+                                <td>
+                                    <span class="badge bg-{{ $payment->status === 'paid' ? 'success' : 'danger' }}">
+                                        {{ ucfirst($payment->status) }}
+                                    </span>
+                                </td>
+                                <td>{{ $payment->created_at->format('M d, Y h:i A') }}</td>
+                                <td>
+                                    <a href="{{ route('guest.history.pdf', $payment->id) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <i class="bi bi-printer"></i> PDF
+                                    </a>
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var calendarEl = document.getElementById('calendar');
-
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                    },
-                    events: [
-                        @foreach($reservations as $reservation)
-                            @php
-                                $payment = $payments->firstWhere('reservation_id', $reservation->id);
-                            @endphp
-                        {
-                            id: "{{ $reservation->id }}",
-                            title: `{!! addslashes($reservation->event_name) !!}`, // Fix apostrophe issue
-                            start: "{{ \Carbon\Carbon::parse($reservation->start_date)->toIso8601String() }}",
-                            end: "{{ $reservation->end_date ? \Carbon\Carbon::parse($reservation->end_date)->toIso8601String() : null }}",
-                            status: "{{ $reservation->status }}",
-                            reservationtype: "{{ $reservation->message }}",
-                            formatted_start_date: "{{ \Carbon\Carbon::parse($reservation->start_date)->format('M d, Y h:i A') }}",
-                            formatted_end_date: "{{ $reservation->end_date ? \Carbon\Carbon::parse($reservation->end_date)->format('M d, Y h:i A') : 'N/A' }}",
-                            invoice_id: "{{ $payment->external_id ?? 'N/A' }}",
-                            total_paid: "{{ $payment ? number_format($payment->total, 2) : '0.00' }}",
-                            payment_status: "{{ $payment->status ?? 'Unpaid' }}",
-                            created_at: "{{ $payment ? $payment->created_at->format('M d, Y h:i A') : 'N/A' }}"
-                        },
-                        @endforeach
-                    ],
-                    eventClick: function(info) {
-                        Swal.fire({
-                            title: '<h3">Reservation Info</h3>',
-                            width: '80%',
-                            html: `
-                                <div class="container text-left mx-auto">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h3 class="fw-bold">Reservation Details</h3>
-                                            <p><strong>Reservation ID:</strong> ${info.event.id}</p>
-                                            <p><strong>Event Name:</strong> ${info.event.title}</p>
-                                            <p><strong>Reservation Type:</strong> ${info.event.extendedProps.reservationtype}</p>
-                                            <p><strong>Start Date:</strong> ${info.event.extendedProps.formatted_start_date}</p>
-                                            <p><strong>End Date:</strong> ${info.event.extendedProps.formatted_end_date}</p>
-                                            <p><strong>Status:</strong> ${info.event.extendedProps.status}</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <h3 class="fw-bold">Payment Details</h3>
-                                            <p><strong>Invoice ID:</strong> ${info.event.extendedProps.invoice_id}</p>
-                                            <p><strong>Total Paid:</strong> ₱${info.event.extendedProps.total_paid}</p>
-                                            <p><strong>Payment Status:</strong> 
-                                                <span class="badge bg-${info.event.extendedProps.payment_status === 'paid' ? 'success' : 'danger'}">
-                                                    ${info.event.extendedProps.payment_status}
-                                                </span>
-                                            </p>
-                                            <p><strong>Payment Date:</strong> ${info.event.extendedProps.created_at}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `,
-                            icon: 'info',
-                            confirmButtonText: 'Close'
-                        });
-                    }
-                });
-
-                calendar.render();
-            });
-        </script>
-
-    @endpush
+    <!-- Reservation History -->
+    <div class="card">
+        <div class="card-header text-center" style="background-color: #ce1212; color: white;">
+            <h2 class="h4 mb-0">Reservation History</h2>
+        </div>
+        <div class="card-body">
+            <table id="reservationTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Reservation ID</th>
+                        <th>Event Name</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($reservations as $res)
+                        <tr>
+                            <td>{{ $res->id }}</td>
+                            <td>{{ $res->event_name ?? 'Reservation #' . $res->id }}</td>
+                            <td>{{ $res->service->name ?? 'N/A' }}</td>
+                            <td>
+                                <span class="badge bg-{{ $res->status === 'confirmed' || $res->status === 'paid' ? 'success' : 'warning' }}">
+                                    {{ ucfirst($res->status) }}
+                                </span>
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($res->start_date ?? $res->reservation_date)->format('M d, Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($res->end_date ?? $res->reservation_date)->format('M d, Y') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#paymentTable').DataTable({
+                order: [[ 4, "desc" ]],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search payments..."
+                }
+            });
+
+            $('#reservationTable').DataTable({
+                order: [[ 4, "desc" ]],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search reservations..."
+                }
+            });
+        });
+    </script>
+@endpush

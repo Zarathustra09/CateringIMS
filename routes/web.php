@@ -88,6 +88,10 @@ Route::get('/admin/client/{id}', [ClientController::class, 'show'])->name('admin
 Route::post('/admin/client', [ClientController::class, 'store'])->name('admin.client.store');
 Route::put('/admin/client/{id}', [ClientController::class, 'update'])->name('admin.client.update');
 Route::delete('/admin/client/{id}', [ClientController::class, 'destroy'])->name('admin.client.destroy');
+Route::get('/admin/client/{client}/payments', [ClientController::class, 'getPayments']);
+
+
+
 
 //admin service
 Route::get('/admin/service', [ServiceController::class, 'index'])->name('admin.service.index');
@@ -117,12 +121,17 @@ Route::post('/payment/checkout', [PaymentController::class, 'store'])->name('pay
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
 
+Route::get('/payments/{payment}/print', [PaymentController::class, 'downloadPDF'])->name('guest.history.pdf');
+
+
+
 //profile
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::post('/profile/upload-image', [ProfileController::class, 'uploadProfileImage'])->name('profile.uploadImage');
 Route::post('/profile/reset-image', [ProfileController::class, 'resetProfileImage'])->name('profile.resetImage');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 
 //admin reservation allocation
 Route::get('/admin/reservation-items', [ReservationItemsController::class, 'index'])->name('admin.reservationitems.index');

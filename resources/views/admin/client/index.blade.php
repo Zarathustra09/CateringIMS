@@ -12,26 +12,27 @@
             <div class="card-body">
                 <table id="clientTable" class="table table-hover table-striped">
                     <thead class="thead-light">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    @foreach($clients as $client)
-                        <tr>
-                            <td>{{ $client->name }}</td>
-                            <td>{{ $client->email }}</td>
-                            <td>{{ $client->phone_number }}</td>
-                            <td>
-                                <button class="btn btn-info btn-sm" onclick="viewClient({{ $client->id }})">View</button>
-                                <button class="btn btn-warning btn-sm" onclick="editClient({{ $client->id }})">Edit</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteClient({{ $client->id }})">Delete</button>
-                            </td>
-                        </tr>
-                    @endforeach
+                        @foreach($clients as $client)
+                            <tr>
+                                <td>{{ $client->name }}</td>
+                                <td>{{ $client->email }}</td>
+                                <td>{{ $client->phone_number }}</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="viewClient({{ $client->id }})">View</button>
+                                    <button class="btn btn-warning btn-sm" onclick="editClient({{ $client->id }})">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteClient({{ $client->id }})">Delete</button>
+                                    <button class="btn btn-secondary btn-sm" onclick="viewPaymentHistory({{ $client->id }})">View Payment History</button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -40,7 +41,6 @@
 @endsection
 
 @push('scripts')
-
     <script>
         $(document).ready(function() {
             $('#clientTable').DataTable();
@@ -49,7 +49,7 @@
         async function createClient() {
             await Swal.fire({
                 title: 'Create Client',
-                html: `
+                html: `    
                 <input id="swal-input1" class="swal2-input" placeholder="Name">
                 <input id="swal-input2" class="swal2-input" placeholder="Email">
                 <input id="swal-input3" class="swal2-input" placeholder="Phone Number">
@@ -168,5 +168,56 @@
                 }
             });
         }
+
+        function viewPaymentHistory(clientId) {
+    $.get('/admin/client/' + clientId + '/payments', function(client) {
+        let paymentsHtml = '';
+        client.forEach(payment => {
+            let totalPaid = parseFloat(payment.total);  // Ensure total is a number
+            if (isNaN(totalPaid)) {
+                totalPaid = 0;  // If it's not a number, set it to 0
+            }
+
+            paymentsHtml += `
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Total Paid</th>
+                            <th>Status</th>
+                            <th>Paid At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${payment.external_id ?? 'N/A'}</td>
+                            <td>₱${totalPaid.toFixed(2)}</td>
+                            <td>
+                                <span class="badge bg-${payment.status === 'paid' ? 'success' : 'danger'}">
+                                    ${payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                                </span>
+                            </td>
+                            <td>${new Date(payment.created_at).toLocaleString()}</td>
+                            <td>
+                                <a href="/payments/${payment.id}/print" class="btn btn-sm btn-outline-primary" target="_blank">
+                                    <i class="bi bi-printer"></i> PDF
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        });
+
+        Swal.fire({
+            title: 'Payment History',
+            html: paymentsHtml || 'No payment history found.',
+            width: '80%',
+            showCloseButton: true
+        });
+    });
+}
+
     </script>
 @endpush
