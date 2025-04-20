@@ -1,4 +1,3 @@
-<!-- resources/views/pdf.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Receipt</title>
     <style>
+        @font-face {
+            font-family: 'DejaVu Sans';
+            src: url('{{ public_path('fonts/DejaVuSans.ttf') }}');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'DejaVu Sans', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f9f9f9;
@@ -81,38 +87,37 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="{{ public_path('landingpage/assets/img/logoname.jpg') }}" alt="Company Logo" class="logo" style="max-width: 150px; height: auto; margin-bottom: 20px;">
+<div class="container">
+    <div class="header">
+        <img src="{{ public_path('landingpage/assets/img/logoname.jpg') }}" alt="Company Logo" class="logo" style="max-width: 150px; height: auto; margin-bottom: 20px;">
 
-            <h1>Payment Receipt</h1>
-            <p>Thank you for your payment!</p>
-        </div>
-
-        <table class="table">
-    
-            <tr>
-                <th>Invoice ID</th>
-                <td>{{ $payment->external_id ?? 'N/A' }}</td>
-            </tr>
-            <tr>
-                <th>Total Paid</th>
-                <td>₱{{ number_format($payment->total, 2) }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ ucfirst($payment->status) }}</td>
-            </tr>
-            <tr>
-                <th>Paid At</th>
-                <td>{{ $payment->created_at->format('M d, Y h:i A') }}</td>
-            </tr>
-        </table>
-
-        <div class="footer">
-            <p>Powered by <span class="highlight">Jhulian's Catering Services</span></p>
-            <p>For inquiries, contact us at <span class="highlight">jhulianscateringservices2003@gmail.com</span></p>
-        </div>
+        <h1>Payment Receipt</h1>
+        <p>Thank you for your payment!</p>
     </div>
+
+    <table class="table">
+        <tr>
+            <th>Invoice ID</th>
+            <td>{{ $payment->external_id ?? 'N/A' }}</td>
+        </tr>
+        <tr>
+            <th>Total Paid</th>
+            <td>PHP {{ number_format($payment->total, 2) }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{ ucfirst($payment->status) }}</td>
+        </tr>
+        <tr>
+            <th>Paid At</th>
+            <td>{{ $payment->created_at->format('M d, Y h:i A') }}</td>
+        </tr>
+    </table>
+
+    <div class="footer">
+        <p>Powered by <span class="highlight">Jhulian's Catering Services</span></p>
+        <p>For inquiries, contact us at <span class="highlight">jhulianscateringservices2003@gmail.com</span></p>
+    </div>
+</div>
 </body>
 </html>

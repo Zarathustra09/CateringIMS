@@ -49,7 +49,7 @@
         async function createClient() {
             await Swal.fire({
                 title: 'Create Client',
-                html: `    
+                html: `
                 <input id="swal-input1" class="swal2-input" placeholder="Name">
                 <input id="swal-input2" class="swal2-input" placeholder="Email">
                 <input id="swal-input3" class="swal2-input" placeholder="Phone Number">
@@ -170,54 +170,69 @@
         }
 
         function viewPaymentHistory(clientId) {
-    $.get('/admin/client/' + clientId + '/payments', function(client) {
-        let paymentsHtml = '';
-        client.forEach(payment => {
-            let totalPaid = parseFloat(payment.total);  // Ensure total is a number
-            if (isNaN(totalPaid)) {
-                totalPaid = 0;  // If it's not a number, set it to 0
-            }
+            $.get('/admin/client/' + clientId + '/payments', function(client) {
+                let paymentsHtml = '';
 
-            paymentsHtml += `
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Invoice ID</th>
-                            <th>Total Paid</th>
-                            <th>Status</th>
-                            <th>Paid At</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${payment.external_id ?? 'N/A'}</td>
-                            <td>₱${totalPaid.toFixed(2)}</td>
-                            <td>
-                                <span class="badge bg-${payment.status === 'paid' ? 'success' : 'danger'}">
-                                    ${payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
-                                </span>
-                            </td>
-                            <td>${new Date(payment.created_at).toLocaleString()}</td>
-                            <td>
-                                <a href="/payments/${payment.id}/print" class="btn btn-sm btn-outline-primary" target="_blank">
-                                    <i class="bi bi-printer"></i> PDF
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
-        });
+                if (client.length === 0) {
+                    paymentsHtml = '<p class="text-center">No payment history found.</p>';
+                } else {
+                    paymentsHtml = `
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Invoice ID</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
 
-        Swal.fire({
-            title: 'Payment History',
-            html: paymentsHtml || 'No payment history found.',
-            width: '80%',
-            showCloseButton: true
-        });
-    });
-}
+                    client.forEach(payment => {
+                        let totalPaid = parseFloat(payment.total);
+                        if (isNaN(totalPaid)) totalPaid = 0;
+
+                        paymentsHtml += `
+                    <tr>
+                        <td>${payment.external_id ?? 'N/A'}</td>
+                        <td>₱${totalPaid.toFixed(2)}</td>
+                        <td>
+                            <span class="badge bg-${payment.status === 'paid' ? 'success' : 'danger'}">
+                                ${payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>${new Date(payment.created_at).toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        })}</td>
+                        <td>
+                            <a href="/payments/${payment.id}/print" class="btn btn-sm btn-outline-primary" target="_blank">
+                                <i class="bx bx-file-pdf"></i> PDF
+                            </a>
+                        </td>
+                    </tr>`;
+                    });
+
+                    paymentsHtml += `
+                        </tbody>
+                    </table>
+                </div>`;
+                }
+
+                Swal.fire({
+                    title: 'Payment History',
+                    html: paymentsHtml,
+                    width: '600px',
+                    showCloseButton: true,
+                    customClass: {
+                        container: 'payment-history-modal'
+                    }
+                });
+            });
+        }
 
     </script>
 @endpush
