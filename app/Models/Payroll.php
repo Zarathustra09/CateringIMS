@@ -14,10 +14,12 @@ class Payroll extends Model
         'pay_period_id',
         'reservation_id',
         'gross_salary',
-        'deductions',
+        'sss_deductions',
+        'pag_ibig_deductions',
+        'philhealth_deductions',
+        'tax',
         'net_salary',
         'paid_at',
-
     ];
 
     public function user()
@@ -29,6 +31,7 @@ class Payroll extends Model
     {
         return $this->belongsTo(PayPeriod::class);
     }
+
     public function reservation()
     {
         return $this->belongsTo(Reservation::class);
@@ -38,6 +41,4 @@ class Payroll extends Model
     {
         return $this->hasOne(EmployeeDetail::class, 'user_id');
     }
-    
 }
-
