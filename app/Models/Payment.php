@@ -16,10 +16,15 @@ class Payment extends Model
         'external_id',
         'status',
         'total',
+        'amount_paid',
+        'is_down_payment',
     ];
 
     protected $casts = [
-        'created_at' => 'datetime', // Ensure created_at is treated as a date
+        'created_at' => 'datetime',
+        'is_down_payment' => 'boolean',
+        'amount_paid' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
 
     public function user()

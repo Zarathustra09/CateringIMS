@@ -48,6 +48,50 @@
                                 <textarea class="form-control shadow-sm" id="message" name="message" rows="4"></textarea>
                             </div>
 
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold" style="color: black;">Message</label>
+                                <textarea class="form-control shadow-sm" id="message" name="message" rows="4"></textarea>
+                            </div>
+
+                            <!-- Add payment type selection here -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold" style="color: black;">Payment Option</label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="card payment-option shadow-sm h-100">
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="payment_type" id="fullPayment" value="full" checked>
+                                                    <label class="form-check-label w-100" for="fullPayment">
+                                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <span class="fw-bold">Full Payment</span>
+                                                            <span class="badge" style="background-color: #ce1212;">100%</span>
+                                                        </div>
+                                                        <p class="text-muted small mb-0">Pay the total amount now</p>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card payment-option shadow-sm h-100">
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="payment_type" id="downPayment" value="downpayment">
+                                                    <label class="form-check-label w-100" for="downPayment">
+                                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <span class="fw-bold">Down Payment</span>
+                                                            <span class="badge" style="background-color: #ce1212;">50%</span>
+                                                        </div>
+                                                        <p class="text-muted small mb-0">Pay half now, half later</p>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="text-center mt-4">
                                 <p id="menuCounter" class="mb-2">0 of 1-3 menus selected</p>
                                 <button type="button" id="submitReservation" class="btn btn-danger px-5 py-2 fw-bold" style="background-color: #ce1212;" onclick="submitReservationForm()" disabled>Submit Reservation</button>

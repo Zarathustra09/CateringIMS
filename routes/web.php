@@ -122,7 +122,9 @@ Route::get('/payment/success', [PaymentController::class, 'success'])->name('pay
 Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
 
 Route::get('/payments/{payment}/print', [PaymentController::class, 'downloadPDF'])->name('guest.history.pdf');
-
+    Route::get('/payment/choose-type', [PaymentController::class, 'choosePaymentType'])->name('payment.choose_type');
+    Route::get('/payment/balance/{reservation_id}', [PaymentController::class, 'payRemainingBalance'])->name('payment.balance');
+    Route::get('/balance/success', [PaymentController::class, 'balanceSuccess'])->name('payment.balance.success');
 
 
 //profile

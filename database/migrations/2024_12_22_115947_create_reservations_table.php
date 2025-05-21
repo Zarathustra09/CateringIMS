@@ -19,17 +19,14 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->foreignId('category_event_id')->constrained('category_events')->onDelete('cascade');
             $table->string('event_name');
-            $table->dateTime('start_date'); // Changed to dateTime
-            $table->dateTime('end_date'); // Changed to dateTime
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->text('message')->nullable();
-            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'partially_paid', 'confirmed', 'cancelled', 'completed'])->default('pending');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('reservations');

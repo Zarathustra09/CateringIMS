@@ -13,19 +13,18 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Link to users table
-            $table->foreignId('reservation_id')->constrained('reservations')->onDelete('cascade'); // Link to reservations table
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('reservation_id')->constrained('reservations')->onDelete('cascade');
             $table->string('checkout_link');
             $table->string('external_id');
             $table->string('status');
-            $table->decimal('total', 10, 2); // Add total column
+            $table->decimal('total', 10, 2);
+            $table->decimal('amount_paid', 10, 2); // Amount paid in this transaction
+            $table->boolean('is_down_payment')->default(false); // Flag for down payment
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('payments');

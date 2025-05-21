@@ -64,15 +64,15 @@ class ReservationController extends Controller
                 'event_name' => $request->input('event_name'),
                 'category_event_id' => $request->input('event_type'),
                 'description' => 'Reservation for ' . $service->name,
-                'success' => 'Reservation created successfully.',
                 'start_date' => $request->input('start_date'),
                 'end_date' => $request->input('end_date'),
                 'selected_menus' => $request->input('selected_menus'),
+                'payment_type' => $request->input('payment_type'),  // Add this line
             ]);
 
             DB::commit();
 
-            return view('guest.riderect');
+            return redirect()->route('payment.choose_type');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error creating reservation:', ['message' => $e->getMessage()]);

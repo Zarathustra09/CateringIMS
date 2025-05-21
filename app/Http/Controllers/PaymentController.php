@@ -37,30 +37,31 @@ class PaymentController extends Controller
         return view('guest.reservation.create', compact('services'));
     }
 
+    public function choosePaymentType()
+    {
+        // Validate session data
+        if (!session('total') || !session('service_id')) {
+            return redirect()->route('reservation.index')->with('error', 'Missing reservation information.');
+        }
+
+        $total = session('total');
+        $downPaymentAmount = $total * 0.50; // 50% down payment
+
+        return view('guest.riderect', compact('total', 'downPaymentAmount'));
+    }
+
     public function store(Request $request)
     {
         Log::info('Payment store function called with request data:', $request->all());
-
-        Log::info('Session data:', [
-            'total' => session('total'),
-            'service_id' => session('service_id'),
-            'event_name' => session('event_name'),
-            'category_event_id' => session('category_event_id'),
-            'description' => session('description'),
-            'success' => session('success'),
-            'start_date' => session('start_date'),
-            'end_date' => session('end_date'),
-            'selected_menus' => session('selected_menus'),
-        ]);
 
         $request->validate([
             'total' => 'required|numeric',
             'service' => 'required|string',
             'description' => 'required|string',
+            'payment_type' => 'required|in:full,downpayment',
         ]);
 
         $service = Service::find($request->input('service'));
-
         if (!$service) {
             Log::error('Invalid service selected:', ['service' => $request->input('service')]);
             return back()->withErrors(['service' => 'Invalid service selected.']);
@@ -81,37 +82,33 @@ class PaymentController extends Controller
             ->exists();
 
         if ($overlappingReservations) {
-            Log::error('Overlapping reservation found:', [
-                'service_id' => $service->id,
-                'start_date' => $startDate,
-                'end_date' => $endDate
-            ]);
+            Log::error('Overlapping reservation found');
             return back()->withErrors(['reservation' => 'There is an overlapping reservation for the selected dates.']);
+        }
+
+        $total = $request->input('total');
+        $isDownPayment = $request->input('payment_type') === 'downpayment';
+        $amountToPay = $total;
+
+        // If it's a down payment, calculate 50% of the total
+        if ($isDownPayment) {
+            $amountToPay = $total * 0.5;
         }
 
         Configuration::setXenditKey(env('XENDIT_API_KEY'));
         $apiInstance = new InvoiceApi();
 
         $external_id = 'invoice-' . Str::random(5);
-        $total = $request->input('total');
         $success_redirect_url = route('payment.success', ['external_id' => $external_id]);
         $failure_redirect_url = route('payment.failed');
 
         $create_invoice_request = new CreateInvoiceRequest([
             'external_id' => $external_id,
-            'description' => $request->input('description'),
-            'amount' => $total,
+            'description' => $request->input('description') . ($isDownPayment ? ' (Down Payment)' : ' (Full Payment)'),
+            'amount' => $amountToPay,
             'invoice_duration' => 172800,
             'currency' => 'PHP',
             'reminder_time' => 1,
-            'success_redirect_url' => $success_redirect_url,
-            'failure_redirect_url' => $failure_redirect_url
-        ]);
-
-        Log::info('Creating invoice with details:', [
-            'external_id' => $external_id,
-            'description' => $request->input('description'),
-            'amount' => $total,
             'success_redirect_url' => $success_redirect_url,
             'failure_redirect_url' => $failure_redirect_url
         ]);
@@ -121,11 +118,7 @@ class PaymentController extends Controller
         try {
             $result = $apiInstance->createInvoice($create_invoice_request);
 
-            Log::info('Invoice created successfully:', [
-                'invoice_url' => $result['invoice_url'],
-                'invoice_id' => $result['id']
-            ]);
-
+            // Create reservation
             $reservation = new Reservation([
                 'user_id' => Auth::id(),
                 'service_id' => $service->id,
@@ -138,7 +131,6 @@ class PaymentController extends Controller
             ]);
 
             $reservation->save();
-            Log::info('Reservation saved successfully:', ['reservation_id' => $reservation->id]);
 
             // Save selected menus
             $selectedMenus = session('selected_menus');
@@ -149,22 +141,19 @@ class PaymentController extends Controller
                 ]);
             }
 
+            // Create payment record
             $payment = new Payment([
                 'user_id' => auth()->id(),
                 'reservation_id' => $reservation->id,
                 'external_id' => $external_id,
                 'checkout_link' => $result['invoice_url'],
                 'total' => $total,
+                'amount_paid' => $amountToPay,
+                'is_down_payment' => $isDownPayment,
                 'status' => 'pending',
             ]);
 
             $payment->save();
-            Log::info('Payment saved successfully:', [
-                'user_id' => auth()->id(),
-                'external_id' => $external_id,
-                'checkout_link' => $result['invoice_url'],
-                'status' => 'pending'
-            ]);
 
             DB::commit();
 
@@ -174,22 +163,23 @@ class PaymentController extends Controller
                 'event_name' => session('event_name'),
                 'service' => $service->name,
                 'total' => $total,
+                'amount_paid' => $amountToPay,
+                'is_down_payment' => $isDownPayment,
                 'description' => $request->input('description')
             ];
+
             Mail::to(Auth::user()->email)->send(new ReservationMail($reservationDetails));
-//            $this->sendSmsNotification(Auth::user()->phone_number, $reservationDetails);
 
             return redirect($result['invoice_url']);
 
         } catch (\Xendit\XenditSdkException $e) {
             DB::rollBack();
-
             Log::error('Exception when calling InvoiceApi->createInvoice:', [
                 'message' => $e->getMessage(),
                 'full_error' => $e->getFullError()
             ]);
 
-            return response()->json(['message' => 'Exception when calling InvoiceApi->createInvoice: ' . $e->getMessage(), 'full_error' => $e->getFullError()], 500);
+            return back()->withErrors(['payment' => 'Error processing payment. Please try again.']);
         }
     }
 
@@ -201,15 +191,19 @@ class PaymentController extends Controller
 
         $external_id = $request->input('external_id');
         $payment = Payment::where('external_id', $external_id)->first();
-        $reservation = Reservation::find($payment->reservation_id);
 
-        if ($payment) {
-            $payment->status = 'paid';
-            $payment->save();
+        if (!$payment) {
+            return redirect()->route('payment.index')->with('error', 'Payment not found.');
         }
 
+        $reservation = Reservation::find($payment->reservation_id);
+
+        $payment->status = 'paid';
+        $payment->save();
+
         if ($reservation) {
-            $reservation->status = 'confirmed';
+            // Set status based on payment type
+            $reservation->status = $payment->is_down_payment ? 'partially_paid' : 'confirmed';
             $reservation->save();
         }
 
@@ -221,44 +215,109 @@ class PaymentController extends Controller
         return redirect()->route('payment.index')->with('error', 'Payment unsuccessful.');
     }
 
- private function sendSmsNotification($phoneNumber, $reservationDetails)
- {
-     $message = "Dear {$reservationDetails['name']},\n";
-     $message .= "Thank you for your reservation.\n";
-     $message .= "Event: {$reservationDetails['event_name']}\n";
-     $message .= "Please check your email for more details.";
-
-     $response = Http::post('https://api.semaphore.co/api/v4/messages', [
-         'apikey' => env('SEMAPHORE_API_KEY'),
-         'number' => $phoneNumber,
-         'message' => $message
-     ]);
-
-     Log::info('API Response:', ['response' => $response->json()]);
-
-     if ($response->successful()) {
-         Log::info('SMS sent successfully to ' . $phoneNumber);
-     } else {
-         Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
-     }
- }
-
- public function downloadPDF(Payment $payment)
+    public function payRemainingBalance($reservation_id)
     {
-        // Get the reservation associated with the payment
-        $reservation = $payment->reservation; // assuming a relationship with the reservation model
+        $reservation = Reservation::findOrFail($reservation_id);
+        $existingPayment = Payment::where('reservation_id', $reservation_id)
+                                  ->where('status', 'paid')
+                                  ->where('is_down_payment', true)
+                                  ->first();
 
-        // Prepare the data to pass to the view
+        if (!$existingPayment) {
+            return redirect()->route('payment.index')->with('error', 'No down payment found for this reservation.');
+        }
+
+        $remainingBalance = $existingPayment->total - $existingPayment->amount_paid;
+
+        if ($remainingBalance <= 0) {
+            return redirect()->route('payment.index')->with('error', 'This reservation is already fully paid.');
+        }
+
+        Configuration::setXenditKey(env('XENDIT_API_KEY'));
+        $apiInstance = new InvoiceApi();
+
+        $external_id = 'invoice-balance-' . Str::random(5);
+        $success_redirect_url = route('payment.balance.success', ['external_id' => $external_id]);
+        $failure_redirect_url = route('payment.failed');
+
+        $create_invoice_request = new CreateInvoiceRequest([
+            'external_id' => $external_id,
+            'description' => 'Remaining balance for reservation #' . $reservation->id,
+            'amount' => $remainingBalance,
+            'invoice_duration' => 172800,
+            'currency' => 'PHP',
+            'reminder_time' => 1,
+            'success_redirect_url' => $success_redirect_url,
+            'failure_redirect_url' => $failure_redirect_url
+        ]);
+
+        try {
+            $result = $apiInstance->createInvoice($create_invoice_request);
+
+            // Create a new payment record for the balance
+            $balancePayment = new Payment([
+                'user_id' => auth()->id(),
+                'reservation_id' => $reservation->id,
+                'external_id' => $external_id,
+                'checkout_link' => $result['invoice_url'],
+                'total' => $existingPayment->total,
+                'amount_paid' => $remainingBalance,
+                'is_down_payment' => false,
+                'status' => 'pending',
+            ]);
+
+            $balancePayment->save();
+
+            return redirect($result['invoice_url']);
+
+        } catch (\Xendit\XenditSdkException $e) {
+            Log::error('Exception when creating balance invoice:', [
+                'message' => $e->getMessage(),
+                'full_error' => $e->getFullError()
+            ]);
+
+            return redirect()->route('payment.index')->with('error', 'Error processing payment. Please try again.');
+        }
+    }
+
+    public function balanceSuccess(Request $request)
+    {
+        $request->validate([
+            'external_id' => 'required|string',
+        ]);
+
+        $external_id = $request->input('external_id');
+        $payment = Payment::where('external_id', $external_id)->first();
+
+        if (!$payment) {
+            return redirect()->route('payment.index')->with('error', 'Payment not found.');
+        }
+
+        $reservation = Reservation::find($payment->reservation_id);
+
+        $payment->status = 'paid';
+        $payment->save();
+
+        // Update reservation status to confirmed since balance is now paid
+        if ($reservation) {
+            $reservation->status = 'confirmed';
+            $reservation->save();
+        }
+
+        return redirect()->route('payment.index')->with('success', 'Balance payment successful. Your reservation is now fully confirmed.');
+    }
+
+    public function downloadPDF(Payment $payment)
+    {
+        $reservation = $payment->reservation;
+
         $data = [
             'payment' => $payment,
             'reservation' => $reservation,
+            'remaining_balance' => $payment->is_down_payment ? ($payment->total - $payment->amount_paid) : 0,
         ];
 
-        // Generate the PDF from the 'pdf' blade view
         $pdf = PDF::loadView('guest.history.pdf', $data);
-
-        // Return the PDF as a download
         return $pdf->download('payment_receipt_' . $payment->id . '.pdf');
     }
-
 }

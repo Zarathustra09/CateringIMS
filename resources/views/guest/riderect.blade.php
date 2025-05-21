@@ -21,6 +21,7 @@
     <input type="hidden" name="total" value="{{ session('total') }}">
     <input type="hidden" name="service" value="{{ session('service_id') }}">
     <input type="hidden" name="description" value="{{ session('description') }}">
+    <input type="hidden" name="payment_type" value="{{ session('payment_type') }}">
 </form>
 
 <script>
