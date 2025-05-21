@@ -64,7 +64,8 @@ class PaymentController extends Controller
         $service = Service::find($request->input('service'));
         if (!$service) {
             Log::error('Invalid service selected:', ['service' => $request->input('service')]);
-            return back()->withErrors(['service' => 'Invalid service selected.']);
+            session()->flash('error', 'Invalid service selected.');
+            return redirect()->route('reservation.index');
         }
 
         // Check for overlapping reservations
@@ -83,9 +84,11 @@ class PaymentController extends Controller
 
         if ($overlappingReservations) {
             Log::error('Overlapping reservation found');
-            return back()->withErrors(['reservation' => 'There is an overlapping reservation for the selected dates.']);
+            session()->flash('error', 'There is an overlapping reservation for the selected dates.');
+            return redirect()->route('reservation.index');
         }
 
+        // Continue with the rest of your code...
         $total = $request->input('total');
         $isDownPayment = $request->input('payment_type') === 'downpayment';
         $amountToPay = $total;
