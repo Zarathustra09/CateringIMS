@@ -172,6 +172,8 @@ class PaymentController extends Controller
             ];
 
             Mail::to(Auth::user()->email)->send(new ReservationMail($reservationDetails));
+            $this->sendSmsNotification(Auth::user()->phone_number, $reservationDetails);
+
 
             return redirect($result['invoice_url']);
 
@@ -186,6 +188,28 @@ class PaymentController extends Controller
         }
     }
 
+
+    private function sendSmsNotification($phoneNumber, $reservationDetails)
+    {
+        $message = "Dear {$reservationDetails['name']},\n";
+        $message .= "Thank you for your reservation.\n";
+        $message .= "Event: {$reservationDetails['event_name']}\n";
+        $message .= "Please check your email for more details.";
+
+        $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+            'apikey' => env('SEMAPHORE_API_KEY'),
+            'number' => $phoneNumber,
+            'message' => $message
+        ]);
+
+        Log::info('API Response:', ['response' => $response->json()]);
+
+        if ($response->successful()) {
+            Log::info('SMS sent successfully to ' . $phoneNumber);
+        } else {
+            Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
+        }
+    }
     public function success(Request $request)
     {
         $request->validate([
@@ -323,4 +347,5 @@ class PaymentController extends Controller
         $pdf = PDF::loadView('guest.history.pdf', $data);
         return $pdf->download('payment_receipt_' . $payment->id . '.pdf');
     }
+
 }
