@@ -48,10 +48,6 @@
                                 <textarea class="form-control shadow-sm" id="message" name="message" rows="4"></textarea>
                             </div>
 
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold" style="color: black;">Message</label>
-                                <textarea class="form-control shadow-sm" id="message" name="message" rows="4"></textarea>
-                            </div>
 
                             <!-- Add payment type selection here -->
                             <div class="mb-4">
