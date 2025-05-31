@@ -1,351 +1,368 @@
 <?php
 
-namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Mail\ReservationMail;
-use App\Models\ReservationMenu;
-use Illuminate\Http\Request;
-use App\Models\Payment;
-use App\Models\Reservation;
-use App\Models\Service;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use Xendit\Configuration;
-use Xendit\Invoice\CreateInvoiceRequest;
-use Xendit\Invoice\InvoiceApi;
+    use Barryvdh\DomPDF\Facade\Pdf;
+    use App\Mail\ReservationMail;
+    use App\Models\ReservationMenu;
+    use Illuminate\Http\Request;
+    use App\Models\Payment;
+    use App\Models\Reservation;
+    use App\Models\Service;
+    use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Support\Facades\Http;
+    use Illuminate\Support\Facades\Mail;
+    use Illuminate\Support\Str;
+    use Xendit\Configuration;
+    use Xendit\Invoice\CreateInvoiceRequest;
+    use Xendit\Invoice\InvoiceApi;
 
-class PaymentController extends Controller
-{
-    public function index()
+    class PaymentController extends Controller
     {
-        $userId = auth()->id();
+        public function index()
+        {
+            $userId = auth()->id();
 
-        $payments = Payment::where('user_id', $userId)->get();
-        $reservations = Reservation::where('user_id', $userId)->get();
+            // Clear any lingering session data when viewing payment history
+            $this->clearReservationSessionData();
 
-        return view('guest.history.index', compact('payments', 'reservations'));
-    }
+            $payments = Payment::where('user_id', $userId)->get();
+            $reservations = Reservation::where('user_id', $userId)->get();
 
-    public function create()
-    {
-        $services = Service::all();
-        return view('guest.reservation.create', compact('services'));
-    }
-
-    public function choosePaymentType()
-    {
-        // Validate session data
-        if (!session('total') || !session('service_id')) {
-            return redirect()->route('reservation.index')->with('error', 'Missing reservation information.');
+            return view('guest.history.index', compact('payments', 'reservations'));
         }
 
-        $total = session('total');
-        $downPaymentAmount = $total * 0.50; // 50% down payment
+        public function create()
+        {
+            // Only clear session if coming from a fresh reservation start
+            // Don't clear if we're in the middle of a payment flow
+            $fromPaymentProcess = session()->has('payment_in_progress');
 
-        return view('guest.riderect', compact('total', 'downPaymentAmount'));
-    }
-
-    public function store(Request $request)
-    {
-        Log::info('Payment store function called with request data:', $request->all());
-
-        $request->validate([
-            'total' => 'required|numeric',
-            'service' => 'required|string',
-            'description' => 'required|string',
-            'payment_type' => 'required|in:full,downpayment',
-        ]);
-
-        $service = Service::find($request->input('service'));
-        if (!$service) {
-            Log::error('Invalid service selected:', ['service' => $request->input('service')]);
-            session()->flash('error', 'Invalid service selected.');
-            return redirect()->route('reservation.index');
-        }
-
-        // Check for overlapping reservations
-        $startDate = session('start_date');
-        $endDate = session('end_date');
-        $overlappingReservations = Reservation::where('service_id', $service->id)
-            ->where(function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('start_date', [$startDate, $endDate])
-                    ->orWhereBetween('end_date', [$startDate, $endDate])
-                    ->orWhere(function ($query) use ($startDate, $endDate) {
-                        $query->where('start_date', '<=', $startDate)
-                            ->where('end_date', '>=', $endDate);
-                    });
-            })
-            ->exists();
-
-        if ($overlappingReservations) {
-            Log::error('Overlapping reservation found');
-            session()->flash('error', 'There is an overlapping reservation for the selected dates.');
-            return redirect()->route('reservation.index');
-        }
-
-        // Continue with the rest of your code...
-        $total = $request->input('total');
-        $isDownPayment = $request->input('payment_type') === 'downpayment';
-        $amountToPay = $total;
-
-        // If it's a down payment, calculate 50% of the total
-        if ($isDownPayment) {
-            $amountToPay = $total * 0.5;
-        }
-
-        Configuration::setXenditKey(env('XENDIT_API_KEY'));
-        $apiInstance = new InvoiceApi();
-
-        $external_id = 'invoice-' . Str::random(5);
-        $success_redirect_url = route('payment.success', ['external_id' => $external_id]);
-        $failure_redirect_url = route('payment.failed');
-
-        $create_invoice_request = new CreateInvoiceRequest([
-            'external_id' => $external_id,
-            'description' => $request->input('description') . ($isDownPayment ? ' (Down Payment)' : ' (Full Payment)'),
-            'amount' => $amountToPay,
-            'invoice_duration' => 172800,
-            'currency' => 'PHP',
-            'reminder_time' => 1,
-            'success_redirect_url' => $success_redirect_url,
-            'failure_redirect_url' => $failure_redirect_url
-        ]);
-
-        DB::beginTransaction();
-
-        try {
-            $result = $apiInstance->createInvoice($create_invoice_request);
-
-            // Create reservation
-            $reservation = new Reservation([
-                'user_id' => Auth::id(),
-                'service_id' => $service->id,
-                'event_name' => session('event_name'),
-                'category_event_id' => session('category_event_id'),
-                'start_date' => session('start_date'),
-                'end_date' => session('end_date'),
-                'message' => $request->input('description'),
-                'status' => 'pending',
-            ]);
-
-            $reservation->save();
-
-            // Save selected menus
-            $selectedMenus = session('selected_menus');
-            foreach ($selectedMenus as $menuId) {
-                ReservationMenu::create([
-                    'reservation_id' => $reservation->id,
-                    'menu_id' => $menuId,
-                ]);
+            if (!$fromPaymentProcess) {
+                $this->clearReservationSessionData();
             }
 
-            // Create payment record
-            $payment = new Payment([
-                'user_id' => auth()->id(),
-                'reservation_id' => $reservation->id,
-                'external_id' => $external_id,
-                'checkout_link' => $result['invoice_url'],
-                'total' => $total,
-                'amount_paid' => $amountToPay,
-                'is_down_payment' => $isDownPayment,
-                'status' => 'pending',
+            $services = Service::all();
+            return view('guest.reservation.create', compact('services'));
+        }
+
+        public function choosePaymentType()
+        {
+            // Get session data
+            $serviceId = session('service_id');
+            $service = Service::findOrFail($serviceId);
+            $totalAmount = $service->price;
+
+            // Determine payment amount based on payment type
+            $paymentType = session('payment_type', 'full');
+            $isDownPayment = $paymentType === 'downpayment';
+            $amountToPay = $isDownPayment ? ($totalAmount * 0.5) : $totalAmount;
+
+            return view('guest.payments.checkout', compact('service', 'totalAmount', 'amountToPay', 'isDownPayment'));
+        }
+
+        public function processCheckout(Request $request)
+        {
+            $request->validate([
+                'payment_method' => 'required|in:cash,gcash,paymaya',
             ]);
 
-            $payment->save();
+            $paymentMethod = $request->input('payment_method');
 
-            DB::commit();
+            DB::beginTransaction();
 
-            // Send email notification
-            $reservationDetails = [
-                'name' => Auth::user()->name,
-                'event_name' => session('event_name'),
-                'service' => $service->name,
-                'total' => $total,
-                'amount_paid' => $amountToPay,
-                'is_down_payment' => $isDownPayment,
-                'description' => $request->input('description')
+            try {
+                // Create the reservation
+                $reservation = new Reservation();
+                $reservation->user_id = Auth::id();
+                $reservation->service_id = session('service_id');
+                $reservation->category_event_id = session('category_event_id');
+                $reservation->event_name = session('event_name');
+                $reservation->start_date = session('start_date');
+                $reservation->end_date = session('end_date');
+                $reservation->message = session('message');
+                $reservation->status = 'pending';
+                $reservation->save();
+
+                // Create menu relationships for the reservation
+                $selectedMenus = session('selected_menus');
+                foreach ($selectedMenus as $menuId) {
+                    ReservationMenu::create([
+                        'reservation_id' => $reservation->id,
+                        'menu_id' => $menuId
+                    ]);
+                }
+
+                // Get payment details
+                $service = Service::findOrFail(session('service_id'));
+                $totalAmount = $service->price;
+                $paymentType = session('payment_type', 'full');
+                $isDownPayment = $paymentType === 'downpayment';
+                $amountToPay = $isDownPayment ? ($totalAmount * 0.5) : $totalAmount;
+
+                // Generate a unique reference number
+                $referenceNumber = 'PAY-' . strtoupper(Str::random(8));
+
+                // Create payment record
+                $payment = new Payment();
+                $payment->user_id = Auth::id();
+                $payment->reservation_id = $reservation->id;
+                $payment->external_id = $referenceNumber;
+                $payment->status = 'pending';
+                $payment->total = $totalAmount;
+                $payment->amount_paid = $amountToPay;
+                $payment->is_down_payment = $isDownPayment;
+                $payment->payment_type = $paymentMethod;
+                $payment->save();
+
+                // Send SMS notification for new reservation
+                $user = Auth::user();
+                $reservationDetails = [
+                    'name' => $user->name,
+                    'event_name' => $reservation->event_name,
+                    'reference' => $referenceNumber,
+                    'amount' => $amountToPay,
+                    'payment_type' => $isDownPayment ? 'Down Payment' : 'Full Payment'
+                ];
+
+                // Only send SMS if user has a phone number
+                if ($user->phone_number) {
+                    $this->sendSmsNotification($user->phone_number, $reservationDetails);
+                }
+
+                DB::commit();
+
+                // Clear session data after successful transaction
+                $this->clearReservationSessionData();
+
+                // For demonstration purposes, redirect to instructions page
+                return redirect()->route('payment.instructions', [
+                    'reference' => $referenceNumber,
+                    'amount' => $amountToPay,
+                    'method' => $paymentMethod
+                ]);
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Error in checkout process:', ['error' => $e->getMessage()]);
+                return back()->withErrors(['error' => 'An error occurred during checkout. Please try again.']);
+            }
+        }
+
+        /**
+         * Clear reservation-related session data after successful transaction
+         */
+        private function clearReservationSessionData()
+        {
+            // List all session keys related to the reservation process
+            $sessionKeys = [
+                'service_id',
+                'event_name',
+                'category_event_id',
+                'description',
+                'start_date',
+                'end_date',
+                'message', // Added message to clear
+                'selected_menus',
+                'payment_type',
+                'total'
             ];
 
-            Mail::to(Auth::user()->email)->send(new ReservationMail($reservationDetails));
-            $this->sendSmsNotification(Auth::user()->phone_number, $reservationDetails);
+            // Clear each session key
+            foreach ($sessionKeys as $key) {
+                session()->forget($key);
+            }
+        }
 
+        public function showPaymentInstructions(Request $request)
+        {
+            $referenceNumber = $request->query('reference');
+            $amountToPay = $request->query('amount');
+            $paymentMethod = $request->query('method');
 
-            return redirect($result['invoice_url']);
+            // Make sure session data is cleared
+            $this->clearReservationSessionData();
 
-        } catch (\Xendit\XenditSdkException $e) {
-            DB::rollBack();
-            Log::error('Exception when calling InvoiceApi->createInvoice:', [
-                'message' => $e->getMessage(),
-                'full_error' => $e->getFullError()
+            return view('guest.payments.instructions', compact('referenceNumber', 'amountToPay', 'paymentMethod'));
+        }
+
+        public function payRemainingBalance($reservationId)
+        {
+            try {
+                $reservation = Reservation::findOrFail($reservationId);
+                $previousPayment = Payment::where('reservation_id', $reservationId)
+                    ->where('is_down_payment', true)
+                    ->first();
+
+                if (!$previousPayment) {
+                    return redirect()->route('guest.history.index')->with('error', 'No down payment found for this reservation.');
+                }
+
+                $remainingAmount = $previousPayment->total - $previousPayment->amount_paid;
+                $service = Service::findOrFail($reservation->service_id);
+
+                return view('guest.payments.checkout', [
+                    'service' => $service,
+                    'totalAmount' => $remainingAmount,
+                    'amountToPay' => $remainingAmount,
+                    'isDownPayment' => false,
+                    'isBalancePayment' => true,
+                    'reservationId' => $reservationId
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Error processing remaining balance payment:', ['error' => $e->getMessage()]);
+                return redirect()->route('guest.history.index')->with('error', 'An error occurred while processing the payment. Please try again.');
+            }
+        }
+
+        public function markAsPaidTestingMode(Request $request)
+        {
+            $request->validate([
+                'reference_number' => 'required|string',
             ]);
 
-            return back()->withErrors(['payment' => 'Error processing payment. Please try again.']);
-        }
-    }
+            $referenceNumber = $request->input('reference_number');
+            $payment = Payment::where('external_id', $referenceNumber)->first();
 
+            if (!$payment) {
+                return response()->json(['error' => 'Payment not found'], 404);
+            }
 
-    private function sendSmsNotification($phoneNumber, $reservationDetails)
-    {
-        $message = "Dear {$reservationDetails['name']},\n";
-        $message .= "Thank you for your reservation.\n";
-        $message .= "Event: {$reservationDetails['event_name']}\n";
-        $message .= "Please check your email for more details.";
+            $reservation = Reservation::find($payment->reservation_id);
 
-        $response = Http::post('https://api.semaphore.co/api/v4/messages', [
-            'apikey' => env('SEMAPHORE_API_KEY'),
-            'number' => $phoneNumber,
-            'message' => $message
-        ]);
+            // Mark payment as paid
+            $payment->status = 'paid';
+            $payment->save();
 
-        Log::info('API Response:', ['response' => $response->json()]);
+            // Update reservation status based on payment type
+            if ($reservation) {
+                $reservation->status = $payment->is_down_payment ? 'partially_paid' : 'confirmed';
+                $reservation->save();
+            }
 
-        if ($response->successful()) {
-            Log::info('SMS sent successfully to ' . $phoneNumber);
-        } else {
-            Log::error('Failed to send SMS to ' . $phoneNumber, ['response' => $response->body()]);
-        }
-    }
-    public function success(Request $request)
-    {
-        $request->validate([
-            'external_id' => 'required|string',
-        ]);
+            // Clear any remaining session data
+            $this->clearReservationSessionData();
 
-        $external_id = $request->input('external_id');
-        $payment = Payment::where('external_id', $external_id)->first();
-
-        if (!$payment) {
-            return redirect()->route('payment.index')->with('error', 'Payment not found.');
+            return response()->json(['success' => true]);
         }
 
-        $reservation = Reservation::find($payment->reservation_id);
+private function sendSmsNotification($phoneNumber, $reservationDetails)
+       {
+           try {
+               $apiKey = env('SEMAPHORE_API_KEY');
+               $sender = env('SEMAPHORE_SENDER_ID', 'SEMAPHORE');
 
-        $payment->status = 'paid';
-        $payment->save();
+               // Format message based on payment type - each limited to 110 characters
+               if ($reservationDetails['payment_type'] === 'Balance Payment') {
+                   $message = "Your balance payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
+               } elseif ($reservationDetails['payment_type'] === 'Down Payment') {
+                   $message = "Down payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
+               } else { // Full Payment
+                   $message = "Full payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
+               }
 
-        if ($reservation) {
-            // Set status based on payment type
-            $reservation->status = $payment->is_down_payment ? 'partially_paid' : 'confirmed';
-            $reservation->save();
+               // Send SMS via Semaphore API
+               $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+                   'apikey' => $apiKey,
+                   'number' => $phoneNumber,
+                   'message' => $message,
+                   'sendername' => $sender
+               ]);
+
+               Log::info('SMS notification sent', [
+                   'phone' => $phoneNumber,
+                   'response' => $response->json()
+               ]);
+
+               return $response->successful();
+           } catch (\Exception $e) {
+               Log::error('Failed to send SMS notification', [
+                   'error' => $e->getMessage()
+               ]);
+               return false;
+           }
+       }
+        public function downloadPDF(Payment $payment)
+        {
+            // Clear any session data when downloading PDF
+            $this->clearReservationSessionData();
+
+            $reservation = $payment->reservation;
+
+            $data = [
+                'payment' => $payment,
+                'reservation' => $reservation,
+                'remaining_balance' => $payment->is_down_payment ? ($payment->total - $payment->amount_paid) : 0,
+            ];
+
+            $pdf = PDF::loadView('guest.history.pdf', $data);
+            return $pdf->download('payment_receipt_' . $payment->id . '.pdf');
         }
 
-        return redirect()->route('payment.index')->with('success', 'Payment successful.');
-    }
-
-    public function failed()
-    {
-        return redirect()->route('payment.index')->with('error', 'Payment unsuccessful.');
-    }
-
-    public function payRemainingBalance($reservation_id)
-    {
-        $reservation = Reservation::findOrFail($reservation_id);
-        $existingPayment = Payment::where('reservation_id', $reservation_id)
-                                  ->where('status', 'paid')
-                                  ->where('is_down_payment', true)
-                                  ->first();
-
-        if (!$existingPayment) {
-            return redirect()->route('payment.index')->with('error', 'No down payment found for this reservation.');
-        }
-
-        $remainingBalance = $existingPayment->total - $existingPayment->amount_paid;
-
-        if ($remainingBalance <= 0) {
-            return redirect()->route('payment.index')->with('error', 'This reservation is already fully paid.');
-        }
-
-        Configuration::setXenditKey(env('XENDIT_API_KEY'));
-        $apiInstance = new InvoiceApi();
-
-        $external_id = 'invoice-balance-' . Str::random(5);
-        $success_redirect_url = route('payment.balance.success', ['external_id' => $external_id]);
-        $failure_redirect_url = route('payment.failed');
-
-        $create_invoice_request = new CreateInvoiceRequest([
-            'external_id' => $external_id,
-            'description' => 'Remaining balance for reservation #' . $reservation->id,
-            'amount' => $remainingBalance,
-            'invoice_duration' => 172800,
-            'currency' => 'PHP',
-            'reminder_time' => 1,
-            'success_redirect_url' => $success_redirect_url,
-            'failure_redirect_url' => $failure_redirect_url
-        ]);
-
-        try {
-            $result = $apiInstance->createInvoice($create_invoice_request);
-
-            // Create a new payment record for the balance
-            $balancePayment = new Payment([
-                'user_id' => auth()->id(),
-                'reservation_id' => $reservation->id,
-                'external_id' => $external_id,
-                'checkout_link' => $result['invoice_url'],
-                'total' => $existingPayment->total,
-                'amount_paid' => $remainingBalance,
-                'is_down_payment' => false,
-                'status' => 'pending',
+        public function processBalancePayment(Request $request, $reservationId)
+        {
+            $request->validate([
+                'payment_method' => 'required|in:cash,gcash,paymaya',
             ]);
 
-            $balancePayment->save();
+            $reservation = Reservation::findOrFail($reservationId);
+            $previousPayment = Payment::where('reservation_id', $reservationId)
+                ->where('is_down_payment', true)
+                ->first();
 
-            return redirect($result['invoice_url']);
+            if (!$previousPayment || $previousPayment->status !== 'paid') {
+                return redirect()->route('guest.history.index')->with('error', 'Invalid payment status.');
+            }
 
-        } catch (\Xendit\XenditSdkException $e) {
-            Log::error('Exception when creating balance invoice:', [
-                'message' => $e->getMessage(),
-                'full_error' => $e->getFullError()
-            ]);
+            $remainingAmount = $previousPayment->total - $previousPayment->amount_paid;
+            $paymentMethod = $request->input('payment_method');
 
-            return redirect()->route('payment.index')->with('error', 'Error processing payment. Please try again.');
-        }
-    }
+            DB::beginTransaction();
 
-    public function balanceSuccess(Request $request)
-    {
-        $request->validate([
-            'external_id' => 'required|string',
-        ]);
+            try {
+                // Generate a unique reference number
+                $referenceNumber = 'BAL-' . strtoupper(Str::random(8));
 
-        $external_id = $request->input('external_id');
-        $payment = Payment::where('external_id', $external_id)->first();
+                // Create payment record for the balance
+                $balancePayment = new Payment();
+                $balancePayment->user_id = Auth::id();
+                $balancePayment->reservation_id = $reservation->id;
+                $balancePayment->external_id = $referenceNumber;
+                $balancePayment->status = 'pending';
+                $balancePayment->total = $previousPayment->total;
+                $balancePayment->amount_paid = $remainingAmount;
+                $balancePayment->is_down_payment = false; // This is a balance payment
+                $balancePayment->payment_type = $paymentMethod;
+                $balancePayment->save();
 
-        if (!$payment) {
-            return redirect()->route('payment.index')->with('error', 'Payment not found.');
-        }
+                // Send SMS notification for balance payment
+                $user = Auth::user();
+                $reservationDetails = [
+                    'name' => $user->name,
+                    'event_name' => $reservation->event_name,
+                    'reference' => $referenceNumber,
+                    'amount' => $remainingAmount,
+                    'payment_type' => 'Balance Payment'
+                ];
 
-        $reservation = Reservation::find($payment->reservation_id);
+                // Only send SMS if user has a phone number
+                if ($user->phone_number) {
+                    $this->sendSmsNotification($user->phone_number, $reservationDetails);
+                }
 
-        $payment->status = 'paid';
-        $payment->save();
+                DB::commit();
 
-        // Update reservation status to confirmed since balance is now paid
-        if ($reservation) {
-            $reservation->status = 'confirmed';
-            $reservation->save();
-        }
+                return redirect()->route('payment.instructions', [
+                    'reference' => $referenceNumber,
+                    'amount' => $remainingAmount,
+                    'method' => $paymentMethod
+                ]);
 
-        return redirect()->route('payment.index')->with('success', 'Balance payment successful. Your reservation is now fully confirmed.');
-    }
-
-    public function downloadPDF(Payment $payment)
-    {
-        $reservation = $payment->reservation;
-
-        $data = [
-            'payment' => $payment,
-            'reservation' => $reservation,
-            'remaining_balance' => $payment->is_down_payment ? ($payment->total - $payment->amount_paid) : 0,
-        ];
-
-        $pdf = PDF::loadView('guest.history.pdf', $data);
-        return $pdf->download('payment_receipt_' . $payment->id . '.pdf');
-    }
-
-}
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Error in balance payment process:', ['error' => $e->getMessage()]);
+                return back()->withErrors(['error' => 'An error occurred during payment processing. Please try again.']);
+            }
+        }    }

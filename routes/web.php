@@ -116,16 +116,21 @@ Route::post('/reservations/update-date', [ReservationController::class, 'updateD
 
 
 //payment
-Route::get('/payment/index', [PaymentController::class, 'index'])->name('payment.index');
-Route::post('/payment/checkout', [PaymentController::class, 'store'])->name('payment.checkout');
-Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
-Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
+    // Add this to your routes/web.php
+    // Payment history and PDF
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payment.index');
+    Route::get('/payments/{payment}/print', [PaymentController::class, 'downloadPDF'])->name('guest.history.pdf');
 
-Route::get('/payments/{payment}/print', [PaymentController::class, 'downloadPDF'])->name('guest.history.pdf');
+    // Reservation payment flow
+    Route::get('/payment/create', [PaymentController::class, 'create'])->name('payment.create');
     Route::get('/payment/choose-type', [PaymentController::class, 'choosePaymentType'])->name('payment.choose_type');
-    Route::get('/payment/balance/{reservation_id}', [PaymentController::class, 'payRemainingBalance'])->name('payment.balance');
-    Route::get('/balance/success', [PaymentController::class, 'balanceSuccess'])->name('payment.balance.success');
+    Route::post('/payment/checkout/process', [PaymentController::class, 'processCheckout'])->name('payment.checkout.process');
+    Route::get('/payment/instructions', [PaymentController::class, 'showPaymentInstructions'])->name('payment.instructions');
 
+    // Balance payment flow
+    Route::get('/payment/balance/{reservationId}', [PaymentController::class, 'payRemainingBalance'])->name('payment.balance');
+    Route::post('/payment/balance/{reservationId}/process', [PaymentController::class, 'processBalancePayment'])->name('payment.balance.process');    // Testing mode callback
+    Route::post('/payment/testing-mode/mark-as-paid', [PaymentController::class, 'markAsPaidTestingMode'])->name('payment.testing.mark-as-paid');
 
 //profile
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
