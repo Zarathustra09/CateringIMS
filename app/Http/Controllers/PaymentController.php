@@ -248,42 +248,42 @@
             return response()->json(['success' => true]);
         }
 
-private function sendSmsNotification($phoneNumber, $reservationDetails)
-       {
-           try {
-               $apiKey = env('SEMAPHORE_API_KEY');
-               $sender = env('SEMAPHORE_SENDER_ID', 'SEMAPHORE');
+        private function sendSmsNotification($phoneNumber, $reservationDetails)
+        {
+            try {
+                $apiKey = env('SEMAPHORE_API_KEY');
+                $sender = env('SEMAPHORE_SENDER_ID', 'SEMAPHORE');
 
-               // Format message based on payment type - each limited to 110 characters
-               if ($reservationDetails['payment_type'] === 'Balance Payment') {
-                   $message = "Your balance payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
-               } elseif ($reservationDetails['payment_type'] === 'Down Payment') {
-                   $message = "Down payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
-               } else { // Full Payment
-                   $message = "Full payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
-               }
+                // Format message based on payment type - each limited to 110 characters
+                if ($reservationDetails['payment_type'] === 'Balance Payment') {
+                    $message = "Your balance payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
+                } elseif ($reservationDetails['payment_type'] === 'Down Payment') {
+                    $message = "Down payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
+                } else { // Full Payment
+                    $message = "Full payment of ₱{$reservationDetails['amount']} for {$reservationDetails['event_name']} received. Ref: {$reservationDetails['reference']}";
+                }
 
-               // Send SMS via Semaphore API
-               $response = Http::post('https://api.semaphore.co/api/v4/messages', [
-                   'apikey' => $apiKey,
-                   'number' => $phoneNumber,
-                   'message' => $message,
-                   'sendername' => $sender
-               ]);
+                // Send SMS via Semaphore API
+                $response = Http::post('https://api.semaphore.co/api/v4/messages', [
+                    'apikey' => $apiKey,
+                    'number' => $phoneNumber,
+                    'message' => $message,
+                    'sendername' => $sender
+                ]);
 
-               Log::info('SMS notification sent', [
-                   'phone' => $phoneNumber,
-                   'response' => $response->json()
-               ]);
+                Log::info('SMS notification sent', [
+                    'phone' => $phoneNumber,
+                    'response' => $response->json()
+                ]);
 
-               return $response->successful();
-           } catch (\Exception $e) {
-               Log::error('Failed to send SMS notification', [
-                   'error' => $e->getMessage()
-               ]);
-               return false;
-           }
-       }
+                return $response->successful();
+            } catch (\Exception $e) {
+                Log::error('Failed to send SMS notification', [
+                    'error' => $e->getMessage()
+                ]);
+                return false;
+            }
+        }
         public function downloadPDF(Payment $payment)
         {
             // Clear any session data when downloading PDF

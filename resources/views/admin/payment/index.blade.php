@@ -15,6 +15,7 @@
                                             <th>Invoice</th>
                                             <th>Payment Type</th>
                                             <th>Amount Paid</th>
+                                            <th>Payment Type</th>
                                             <th>Total</th>
                                             <th>Status</th>
                                             <th>Created At</th>
@@ -35,6 +36,7 @@
                                                     @endif
                                                 </td>
                                                 <td>₱{{ number_format($payment->amount_paid, 2) }}</td>
+                                                <td>{{$payment->payment_type}}</td>
                                                 <td>₱{{ number_format($payment->total, 2) }}</td>
                                                 <td>
                                                     @if($payment->status === 'paid')
